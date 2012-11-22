@@ -1,0 +1,13 @@
+{% if classes %}
+    <table border="1">
+        {% for class in classes %}
+            <tr>
+            <td>{{ class.number }}</td>
+            <td>{{ class.year }}</td>
+            <td>{{ class.enrollment }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
