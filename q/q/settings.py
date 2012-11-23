@@ -102,7 +102,7 @@ ROOT_URLCONF = 'q.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'q.wsgi.application'
 
-TEMPLATE_DIRS = ('/Users/Andrew/PycharmProjects/q/templates',)
+TEMPLATE_DIRS = ('/Users/Andrew/PycharmProjects/q-guide/q/templates',)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
