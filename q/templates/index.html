@@ -1,4 +1,5 @@
-{% if classes %}
+{% extends "base.html" %}
+{% block content %}
     <table>
     <tr><td>Class</td><td>Year</td><td>Enrollment</td></tr>
         {% for class in classes %}
@@ -9,6 +10,4 @@
             </tr>
         {% endfor %}
     </table>
-{% else %}
-    <p>No polls are available.</p>
-{% endif %}
+{% endblock %}
