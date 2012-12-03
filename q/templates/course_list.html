@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<table class="table">
+{% for course in course_list %}
+    <tr>
+        <td>{{ course.number }}</td>
+        <td>{{ course.term }} {{ course.year }}</td>
+        <td>{{ course.overall }}<div class="progress {{ course.style }}">
+            <div class="bar" style="width: {{ course.percent }}%"></div>
+        </div></td>
+    </tr>
+{% endfor %}
+</table>
+
+{% endblock %}

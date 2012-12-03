@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+    {{ STATIC_URL }}
     <table>
     <tr><td>Class</td><td>Year</td><td>Enrollment</td></tr>
         {% for class in classes %}
