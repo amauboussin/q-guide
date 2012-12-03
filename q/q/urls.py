@@ -15,6 +15,7 @@ urlpatterns = patterns('',
 
     (r'^(\w+)/(\d{4})$', CourseListView.as_view()),
     (r'^(\w+)/(\d{4})/(\w+)$', CourseListView.as_view())
+    (r'^(\w+)/(\d{4})/(\w+)$', CourseListView.as_view())
     # url(r'^q/', include('q.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
