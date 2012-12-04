@@ -12,7 +12,7 @@ from django.db import models
 class Qcomments(models.Model):
     number = models.CharField(max_length=384)
     cat_num = models.CharField(max_length=765)
-    year = models.TextField() # This field type is a guess.
+    year = models.IntegerField() # changed to integer
     term = models.IntegerField()
     comment = models.CharField(max_length=24576)
     class Meta:
@@ -22,7 +22,7 @@ class Qcourses(models.Model):
     number = models.CharField(max_length=384)
     course_id = models.IntegerField(primary_key=True)
     cat_num = models.CharField(max_length=765)
-    year = models.TextField() # This field type is a guess.
+    year = models.IntegerField() # changed to integer
     term = models.IntegerField()
     enrollment = models.IntegerField(null=True, db_column='Enrollment', blank=True) # Field name made lowercase.
     evaluations = models.IntegerField(null=True, db_column='Evaluations', blank=True) # Field name made lowercase.
@@ -35,17 +35,18 @@ class Qcourses(models.Model):
     workload = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='Workload', blank=True) # Field name made lowercase.
     difficulty = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='Difficulty', blank=True) # Field name made lowercase.
     recommend = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='WouldYouRecommend', blank=True) # Field name made lowercase.
+
     class Meta:
         db_table = u'Qcourses'
 
 class Qinstructors(models.Model):
     number = models.CharField(max_length=384)
     cat_num = models.CharField(max_length=765)
-    year = models.TextField() # This field type is a guess.
+    year = models.IntegerField() # changed to integer
     term = models.IntegerField()
-    id = models.CharField(max_length=765)
-    first = models.CharField(max_length=384)
-    last = models.CharField(max_length=384)
+    instructor_id = models.CharField(max_length=255, db_column="id", primary_key=True)
+    first = models.CharField(max_length=128)
+    last = models.CharField(max_length=128)
     overall = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='InstructorOverall', blank=True) # Field name made lowercase.
     lectures = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='EffectiveLecturesorPresentations', blank=True) # Field name made lowercase.
     accessible = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='AccessibleOutsideClass', blank=True) # Field name made lowercase.
@@ -53,6 +54,12 @@ class Qinstructors(models.Model):
     facilitates_discussion = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='FacilitatesDiscussionEncouragesParticipation', blank=True) # Field name made lowercase.
     feedback = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='GivesUsefulFeedback', blank=True) # Field name made lowercase.
     returns_assignments = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='ReturnsAssignmentsinTimelyFashion', blank=True) # Field name made lowercase.
+
+
+    def __unicode__(self):
+        return self.first+' '+self.last
+
+
     class Meta:
         db_table = u'Qinstructors'
 

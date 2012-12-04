@@ -10,8 +10,8 @@ urlpatterns = patterns('',
     # Examples:
      url(r'^$', index, name='index'),
     url(r'^courses/$', course_root, name = "course_root" ),
-    url(r'^courses/(?P<course_number>\w+)/$', course_detail, name = "course_detail" ), #courses
-    url(r'^profs/(?P<prof>\w+)/$', course_detail, name = "course_detail" ), #professors
+    url(r'^courses/(?P<course_field>\w+)/(?P<course_number>\w+)/$', course_detail, name = "course_detail" ), #courses
+    url(r'^profs/(?P<prof_first>\w+)-(?P<prof_last>\w+)/$', prof_detail, name = "prof_detail" ), #professors
 
 
     url(r'^about/', TemplateView.as_view(template_name="about.html")),
