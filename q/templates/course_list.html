@@ -2,7 +2,15 @@
 
 {% block content %}
 
-<table class="table">
+<table class="table" id="course_list">
+<thead>
+    <tr>
+        <th>Course</th>
+        <th>Term</th>
+        <th>Overall Score</th>
+    </tr>
+</thead>
+<tbody>
 {% for course in course_list %}
     <tr>
         <td>{{ course.number }}</td>
@@ -12,6 +20,17 @@
         </div></td>
     </tr>
 {% endfor %}
+</tbody>
 </table>
 
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.tablesorter.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function()
+        {
+            $("#course_list").tablesorter();
+        });
+    </script>
 {% endblock %}

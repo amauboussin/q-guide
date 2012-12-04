@@ -49,8 +49,8 @@
                 </form>
                 <ul class="nav">
                     <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="/courses">Courses</a></li>
+                    <li><a href="/profs">Professors</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -69,7 +69,7 @@
 <!-- Le javascript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-{% block javascript %}{% endblock %}
+
 <script src="{{ STATIC_URL }}bootstrap/js/jquery.js"></script>
 <script src="{{ STATIC_URL }}bootstrap/js/bootstrap-transition.js"></script>
 <script src="{{ STATIC_URL }}bootstrap/js/bootstrap-alert.js"></script>
@@ -83,6 +83,6 @@
 <script src="{{ STATIC_URL }}bootstrap/js/bootstrap-collapse.js"></script>
 <script src="{{ STATIC_URL }}bootstrap/js/bootstrap-carousel.js"></script>
 <script src="{{ STATIC_URL }}bootstrap/js/bootstrap-typeahead.js"></script>
-
+{% block javascript %}{% endblock %}
 </body>
 </html>

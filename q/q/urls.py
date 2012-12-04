@@ -9,14 +9,20 @@ from viewer.views import *
 urlpatterns = patterns('',
     # Examples:
      url(r'^$', index, name='index'),
+    url(r'^courses/$', course_root, name = "course_root" ),
+    url(r'^courses/(?P<course_number>\w+)/$', course_detail, name = "course_detail" ), #courses
+    url(r'^profs/(?P<prof>\w+)/$', course_detail, name = "course_detail" ), #professors
+
 
     url(r'^about/', TemplateView.as_view(template_name="about.html")),
-    (r'^(\w+)/$', CourseListView.as_view()),
+    (r'^(\w+)/$', CourseListView.as_view()), #department
 
-    (r'^(\w+)/(\d{4})$', CourseListView.as_view()),
-    (r'^(\w+)/(\d{4})/(\w+)$', CourseListView.as_view()),
-    (r'^(\w+)/(\d{4})/(\w+)$', CourseListView.as_view()),
-    (r'^(\w+)/(\d{4})/(\w+)$', CourseListView.as_view())
+    (r'^(\w+)/(\d{4})/$', CourseListView.as_view()), #deparment/year
+    (r'^(\w+)/(\w{4,6})/$', CourseListView.as_view()), #deparment/term
+    (r'^(\w+)/(\d{4})/(\w{4,6})$', CourseListView.as_view()), #department/year/term
+    (r'^(\w+)/(\w{4,6})/(\d{4})$', CourseListView.as_view()), #department/term/year
+
+
     # url(r'^q/', include('q.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
