@@ -56,6 +56,9 @@ class Qinstructors(models.Model):
     discussion = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='FacilitatesDiscussionEncouragesParticipation', blank=True) # Field name made lowercase.
     feedback = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='GivesUsefulFeedback', blank=True) # Field name made lowercase.
     returns_assignments = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='ReturnsAssignmentsinTimelyFashion', blank=True) # Field name made lowercase.
+
+    def __unicode__(self):
+        return self.first+' '+self.last
     class Meta:
         db_table = u'Qinstructors'
 
