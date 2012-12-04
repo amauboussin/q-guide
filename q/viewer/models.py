@@ -28,7 +28,7 @@ class Qcourses(models.Model):
     section = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='Section', blank=True) # Field name made lowercase.
     workload = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='Workload', blank=True) # Field name made lowercase.
     difficulty = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='Difficulty', blank=True) # Field name made lowercase.
-    wouldyourecommend = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='WouldYouRecommend', blank=True) # Field name made lowercase.
+    recommend = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='WouldYouRecommend', blank=True) # Field name made lowercase.
     class Meta:
         db_table = u'Qcourses'
 
@@ -41,6 +41,7 @@ class Qcomments(models.Model):
 
 class Qfields(models.Model):
     field = models.CharField(max_length=255, primary_key=True)
+    name = models.CharField(max_length=255,db_column='name')
     class Meta:
         db_table = u'Qfields'
 
@@ -59,6 +60,7 @@ class Qinstructors(models.Model):
 
     def __unicode__(self):
         return self.first+' '+self.last
+
     class Meta:
         db_table = u'Qinstructors'
 
