@@ -15,7 +15,8 @@ urlpatterns = patterns('',
 
 
     url(r'^about/', TemplateView.as_view(template_name="about.html")),
-    (r'^(\w+)/$', CourseListView.as_view()), #department
+    (r'^courses/(\w+)/$', CourseListView.as_view()), #department
+    (r'^(\w+)/$', CourseListView.as_view()),
 
     (r'^(\w+)/(\d{4})/$', CourseListView.as_view()), #deparment/year
     (r'^(\w+)/(\w{4,6})/$', CourseListView.as_view()), #deparment/term

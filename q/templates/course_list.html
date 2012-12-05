@@ -13,7 +13,7 @@
 <tbody>
 {% for course in course_list %}
     <tr>
-        <td>{{ course.field }} {{ course.number }}: {{ course.title }}</td>
+        <td>{{ course }}</td>
         <td>{{ course.term }} {{ course.year }}</td>
         <td>{{ course.overall }}<div class="progress {{ course.style }}">
             <div class="bar" style="width: {{ course.percent }}%"></div>

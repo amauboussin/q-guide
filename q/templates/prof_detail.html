@@ -2,8 +2,42 @@
 
 {% block content %}
 
- This is the detail page of {{ prof.first }} {{ prof.last }}.
+ This is the detail page of {{ prof_rows.0.first }} {{ prof_rows.0.last }}.
 
-    note to josh - the view should also pass all of the professor classes into the template
+    <table class="table table-bordered" id="course_list">
+        <thead>
+        <tr>
+            <th>Class</th>
+            <th>Term</th>
+            <th>Enrollment</th>
+            <th>Response Rate</th>
+            <th>Overall Score</th>
+            <th>Workload</th>
+            <th>Difficulty</th>
+            <th>Class Materials</th>
+            <th>Assignments</th>
+            <th>Section</th>
+            <th>Feedback given</th>
+            <th>Recommended</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for course in courses %}
+            <tr>
+                <td>{{ course }}</td>
+                <td>{{ course.term }} {{ course.year }}</td>
+                <td>{{ course.enrollment }}</td>
+                <td>{{ course.response_rate }}</td>
+                <td>{{ course.overall }}</td>
+                <td id="workload{{ forloop.counter }}">{{ course.workload }}</td>
+                <td id="difficulty{{ forloop.counter }}">{{ course.difficulty }}</td>
+                <td>{{ course.materials }}</td>
+                <td>{{ course.assignments }}</td>
+                <td>{{ course.section }}</td>
+                <td>{{ course.feedback }}</td>
+                <td>{{ course.recommend }}</td>
 
+            </tr>
+        {% endfor %}
+        </tbody></table>
 {% endblock %}

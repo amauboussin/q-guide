@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404
 import string
 from helper import *
+from django.db.models import Q
 
 
 def index(request):
@@ -33,9 +34,17 @@ def prof_detail(request, prof_first, prof_last):
     last = string.replace(prof_last.title(), '_', ' ')
     print first, last
     prof_rows = Qinstructors.objects.filter(first__exact = first).filter(last__exact = last)
-#    cat_nums = [prof_row.cat_num for prof_row in prof_rows]
+    ids = []
+    for row in prof_rows:
+        if row.course_id not in ids:
+            ids.append(row.course_id)
+
+    courses = Qcourses.objects.filter(reduce(lambda x, y: x | y, [Q(course_id__exact=id) for id in ids]))
+
+
+    #    cat_nums = [prof_row.cat_num for prof_row in prof_rows]
 #    courses = Qcourses.objects.filter(cat_num__exact = prof.cat_num)
-    return render_to_response('prof_detail.html', {'prof': prof_rows[0]}, context_instance=RequestContext(request))
+    return render_to_response('prof_detail.html', {'prof_rows': prof_rows, 'courses':courses }, context_instance=RequestContext(request))
 
 
 class CourseListView(ListView):

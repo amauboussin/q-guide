@@ -29,6 +29,9 @@ class Qcourses(models.Model):
     workload = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='Workload', blank=True) # Field name made lowercase.
     difficulty = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='Difficulty', blank=True) # Field name made lowercase.
     recommend = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='WouldYouRecommend', blank=True) # Field name made lowercase.
+
+    def __unicode__(self):
+        return self.field+' '+self.number+': '+self.title
     class Meta:
         db_table = u'Qcourses'
 
