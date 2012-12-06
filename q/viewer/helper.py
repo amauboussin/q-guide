@@ -9,12 +9,6 @@ def convert_term(term):
     else:
         return 0 #term is not valid. filtering for term by 0 will return an empty queryset
 
-def get_term(n):
-    if n == 1:
-        return 'Fall'
-    elif n==2:
-        return 'Spring'
-    else: return 'Unknown'
 
 
 def get_color(score):

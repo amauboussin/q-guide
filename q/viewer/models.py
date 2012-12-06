@@ -32,6 +32,17 @@ class Qcourses(models.Model):
 
     def __unicode__(self):
         return self.field+' '+self.number+': '+self.title
+
+    def get_absolute_url(self):
+        return '/courses/'+self.field+'/'+self.number
+
+
+    def term_text(self):
+        if self.term == 1:
+            return 'Fall'
+        elif self.term==2:
+            return 'Spring'
+        else: return 'Unknown'
     class Meta:
         db_table = u'Qcourses'
 
@@ -50,7 +61,7 @@ class Qfields(models.Model):
 
 class Qinstructors(models.Model):
     course = models.ForeignKey(Qcourses)
-    id = models.CharField(max_length=255, primary_key=True)
+    prof_id = models.CharField(max_length=255)
     first = models.CharField(max_length=384)
     last = models.CharField(max_length=384)
     overall = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='InstructorOverall', blank=True) # Field name made lowercase.

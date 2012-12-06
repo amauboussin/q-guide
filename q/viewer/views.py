@@ -22,13 +22,12 @@ def course_detail(request, course_field, course_number):
     if not courses:
         return render_to_response('no_course_found.html', {}, context_instance=RequestContext(request))
 
-    for course in courses:
-        course.term = get_term(course.term)
     return render_to_response('course.html', {'courses': courses}, context_instance=RequestContext(request))
 
 def course_root(request):
     courses = Qcourses.objects.order_by('-overall')[:20]
     return render_to_response('course_list.html', {'course_list': courses}, context_instance=RequestContext(request))
+
 def prof_detail(request, prof_first, prof_last):
     first = string.replace(prof_first.title(), '_', ' ')
     last = string.replace(prof_last.title(), '_', ' ')
@@ -79,7 +78,6 @@ class CourseListView(ListView):
 
         #add term data and styling for bar
         for course in context['course_list']:
-            course.term = get_term(course.term)
             if 4<course.overall:
                 course.style = 'progress-success'
             elif 3<=course.overall<=4 :
