@@ -10,7 +10,7 @@ from django.db.models import Q
 
 
 def index(request):
-    classes = Qcourses.objects.order_by('-enrollment')[:20]
+    classes = Qcourses.objects.order_by('-overall')[:20]
     return render_to_response('index.html', {'classes': classes}, context_instance=RequestContext(request))
 
 def course_detail(request, course_field, course_number):
@@ -27,8 +27,8 @@ def course_detail(request, course_field, course_number):
     return render_to_response('course.html', {'courses': courses}, context_instance=RequestContext(request))
 
 def course_root(request):
-    return ''
-
+    courses = Qcourses.objects.order_by('-overall')[:20]
+    return render_to_response('course_list.html', {'course_list': courses}, context_instance=RequestContext(request))
 def prof_detail(request, prof_first, prof_last):
     first = string.replace(prof_first.title(), '_', ' ')
     last = string.replace(prof_last.title(), '_', ' ')
