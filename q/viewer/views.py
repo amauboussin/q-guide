@@ -41,6 +41,9 @@ def prof_detail(request, prof_first, prof_last):
 
     courses = Qcourses.objects.filter(reduce(lambda x, y: x | y, [Q(course_id__exact=id) for id in ids]))
 
+    for row in prof_rows:
+        row.class_name = courses.filter(course_id__exact = row.course_id)[0].__unicode__()
+
 
     #    cat_nums = [prof_row.cat_num for prof_row in prof_rows]
 #    courses = Qcourses.objects.filter(cat_num__exact = prof.cat_num)
