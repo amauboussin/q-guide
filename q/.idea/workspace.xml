@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7de94d6e-d8de-4984-bc02-2c2feffb63b5" name="Default" comment="updated template dir path">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/course_root.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/search_results.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/q/urls.py" afterPath="$PROJECT_DIR$/q/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/base.html" afterPath="$PROJECT_DIR$/templates/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/course.html" afterPath="$PROJECT_DIR$/templates/course.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/course_list.html" afterPath="$PROJECT_DIR$/templates/course_list.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/helper.py" afterPath="$PROJECT_DIR$/viewer/helper.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/models.py" afterPath="$PROJECT_DIR$/viewer/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/search_results.html" afterPath="$PROJECT_DIR$/templates/search_results.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/views.py" afterPath="$PROJECT_DIR$/viewer/views.py" />
     </list>
     <ignored path="q.iws" />
@@ -34,19 +27,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/viewer/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="67" column="8" selection-start="2473" selection-end="2473" vertical-scroll-proportion="0.0">
+            <state line="106" column="21" selection-start="4115" selection-end="4115" vertical-scroll-proportion="0.82758623">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="search_results.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="search_results.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/search_results.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="40" selection-start="293" selection-end="293" vertical-scroll-proportion="0.3649635">
+            <state line="13" column="8" selection-start="397" selection-end="397" vertical-scroll-proportion="-8.125">
               <folding />
             </state>
           </provider>
@@ -73,7 +66,7 @@
       <file leaf-file-name="course_list.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/course_list.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="46" column="0" selection-start="852" selection-end="852" vertical-scroll-proportion="-6.875">
+            <state line="38" column="9" selection-start="807" selection-end="807" vertical-scroll-proportion="-23.75">
               <folding />
             </state>
           </provider>
@@ -146,9 +139,9 @@
         <option value="$PROJECT_DIR$/templates/course.html" />
         <option value="$PROJECT_DIR$/viewer/helper.py" />
         <option value="$PROJECT_DIR$/templates/base.html" />
+        <option value="$PROJECT_DIR$/templates/search_results.html" />
         <option value="$PROJECT_DIR$/templates/course_list.html" />
         <option value="$PROJECT_DIR$/viewer/views.py" />
-        <option value="$PROJECT_DIR$/templates/search_results.html" />
       </list>
     </option>
   </component>
@@ -573,13 +566,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/course_root.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="24" selection-start="72" selection-end="72" vertical-scroll-proportion="-2.5">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/q/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="58" selection-start="737" selection-end="737" vertical-scroll-proportion="0.0">
@@ -610,9 +596,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/course_list.html">
+    <entry file="file://$PROJECT_DIR$/templates/search_results.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="0" selection-start="852" selection-end="852" vertical-scroll-proportion="-6.875">
+        <state line="13" column="8" selection-start="397" selection-end="397" vertical-scroll-proportion="-8.125">
           <folding />
         </state>
       </provider>
@@ -624,16 +610,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/viewer/views.py">
+    <entry file="file://$PROJECT_DIR$/templates/course_root.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="67" column="8" selection-start="2473" selection-end="2473" vertical-scroll-proportion="0.0">
+        <state line="4" column="24" selection-start="72" selection-end="72" vertical-scroll-proportion="-2.5">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/search_results.html">
+    <entry file="file://$PROJECT_DIR$/templates/course_list.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="40" selection-start="293" selection-end="293" vertical-scroll-proportion="0.3649635">
+        <state line="38" column="9" selection-start="807" selection-end="807" vertical-scroll-proportion="-23.75">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/viewer/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="106" column="21" selection-start="4115" selection-end="4115" vertical-scroll-proportion="0.82758623">
           <folding />
         </state>
       </provider>
