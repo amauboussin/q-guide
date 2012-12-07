@@ -24,14 +24,54 @@ def course_detail(request, course_field, course_number):
 
     return render_to_response('course.html', {'courses': courses}, context_instance=RequestContext(request))
 
+
 def course_root(request):
-    courses = Qcourses.objects.order_by('-overall')[:20]
+    fields = Qfields.objects.all()
+    return render_to_response('course_root.html', {'fields': fields}, context_instance=RequestContext(request))
+
+def top_courses(request):
+    courses = Qcourses.objects.filter(year__exact = 2011).exclude(number__exact = "EXPOS 20").order_by('-enrollment')[:21]
+#    for c in courses:
+#        if c.get_profs():
+#
+#            print c.__unicode__(),c.course_id, ', '.join([ p.first+p.last for p in c.get_profs()])
+#        else:
+#            print c.__unicode__(), 'NO PROF'
+
     return render_to_response('course_list.html', {'course_list': courses}, context_instance=RequestContext(request))
+
+
+def search_results(request):
+    courses = []
+    query_string = ''
+    if ('q' in request.GET) and request.GET['q'].strip():
+        query_string = request.GET['q']
+        courses = search_for_courses(query_string)
+
+    p = 1
+    if ('p' in request.GET) and request.GET['p'].isdigit():
+        p = int(request.GET['p'])
+
+    n = courses.count()
+    courses_per_page = 20
+
+    #get the courses that should be on the page
+    start =  (p-1) * courses_per_page
+    this_page = []
+    for i, c in enumerate(courses[start:]):
+        if i == courses_per_page: #no more courses need to go on this page
+            break
+        print i
+        this_page.append(c)
+
+    return render_to_response('search_results.html', {'course_list': this_page, 'q': query_string,
+        'pages': [x+1 for x in range(1+n/courses_per_page)], 'results' : n},
+        context_instance=RequestContext(request))
+
 
 def prof_detail(request, prof_first, prof_last):
     first = string.replace(prof_first.title(), '_', ' ')
     last = string.replace(prof_last.title(), '_', ' ')
-    print first, last
     prof_rows = Qinstructors.objects.filter(first__exact = first).filter(last__exact = last)
     ids = []
     for row in prof_rows:
@@ -40,8 +80,6 @@ def prof_detail(request, prof_first, prof_last):
 
     courses = Qcourses.objects.filter(reduce(lambda x, y: x | y, [Q(course_id__exact=id) for id in ids]))
 
-    for row in prof_rows:
-        row.class_name = courses.filter(course_id__exact = row.course_id)[0].__unicode__()
 
 
     #    cat_nums = [prof_row.cat_num for prof_row in prof_rows]
@@ -85,6 +123,7 @@ class CourseListView(ListView):
             else:
                 course.style = 'progress-danger'
             course.percent = course.overall * 20
+
         return context
 
 

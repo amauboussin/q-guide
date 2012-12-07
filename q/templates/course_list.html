@@ -1,28 +1,50 @@
 {% extends "base.html" %}
 
+
+
+
 {% block content %}
 
+ {% block search %}
+ {% endblock %}
+
+{% block results %}
+<div class="row-fluid">
 <table class="table" id="course_list">
 <thead>
     <tr>
         <th>Course</th>
         <th>Term</th>
+        <th>Professor(s)</th>
+        <th>Professor Overall</th>
         <th>Overall Score</th>
     </tr>
 </thead>
 <tbody>
 {% for course in course_list %}
     <tr>
-        <td><a href="{{ course.get_absolute_url }}">>{{ course }}</a></td>
+        <td> <a href="{{ course.get_absolute_url }}">{{ course }}</a></td>
         <td>{{ course.term_text }} {{ course.year }}</td>
-        <td>{{ course.overall }}<div class="progress {{ course.style }}">
-            <div class="bar" style="width: {{ course.percent }}%"></div>
+
+
+        <td>{% for prof in course.get_profs %}
+            {{ prof }} <br>
+            {% endfor %}</td>
+
+
+        <td>{% for prof in course.get_profs %}
+            {{ prof.overall }} <br>
+        {% endfor %}</td>
+
+        <td>{{ course.overall }} </td>
+
         </div></td>
     </tr>
 {% endfor %}
 </tbody>
 </table>
 
+</div>
 {% endblock %}
 
 {% block javascript %}
@@ -33,4 +55,5 @@
             $("#course_list").tablesorter();
         });
     </script>
+{% endblock %}
 {% endblock %}

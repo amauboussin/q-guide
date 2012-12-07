@@ -36,6 +36,13 @@ class Qcourses(models.Model):
     def get_absolute_url(self):
         return '/courses/'+self.field+'/'+self.number
 
+    def get_profs(self):
+        profs =  Qinstructors.objects.filter(course_id__exact = self.course_id)
+        if profs:
+            return profs
+        else:
+            return None
+
 
     def term_text(self):
         if self.term == 1:
@@ -56,6 +63,16 @@ class Qcomments(models.Model):
 class Qfields(models.Model):
     field = models.CharField(max_length=255, primary_key=True)
     name = models.CharField(max_length=255,db_column='name')
+
+    def __unicode__(self):
+        if self.name != '':
+            return self.name
+        else:
+            return self.field
+
+    def get_absolute_url(self):
+        return '/courses/'+self.field+'/'
+
     class Meta:
         db_table = u'Qfields'
 

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    Browse by field:<br>
+
+    {% for field in fields %}
+
+    <a href="{{ field.get_absolute_url }}" > {{ field }} </a>
+    <br>
+
+    {% endfor %}
+
+
+{% endblock %}

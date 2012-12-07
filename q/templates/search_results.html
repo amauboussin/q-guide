@@ -1,0 +1,28 @@
+{% extends "course_list.html" %}
+
+{% block content %}
+
+
+{% block search %}
+<div class="span8">
+    <form action="/courses/search/">
+        <input type="text" name="q" placeholder="Search"
+                value="{% if q %}{{ q }}{% else %}{% endif %}">
+        <input type=submit value=Submit formaction="/courses/search/">
+    </form>
+    {% if q %}Search returned {{ results }} results{% endif %}
+    <div class="pagination">
+        <ul>
+           {% for p in pages %}
+            <li><a href="/courses/search/?q={{ q }}&p={{ p }}">{{ p }}</a></li>
+           {% endfor %}
+        </ul>
+    </div>
+    <br>
+</div>
+
+{% endblock %}
+
+{% block results %}{% if course_list %}{{ block.super }}{% else %}{% endif %}{% endblock %}
+
+{% endblock %}

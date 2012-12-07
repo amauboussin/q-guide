@@ -44,13 +44,13 @@
             </a>
             <a class="brand" href="#">Harvard-Q</a>
             <div class="nav-collapse collapse">
-                <form class="navbar-form pull-right">
-                    <input type="text" class="span2" placeholder="Search for a class" >
+                <form class="navbar-form pull-right" action="/courses/search/" method="get">
+                    <input type="text" name="q" class="span2" placeholder="Search for a class" formaction="/courses/search/" >
                 </form>
                 <ul class="nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="/courses">Courses</a></li>
-                    <li><a href="/profs">Professors</a></li>
+                    <li id="navbar-home"><a href="#">Home</a></li>
+                    <li id="navbar-courses"><a href="/courses">Courses</a></li>
+                    <li id="navar-professors"><a href="/profs">Professors</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
