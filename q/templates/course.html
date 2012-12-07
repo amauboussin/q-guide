@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% load get_color %}
 {% block content %}
 
 <div class="row-fluid">
@@ -30,14 +31,14 @@
         <td>{{ course.term_text }} {{ course.year }}</td>
         <td>{{ course.enrollment }}</td>
         <td>{{ course.response_rate }}</td>
-        <td>{{ course.overall }}</td>
-        <td id="workload{{ forloop.counter }}">{{ course.workload }}</td>
-        <td id="difficulty{{ forloop.counter }}">{{ course.difficulty }}</td>
-        <td>{{ course.materials }}</td>
-        <td>{{ course.assignments }}</td>
-        <td>{{ course.section }}</td>
-        <td>{{ course.feedback }}</td>
-        <td>{{ course.recommend }}</td>
+        <td style="background-color: {{ course.overall|get_color:"" }}">{{ course.overall }}</td>
+        <td style="background-color: {{ course.workload|get_color:"true" }}">{{ course.workload }}</td>
+        <td style="background-color: {{ course.difficulty|get_color:"true" }}">{{ course.difficulty }}</td>
+        <td style="background-color: {{ course.materials|get_color:"" }}">{{ course.materials }}</td>
+        <td style="background-color: {{ course.assignments|get_color:"" }}">{{ course.assignments }}</td>
+        <td style="background-color: {{ course.section|get_color:"" }}">{{ course.section }}</td>
+        <td style="background-color: {{ course.feedback|get_color:"" }}">{{ course.feedback }}</td>
+        <td style="background-color: {{ course.recommend|get_color:"" }}">{{ course.recommend }}</td>
 
     </tr>
 {% endfor %}
@@ -93,7 +94,7 @@
         }
         $(document).ready(function()
         {
-            highlightTable();
+            //highlightTable();
             $("#course_list").tablesorter();
         });
     </script>

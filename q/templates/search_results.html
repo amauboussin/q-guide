@@ -11,7 +11,7 @@
         <input type=submit value=Submit formaction="/courses/search/">
     </form>
     {% if q %}Search returned {{ results }} results.
-        Page {% if p %}{{ p }}{% else %}1{% endif %} of {{ num_pages }}{% endif %}
+        Page {{ page }} of {{ num_pages }}{% endif %}
     <div class="pagination">
         <ul>
            {% for p in pages %}
