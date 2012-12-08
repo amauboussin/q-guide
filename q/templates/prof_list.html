@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% block search %}
+{% endblock %}
+
+{% block results %}
+<div class="row-fluid">
+    <table class="table" id="course_list">
+    <thead>
+    <tr>
+        <th>Professor</th>
+        <th>Average Overall Score</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for prof in profs %}
+    <tr>
+        <th><a href="{{ prof.get_absolute_url }}">{{ prof }}</a>  </th>
+        <th>{{ prof.average_overall }}</th>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% endblock %}

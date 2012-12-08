@@ -1,29 +1,37 @@
-{% extends "course_list.html" %}
+{% extends extend %}
 
 {% block content %}
 
 
 {% block search %}
 <div class="span8">
-    <form action="/courses/search/">
-        <input type="text" name="q" placeholder="Search"
+    <form class ="form-search" action="{{ form_action }}">
+        <input type="text" class="input-medium search-query" name="q" placeholder="Search"
                 value="{% if q %}{{ q }}{% else %}{% endif %}">
-        <input type=submit value=Submit formaction="/courses/search/">
+        <input type=submit class="btn" value=Search formaction="{{ form_action }}">
     </form>
-    {% if q %}Search returned {{ results }} results.
-        Page {{ page }} of {{ num_pages }}{% endif %}
-    <div class="pagination">
-        <ul>
-           {% for p in pages %}
-            <li><a href="/courses/search/?q={{ q }}&p={{ p }}">{{ p }}</a></li>
-           {% endfor %}
-        </ul>
-    </div>
+
+    {% if q %}Search returned {{ results }} result{% if results > 1 %}s{% endif %}.
+    {% if num_pages > 1 %}Page {{ page }} of {{ num_pages }}. {% endif %}
+    {% else %}
+        {{ hints }}
+    {% endif %}
+
+
+
     <br>
 </div>
 
 {% endblock %}
 
-{% block results %}{% if course_list %}{{ block.super }}{% else %}{% endif %}{% endblock %}
-
+{% block results %}{% if results > 0 %}{{ block.super }}{% else %}{% endif %}{% endblock %}
+{% if num_pages > 1 %}
+<div class="pagination">
+    <ul>
+        {% for p in pages %}
+            <li class="{% if p == page %}active{% endif %}"><a href="?q={{ q }}&p={{ p }}">{{ p }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
 {% endblock %}

@@ -30,30 +30,72 @@ def course_root(request):
 
 def top_courses(request):
     courses = Qcourses.objects.filter(year__exact = 2011).exclude(number__exact = "EXPOS 20").order_by('-enrollment')[:21]
-#    for c in courses:
-#        if c.get_profs():
-#
-#            print c.__unicode__(),c.course_id, ', '.join([ p.first+p.last for p in c.get_profs()])
-#        else:
-#            print c.__unicode__(), 'NO PROF'
-
     return render_to_response('course_list.html', {'course_list': courses}, context_instance=RequestContext(request))
 
+def prof_search_results(request):
+    profs_per_page = 20 # constant
+    hints = 'Type the last name of any professor.'
 
-def search_results(request):
+    query_string = ''
+    profs = []
+    if ('q' in request.GET) and request.GET['q'].strip():
+        query_string = request.GET['q']
+        profs = search_for_profs(query_string)
+
+    #see what page is requested, default to 1
+    p = 1
+    if ('p' in request.GET) and request.GET['p'].isdigit():
+        p = int(request.GET['p'])
+
+    #group unique professors together
+    unique = {}
+    for prof in profs:
+        if prof.prof_id in unique:
+            unique[prof.prof_id].append(prof)
+        else:
+            unique[prof.prof_id] = [prof]
+
+    #make each unique professor into a new professor object
+    prof_list = []
+    for prof_classes in unique.values():
+        base = prof_classes[0]
+        base.average_overall = average([float(c.overall) for c in prof_classes ])
+        prof_list.append(base)
+
+    num_profs = len(prof_list)
+
+    #get the professors that should be on this page
+    start =  (p-1) * profs_per_page
+    this_page = []
+    for i, c in enumerate(prof_list[start:]):
+        if i == profs_per_page: #no more professors need to go on this page
+            break
+        this_page.append(c)
+
+    return render_to_response('search_results.html', {'profs': this_page, 'q': query_string,
+        'pages': [x+1 for x in range(1+num_profs/profs_per_page)], 'results' : num_profs, 'hints': hints,
+        'num_pages': 1+num_profs/profs_per_page, 'page' : p, 'extend':"prof_list.html", "form_action" : "/profs/search/"},
+        context_instance=RequestContext(request))
+
+def course_search_results(request):
     courses_per_page = 30 #constant
+    hints = "Type a course's abbreviation (cs50), catalog number (4949), or just try some keywords (introduction to computer science)."
 
     courses = []
     query_string = ''
     if ('q' in request.GET) and request.GET['q'].strip():
         query_string = request.GET['q']
         courses = search_for_courses(query_string)
+        num_courses = courses.count()
+    else:
+        num_courses = 0
 
+    #see what page is requested, default to 1
     p = 1
     if ('p' in request.GET) and request.GET['p'].isdigit():
         p = int(request.GET['p'])
 
-    num_courses = courses.count()
+
 
     #get the courses that should be on this page
     start =  (p-1) * courses_per_page
@@ -64,25 +106,35 @@ def search_results(request):
         this_page.append(c)
 
     return render_to_response('search_results.html', {'course_list': this_page, 'q': query_string,
-        'pages': [x+1 for x in range(1+num_courses/courses_per_page)], 'results' : num_courses,
-        'num_pages': 1+num_courses/courses_per_page, 'page' : p},
+        'pages': [x+1 for x in range(1+num_courses/courses_per_page)], 'results' : num_courses, 'hints' : hints,
+        'num_pages': 1+num_courses/courses_per_page, 'page' : p, 'extend':"course_list.html", "form_action" : "/courses/search/"},
         context_instance=RequestContext(request))
-#
 
-def prof_detail(request, prof_first, prof_last):
-    first = string.replace(prof_first.title(), '_', ' ')
-    last = string.replace(prof_last.title(), '_', ' ')
-    prof_rows = Qinstructors.objects.filter(first__exact = first).filter(last__exact = last)
-    ids = []
+def prof_detail(request, id):
+
+    #get professor by first and last name
+    #first = string.replace(prof_first.title(), '_', ' ')
+    #last = string.replace(prof_last.title(), '_', ' ')
+    #prof_rows = Qinstructors.objects.filter(first__exact = first).filter(last__exact = last)
+
+    #get professor by id number
+    prof_rows = Qinstructors.objects.filter(prof_id = id)
+
+
+    classes = {}
     for row in prof_rows:
-        if row.course_id not in ids:
-            ids.append(row.course_id)
 
-    courses = Qcourses.objects.filter(reduce(lambda x, y: x | y, [Q(course_id__exact=id) for id in ids]))
+        row.course = Qcourses.objects.filter(course_id__exact = row.course_id)[0]
+        print row.course_id, row.course.cat_num
+        if row.course.cat_num in classes:
+            classes[row.course.cat_num].append(row)
 
-    #    cat_nums = [prof_row.cat_num for prof_row in prof_rows]
-#    courses = Qcourses.objects.filter(cat_num__exact = prof.cat_num)
-    return render_to_response('prof_detail.html', {'prof_rows': prof_rows, 'courses':courses }, context_instance=RequestContext(request))
+        else:
+            classes[row.course.cat_num] = [row]
+
+    #courses = Qcourses.objects.filter(reduce(lambda x, y: x | y, [Q(course_id__exact=id) for id in ids]))
+
+    return render_to_response('prof_detail.html', {'classes': classes.values() }, context_instance=RequestContext(request))
 
 
 class CourseListView(ListView):

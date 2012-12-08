@@ -92,6 +92,9 @@ class Qinstructors(models.Model):
     def __unicode__(self):
         return self.first+' '+self.last
 
+    def get_absolute_url(self):
+        return '/profs/'+self.prof_id+'/'
+
     class Meta:
         db_table = u'Qinstructors'
 

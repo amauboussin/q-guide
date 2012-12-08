@@ -11,11 +11,13 @@ urlpatterns = patterns('',
      url(r'^$', index, name='index'),
     url(r'^courses/$', course_root, name = "course_root" ),
     url(r'^courses/(?P<course_field>\w+)/(?P<course_number>\w+)/$', course_detail, name = "course_detail" ), #courses
-    url(r'^profs/(?P<prof_first>\w+)-(?P<prof_last>\w+)/$', prof_detail, name = "prof_detail" ), #professors
+
+    url(r'^profs/search/$', prof_search_results, name = "prof_search" ),
+    url(r'^profs/(?P<id>\w+)/$', prof_detail, name = "prof_detail" ), #professors
 
 
     url(r'^about/', TemplateView.as_view(template_name="about.html")),
-    url(r'^courses/search/$', search_results, name='search'), #filter_by
+    url(r'^courses/search/$', course_search_results, name='search'), #filter_by
     url(r'^courses/filter/(\w+)/$', CourseListView.as_view()), #filter_by
     url(r'^courses/(\w+)/$', CourseListView.as_view()), #department
     (r'^(\w+)/$', CourseListView.as_view()),

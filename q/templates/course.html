@@ -13,6 +13,8 @@
     <thead>
     <tr>
         <th>Term</th>
+        <th>Professor</th>
+        <th>Professor Rating</th>
         <th>Enrollment</th>
         <th>Response Rate</th>
         <th>Overall Score</th>
@@ -29,6 +31,12 @@
 {% for course in courses %}
     <tr>
         <td>{{ course.term_text }} {{ course.year }}</td>
+        <td>{% for prof in course.get_profs %}
+            {{ prof }}<br>
+        {% endfor %}</td>
+        <td>{% for prof in course.get_profs %}
+            {{ prof.overall }} <br>
+        {% endfor %}</td>
         <td>{{ course.enrollment }}</td>
         <td>{{ course.response_rate }}</td>
         <td style="background-color: {{ course.overall|get_color:"" }}">{{ course.overall }}</td>
