@@ -10,22 +10,24 @@ urlpatterns = patterns('',
     # Examples:
      url(r'^$', index, name='index'),
     url(r'^courses/$', course_root, name = "course_root" ),
-    url(r'^courses/(?P<course_field>\w+)/(?P<course_number>\w+)/$', course_detail, name = "course_detail" ), #courses
+    url(r'^courses/top/(?P<filter>\w+)/$', top_courses, name='top_courses'), #filter_by
+    url(r'^courses/([a-zA-Z&-]+)/$', department_view, name='department'), #department
+    url(r'^courses/(?P<course_field>[a-zA-Z&-]+)/(?P<course_number>[0-9.a-zA-Z]+)/$', course_detail, name = "course_detail" ), #courses
+
 
     url(r'^profs/search/$', prof_search_results, name = "prof_search" ),
+    url(r'^profs/$', prof_root, name = "prof_root" ),
     url(r'^profs/(?P<id>\w+)/$', prof_detail, name = "prof_detail" ), #professors
 
 
     url(r'^about/', TemplateView.as_view(template_name="about.html")),
     url(r'^courses/search/$', course_search_results, name='search'), #filter_by
-    url(r'^courses/filter/(\w+)/$', CourseListView.as_view()), #filter_by
-    url(r'^courses/(\w+)/$', CourseListView.as_view()), #department
-    (r'^(\w+)/$', CourseListView.as_view()),
 
-    (r'^(\w+)/(\d{4})/$', CourseListView.as_view()), #deparment/year
-    (r'^(\w+)/(\w{4,6})/$', CourseListView.as_view()), #deparment/term
-    (r'^(\w+)/(\d{4})/(\w{4,6})$', CourseListView.as_view()), #department/year/term
-    (r'^(\w+)/(\w{4,6})/(\d{4})$', CourseListView.as_view()), #department/term/year
+
+#    (r'^(\w+)/(\d{4})/$', CourseListView.as_view()), #deparment/year
+#    (r'^(\w+)/(\w{4,6})/$', CourseListView.as_view()), #deparment/term
+#    (r'^(\w+)/(\d{4})/(\w{4,6})$', CourseListView.as_view()), #department/year/term
+#    (r'^(\w+)/(\w{4,6})/(\d{4})$', CourseListView.as_view()), #department/term/year
 
 
     # url(r'^q/', include('q.foo.urls')),

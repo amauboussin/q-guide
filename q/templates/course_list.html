@@ -5,6 +5,9 @@
  {% block search %}
  {% endblock %}
 
+{% block filters %}
+{% endblock %}
+
 {% block results %}
 <div class="row-fluid">
 <table class="table" id="course_list">
@@ -12,6 +15,7 @@
     <tr>
         <th>Course</th>
         <th>Term</th>
+        <th>Enrollment</th>
         <th>Professor</th>
         <th>Professor Overall</th>
         <th>Course Overall</th>
@@ -19,13 +23,14 @@
 </thead>
 <tbody>
 {% for course in course_list %}
+
     <tr>
         <td> <a href="{{ course.get_absolute_url }}">{{ course }}</a></td>
         <td>{{ course.term_text }} {{ course.year }}</td>
-
+        <td>{{ course.enrollment }}</td>
 
         <td>{% for prof in course.get_profs %}
-            {{ prof }} <br>
+            <a href="{{ prof.get_absolute_url }}">{{ prof }}</a> <br>
             {% endfor %}</td>
 
 

@@ -17,7 +17,7 @@
     <tbody>
     {% for prof in profs %}
     <tr>
-        <th><a href="{{ prof.get_absolute_url }}">{{ prof }}</a>  </th>
+        <th><a href="{{ prof.get_absolute_url }}">{{ prof.last }}, {{ prof.first }}</a>  </th>
         <th>{{ prof.average_overall }}</th>
     </tr>
     {% endfor %}

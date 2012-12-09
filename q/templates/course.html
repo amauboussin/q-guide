@@ -9,6 +9,8 @@
 <div class="span8">
 <h5>{{ courses.0.description }}</h5>
 </div>
+
+
 <table class="table table-bordered" id="course_list">
     <thead>
     <tr>
@@ -21,7 +23,7 @@
         <th>Workload</th>
         <th>Difficulty</th>
         <th>Class Materials</th>
-        <th>Assignments</th>
+        <th>Assignment Quality</th>
         <th>Section</th>
         <th>Feedback given</th>
         <th>Recommended</th>
@@ -32,7 +34,7 @@
     <tr>
         <td>{{ course.term_text }} {{ course.year }}</td>
         <td>{% for prof in course.get_profs %}
-            {{ prof }}<br>
+            <a href="{{ prof.get_absolute_url }}">{{ prof }}</a><br>
         {% endfor %}</td>
         <td>{% for prof in course.get_profs %}
             {{ prof.overall }} <br>

@@ -8,8 +8,10 @@ def search_for_courses(q):
     if q.isdigit():
         return Qcourses.objects.filter(cat_num = q).order_by('-year')
 
+    #hardcode in commonly used abbreviations for departments
     departments = {'cs':'compsci', 'am':'apmth', 'ec':'econ', 'ls': 'lifesci',
-                   'neuro':'neurobio','spanish':'spansh' }  #hardcode in commonly used abbreviations for departments
+                   'neuro':'neurobio','spanish':'spansh', 'sls':'sci-livsys' }
+
 
     #check to see if the query is a course number i.e. compsci50 or cs50
     field = ''
@@ -20,14 +22,19 @@ def search_for_courses(q):
             num = char+num #re-add the splitting digit
             break
 
+    #strip whitespace
+    field = string.strip(field)
+    num = string.strip(num)
+
+    print field, num
     #check if the query contains an abbreviation
     if field in departments:
         field = departments[field]
 
     return Qcourses.objects.filter(field__iexact = field).filter(number__iexact = num).order_by('-year') | \
-           Qcourses.objects.filter(title__icontains = ' '+q+ ' ') |\
-           Qcourses.objects.filter(title__istartswith = q) |\
-           Qcourses.objects.filter(title__icontains = q)
+           Qcourses.objects.filter(title__icontains = ' '+q+ ' ').order_by('-enrollment') |\
+           Qcourses.objects.filter(title__istartswith = q).order_by('-enrollment') |\
+           Qcourses.objects.filter(title__icontains = q).order_by('-enrollment')
 
 def search_for_profs(q):
     return Qinstructors.objects.filter(last__iexact = q)| \

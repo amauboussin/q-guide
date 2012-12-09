@@ -1,15 +1,35 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="row-fluid">
+    <div class="span4">
+        <h3>Browse by department</h3>
+    <div class="well" style="height: 300px;overflow: auto;">
 
-    Browse by field:<br>
+        {% for field in fields %}
+        <a href="{{ field.get_absolute_url }}" > {{ field }} </a> <br>
+        {% endfor %}
 
-    {% for field in fields %}
+    </div>
+    </div>
 
-    <a href="{{ field.get_absolute_url }}" > {{ field }} </a>
-    <br>
+    <div class="span4">
+        <h3>Search</h3>
+        <form class ="form-search" action="/courses/search/">
+            <input type="text" class="input-large search-query" name="q" placeholder="Number (cs50) or keyword"
+                   value="">
+            <input type=submit class="btn" value=Go formaction="/courses/search/">
+        </form>
+    </div>
 
-    {% endfor %}
+    <div class="span4">
+        <h3> Get top classes by</h3>
+        <a href="/courses/top/overall">Overall Score</a><br>
+        <a href="/courses/top/enrollment">Enrollment</a><br>
+        <a href="/courses/top/workload">Workload</a><br>
+        <a href="/courses/top/difficulty">Difficulty</a><br>
+        <a href="/courses/top/recommend">Recommended</a><br><br>
+    </div>
 
-
+</div>
 {% endblock %}
