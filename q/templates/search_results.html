@@ -44,14 +44,11 @@
             {% if extend == "course_list.html" %}
 
             $("#course_list").tablesorter({
-                // sort on the first column and third column, order asc
+                // sort on the third column, order asc
                 sortList: [[2,1]]
             });
 
-
             {% else %}
-
-
                 $(function()
                 {
                     $("#course_list").tablesorter();

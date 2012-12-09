@@ -182,6 +182,7 @@ def prof_search_results(request):
 def course_detail(request, course_field, course_number):
     course_number = string.replace(string.upper(course_number),'_',' ')
 
+    #get all instances of the course across years
     courses = Qcourses.objects.filter(field__exact = string.upper(course_field)).filter(number__exact = course_number).order_by('-year')
 
     if not courses:
