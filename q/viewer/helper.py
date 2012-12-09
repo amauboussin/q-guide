@@ -31,7 +31,7 @@ def search_for_courses(q):
     if field in departments:
         field = departments[field]
 
-    return Qcourses.objects.filter(field__iexact = field).filter(number__iexact = num).order_by('-year') | \
+    return Qcourses.objects.filter(field__iexact = field).filter(number__iexact = num) | \
            Qcourses.objects.filter(title__icontains = ' '+q+ ' ').order_by('-enrollment') |\
            Qcourses.objects.filter(title__istartswith = q).order_by('-enrollment') |\
            Qcourses.objects.filter(title__icontains = q).order_by('-enrollment')
@@ -50,6 +50,15 @@ def convert_term(term):
 
 
 def average(list):
+
+    #get rid of bad values
+    pop = []
+    for i in range(len(list)):
+        if list[i] == 'Null' or list[i] < 1:
+            pop.append(i)
+    for i in pop:
+        list.pop(i)
+
     if len(list) > 0:
         return '%.2f' % (float(sum(list))/len(list))
     else:

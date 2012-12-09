@@ -29,9 +29,36 @@
 <div class="pagination">
     <ul>
         {% for p in pages %}
-            <li class="{% if p == page %}active{% endif %}"><a href="?q={{ q }}&p={{ p }}">{{ p }}</a></li>
+            <li class="{% if p == page %}active{% endif %}"><a href="?q={{ q }}&amp;p={{ p }}">{{ p }}</a></li>
         {% endfor %}
     </ul>
 </div>
 {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.tablesorter.min.js"></script>
+    <script type="text/javascript">
+        $(function()
+        {
+            {% if extend == "course_list.html" %}
+
+            $("#course_list").tablesorter({
+                // sort on the first column and third column, order asc
+                sortList: [[2,1]]
+            });
+
+
+            {% else %}
+
+
+                $(function()
+                {
+                    $("#course_list").tablesorter();
+                });
+
+
+            {% endif %}
+        });
+    </script>
 {% endblock %}

@@ -22,9 +22,43 @@ def prof_root(request):
     return ''
 
 
-def top_courses(request, filter):
-    courses = Qcourses.objects.filter(year__exact = 2011).exclude(number__exact = "EXPOS 20").order_by('-'+filter)[:21]
-    return render_to_response('course_list.html', {'course_list': courses}, context_instance=RequestContext(request))
+def top_courses(request):
+
+    #get number of courses to be on the page
+    n = 50
+    if ('n' in request.GET) and request.GET['n'].isdigit():
+        n = request.GET['n']
+
+    if ('category' in request.GET) and request.GET['category'].strip():
+        filter = request.GET['category']
+    else:
+        filter = 'overall'
+
+
+    #filter out generic expos 20 and courses that do not have scores in the database
+    courses = Qcourses.objects.all().exclude(overall = None).exclude(cat_num = 5518)
+
+    #set order of values
+    if ('reverse' in request.GET) and request.GET['reverse'].strip() and string.lower(request.GET['reverse']) == 'true':
+        courses=courses.order_by(filter)
+    else:
+        courses = courses.order_by('-'+filter)
+
+    #filter by various traits
+    if ('year' in request.GET) and request.GET['year'].strip() and string.lower(request.GET['year']) != 'all':
+        print request.GET['year']
+        courses=courses.filter(year__exact = int(request.GET['year']))
+
+    if ('term' in request.GET) and request.GET['term'].strip() and string.lower(request.GET['term']) != 'both':
+        courses=courses.filter(term__exact = convert_term(request.GET['term']) )
+
+    if ('enrollment' in request.GET) and request.GET['enrollment'].strip():
+        courses=courses.filter(enrollment__gte = (request.GET['enrollment']) ) #greater than or equal to min enrollment
+
+    #take first n courses
+    courses = courses[:n]
+
+    return render_to_response('course_list_filters.html', {'course_list': courses}, context_instance=RequestContext(request))
 def department_view(request, field):
 
     field = string.upper(field)
@@ -40,18 +74,18 @@ def department_view(request, field):
 
     return render_to_response('course_list.html', {'course_list': queryset},
         context_instance=RequestContext(request))
+
+
 def course_search_results(request):
     courses_per_page = 30 #constant
     hints = "Type a course's abbreviation (cs50), catalog number (4949), or just try some keywords (introduction to computer science)."
 
-    courses = []
     query_string = ''
     if ('q' in request.GET) and request.GET['q'].strip():
         query_string = request.GET['q']
         courses = search_for_courses(query_string)
-        num_courses = courses.count()
     else:
-        num_courses = 0
+        courses = []
 
     #see what page is requested, default to 1
     p = 1
@@ -60,13 +94,38 @@ def course_search_results(request):
 
 
 
+    #group unique courses together
+    unique = {}
+    for course in courses:
+        if course.cat_num in unique:
+            unique[course.cat_num].append(course)
+        else:
+            unique[course.cat_num] = [course]
+
+    #make each unique course into a new course object
+    course_list = []
+
+    for years in unique.values():
+        base = years[0]
+        #assign the most recent year to the base
+        for c in years:
+            if c.year > base.year:
+                base = c
+
+        base.average_overall = average([c.overall for c in years ])
+        print base.year
+        course_list.append(base)
+
+
     #get the courses that should be on this page
+    num_courses = len(course_list)
     start =  (p-1) * courses_per_page
     this_page = []
-    for i, c in enumerate(courses[start:]):
+    for i, c in enumerate(course_list[start:]):
         if i == courses_per_page: #no more courses need to go on this page
             break
         this_page.append(c)
+
 
     return render_to_response('search_results.html', {'course_list': this_page, 'q': query_string,
                                                       'pages': [x+1 for x in range(1+num_courses/courses_per_page)], 'results' : num_courses, 'hints' : hints,
@@ -145,10 +204,8 @@ def prof_detail(request, id):
     for row in prof_rows:
 
         row.course = Qcourses.objects.filter(course_id__exact = row.course_id)[0]
-        print row.course_id, row.course.cat_num
         if row.course.cat_num in classes:
             classes[row.course.cat_num].append(row)
-
         else:
             classes[row.course.cat_num] = [row]
 

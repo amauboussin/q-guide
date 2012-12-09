@@ -8,9 +8,11 @@ from viewer.views import *
 
 urlpatterns = patterns('',
     # Examples:
-     url(r'^$', index, name='index'),
+    url(r'^$', course_root, name = "course_root" ),
     url(r'^courses/$', course_root, name = "course_root" ),
-    url(r'^courses/top/(?P<filter>\w+)/$', top_courses, name='top_courses'), #filter_by
+    url(r'^courses/search/$', course_search_results, name='search'), #search
+
+    url(r'^courses/top/$', top_courses, name='top_courses'), #filter_by
     url(r'^courses/([a-zA-Z&-]+)/$', department_view, name='department'), #department
     url(r'^courses/(?P<course_field>[a-zA-Z&-]+)/(?P<course_number>[0-9.a-zA-Z]+)/$', course_detail, name = "course_detail" ), #courses
 
@@ -21,7 +23,6 @@ urlpatterns = patterns('',
 
 
     url(r'^about/', TemplateView.as_view(template_name="about.html")),
-    url(r'^courses/search/$', course_search_results, name='search'), #filter_by
 
 
 #    (r'^(\w+)/(\d{4})/$', CourseListView.as_view()), #deparment/year

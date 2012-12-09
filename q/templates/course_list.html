@@ -19,6 +19,9 @@
         <th>Professor</th>
         <th>Professor Overall</th>
         <th>Course Overall</th>
+        <th>Workload</th>
+        <th>Difficulty</th>
+
     </tr>
 </thead>
 <tbody>
@@ -39,8 +42,9 @@
         {% endfor %}</td>
 
         <td>{{ course.overall }} </td>
+        <td>{{ course.workload }} </td>
+        <td>{{ course.difficulty }} </td>
 
-     </td>
     </tr>
 {% endfor %}
 </tbody>
