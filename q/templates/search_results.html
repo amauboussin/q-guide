@@ -1,4 +1,5 @@
 {% extends extend %}
+<!-- extend is course_list if called on courses search results, prof_list if called on prof search results -->
 
 {% block content %}
 
@@ -41,14 +42,15 @@
     <script type="text/javascript">
         $(function()
         {
-            {% if extend == "course_list.html" %}
+            // sort course results by the third column (enrollment) by default
+            {% if extend == "course_list.html" %} 
 
             $("#course_list").tablesorter({
-                // sort on the first column and third column, order asc
+                // sort on the third column, order asc
                 sortList: [[2,1]]
             });
 
-
+            //don't sort professor results by default
             {% else %}
 
 

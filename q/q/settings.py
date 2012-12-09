@@ -1,6 +1,6 @@
 # Django settings for q project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -12,11 +12,11 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'q_data_current',                      # Or path to database file if using sqlite3.
-        'USER': 'root',                      # Not used with sqlite3.
-        'PASSWORD': 'root',                  # Not used with sqlite3.
+        'NAME': 'qdata',                      # Or path to database file if using sqlite3.
+        'USER': 'qdata',                      # Not used with sqlite3.
+        'PASSWORD': 'password',                  # Not used with sqlite3.
         'HOST': '127.0.0.1',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '8889',                      # Set to empty string for default. Not used with sqlite3.
+        'PORT': '3306',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -56,7 +56,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = '/var/www/q/application/q-guide/q/viewer/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -95,6 +95,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # To password protect site
+    'lockdown.middleware.LockdownMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -111,7 +113,7 @@ ROOT_URLCONF = 'q.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'q.wsgi.application'
 
-TEMPLATE_DIRS = ('/Users/Andrew/PycharmProjects/q-guide/q/templates',)
+TEMPLATE_DIRS = ('/var/www/q/application/q-guide/q/templates/',)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -125,6 +127,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'viewer',
+    # To password-protect site
+    'lockdown',
 )
 
 # A sample logging configuration. The only tangible logging
