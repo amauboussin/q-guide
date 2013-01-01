@@ -1,6 +1,7 @@
 settings.py
 .idea
 *.py[cod]
+.DS_Store
 
 # C extensions
 *.so
