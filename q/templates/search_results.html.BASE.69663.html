@@ -1,5 +1,4 @@
 {% extends extend %}
-<!-- extend is course_list if called on courses search results, prof_list if called on prof search results -->
 
 {% block content %}
 
@@ -42,19 +41,17 @@
     <script type="text/javascript">
         $(function()
         {
-            // sort course results by the third column (enrollment) by default
-            {% if extend == "course_list.html" %} 
+            {% if extend == "course_list.html" %}
 
             $("#course_list").tablesorter({
-                // sort on the third column, order asc
+                // sort on the first column and third column, order asc
                 sortList: [[2,1]]
             });
 
-<<<<<<< HEAD
-=======
-            //don't sort professor results by default
->>>>>>> 9091d694ff928927aebff7361c02ae39815a44b9
+
             {% else %}
+
+
                 $(function()
                 {
                     $("#course_list").tablesorter();

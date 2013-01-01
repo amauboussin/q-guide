@@ -1,111 +1,165 @@
 {% extends "base.html" %}
-
 {% load get_color %}
-{% block content %}
 
-<div class="row-fluid">
+{% block title %}{{ courses.0.field }} {{ courses.0.number }}{% endblock %}
 
-<h1>{{ courses.0 }}</h1>
-<div class="span8">
-<h5>{{ courses.0.description }}</h5>
-</div>
-
-
-<table class="table table-bordered" id="course_list">
-    <thead>
-    <tr>
-        <th>Term</th>
-        <th>Professor</th>
-        <th>Professor Rating</th>
-        <th>Enrollment</th>
-        <th>Response Rate</th>
-        <th>Overall Score</th>
-        <th>Workload</th>
-        <th>Difficulty</th>
-        <th>Class Materials</th>
-        <th>Assignment Quality</th>
-        <th>Section</th>
-        <th>Feedback given</th>
-        <th>Recommended</th>
-    </tr>
-    </thead>
-    <tbody>
-{% for course in courses %}
-    <tr>
-        <td>{{ course.term_text }} {{ course.year }}</td>
-        <td>{% for prof in course.get_profs %}
-            <a href="{{ prof.get_absolute_url }}">{{ prof }}</a><br>
-        {% endfor %}</td>
-        <td>{% for prof in course.get_profs %}
-            {{ prof.overall }} <br>
-        {% endfor %}</td>
-        <td>{{ course.enrollment }}</td>
-        <td>{{ course.response_rate }}</td>
-        <td style="background-color: {{ course.overall|get_color:"" }}">{{ course.overall }}</td>
-        <td style="background-color: {{ course.workload|get_color:"true" }}">{{ course.workload }}</td>
-        <td style="background-color: {{ course.difficulty|get_color:"true" }}">{{ course.difficulty }}</td>
-        <td style="background-color: {{ course.materials|get_color:"" }}">{{ course.materials }}</td>
-        <td style="background-color: {{ course.assignments|get_color:"" }}">{{ course.assignments }}</td>
-        <td style="background-color: {{ course.section|get_color:"" }}">{{ course.section }}</td>
-        <td style="background-color: {{ course.feedback|get_color:"" }}">{{ course.feedback }}</td>
-        <td style="background-color: {{ course.recommend|get_color:"" }}">{{ course.recommend }}</td>
-
-    </tr>
-{% endfor %}
-    </tbody></table>
-
-
-</div>
-
+{% block head %}
+<link href="{{ STATIC_URL }}css/courses.css" rel="stylesheet">
+<script src="{{ STATIC_URL }}js/courses.js"> </script>
 {% endblock %}
 
-{% block javascript %}
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.tablesorter.min.js"></script>
-    <script type="text/javascript">
-
-        //begins with function by RobKohr on StackOverflow
-        function begins_with (needle, haystack){
-            return (haystack.substr(0, needle.length) == needle);
-        }
-
-        function highlightTable()
-        {
-            var colors = ["#67001f","#B2182B","#D6604D","#F4A582","#FDDBC7","#D1E5F0","#92C5DE","#4393C3","#2166AC","#053061"];
-            var colors2 = ["#A50026","#D73027","#F46D43","#FDAE61","#FEE08B","#D9EF8B","#A6D96A","#66BD63","#1A9850","006837"];
-            $("#course_list td").each(function(){ //loop through all rows of course list
-               if (!(isNaN($(this).html()))){
-
-                   var color;
+{% block content %}
 
 
-                   //inverse colors for difficulty and workload
-{#                   if(begins_with("difficulty", $(this).attr("id") || begins_with("workload",$(this).attr("id")) ){#}
-{#                       var threshold = 5;#}
-{#                       var change_by = -.5#}
-{#                   }#}
-{#                        #}
+<h1>{{ courses.0.field }} {{ courses.0.number }}: {{ courses.0.title }} ({{ courses.0.term_text }} {{ courses.0.year }})</h1>
+<p id="basic_stats">{{ courses.0.enrollment }} students, {{ courses.0.evaluations }} responses (response rate: {{ courses.0.response_rate }}%)</p>
+<p>{{ courses.0.get_profs.0.first }} {{ courses.0.get_profs.0.last }}</p>
 
+<div class="row">
+	<div class="span2 score-box course">
+		<div class="score">{{ courses.0.overall }}</div>
+		<div class="title">overall</div>
+	</div>
 
+	<div class="span2 score-box course">
+		<div class="score">{{ courses.0.difficulty }}</div>
+		<div class="title">difficulty</div>
+	</div>
 
-                   var threshold = 2.5;
+	<div class="span2 score-box course">
+		<div class="score">{{ courses.0.workload }}</div>
+		<div class="title">workload</div>
+	</div>
+	<div class="span2 score-box course">
+		<div class="score">{{ courses.0.recommend }}</div>
+		<div class="title">recommendation</div>
+	</div>
 
-                   for (var i = 0; i <colors.length; i++){
-                       if (parseFloat($(this).html()) < threshold){
-                            color = colors[i];
-                            break;
-                       }
-                       threshold += .334
-                   }
-                   $(this).css("background-color",color);
-               }
+	<a class = "hiddenlink" href = "{{ courses.0.get_profs.0.get_absolute_url }}">
+		<div class="span4 score-box prof">
+			<div class="score">{{ courses.0.get_profs.0.overall }}</div>
+			<div class="title">{{ courses.0.get_profs.0.last }}</div>
+		</div>
+	</a>
+</div>
 
-            })
+<!-- sorry about inline style; it's late -->
+<div class="row" style="margin-left: -20px">
+	<div class="span8 course info">
+		<p class = "text">
+			{{ courses.0.description }}
+		</p>
+		<div class="row">
+			<div class="span3 course bar offset1">
+				<!-- width: courses.0.assignments / 5.0 * 100% -->
+				<span style="width: {% widthratio courses.0.assignments 5.0 100 %}%">assignments: {{ courses.0.assignments }}</span>
+			</div>			
+			<div class="span3 course bar">
+				<span style="width: {% widthratio courses.0.feedback 5.0 100 %}%">feedback: {{ courses.0.feedback }}</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span3 course bar offset1">
+				<span style="width: {% widthratio courses.0.section 5.0 100 %}%">section: {{ courses.0.section }}</span>
+			</div>
 
-        }
-        $(document).ready(function()
-        {
-            //highlightTable();
-            $("#course_list").tablesorter();
-        });
-    </script>
+			<div class="span3 course bar">
+				<span style="width: {% widthratio courses.0.materials 5.0 100 %}%">materials: {{ courses.0.materials }}</span>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span4 offset2">
+				<p id="seemore"><a class="hiddenlink" href="#">See previous years</a></p>
+			</div>
+		</div> &nbsp;		
+	</div>
+
+	<div class="span4 prof info" style="margin-left: 10px">
+		<div class="prof row">
+			<div class="span3 course bar">
+				<span style="width: {% widthratio courses.0.get_profs.0.lectures 5.0 100 %}%">lectures: {{ courses.0.get_profs.0.lectures }}</span>
+			</div>
+		</div>
+		<div class="prof row">
+			<div class="span3 course bar">
+				<span style="width: {% widthratio courses.0.get_profs.0.accessible 5.0 100 %}%">accessibility: {{ courses.0.get_profs.0.accessible }}</span>
+			</div>
+		</div>
+		<div class="prof row">
+			<div class="span3 course bar">
+				<span style="width: {% widthratio courses.0.get_profs.0.enthusiasm 5.0 100 %}%">enthusiasm: {{ courses.0.get_profs.0.enthusiasm }}</span>
+			</div>
+		</div>
+		<div class="prof row">
+			<div class="span3 course bar">
+				<span style="width: {% widthratio courses.0.get_profs.0.discussion 5.0 100 %}%">discussion: {{ courses.0.get_profs.0.discussion }}</span>
+			</div>
+		</div>
+		<div class="prof row">
+			<div class="span3 course bar">
+				<span style="width: {% widthratio courses.0.get_profs.0.feedback 5.0 100 %}%">feedback: {{ courses.0.get_profs.0.feedback }}</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="span8" id="table" style="display: none">
+	<table class="table table-bordered" id="course_list">
+	    <thead>
+		    <tr>
+		        <th>Term</th>
+		        <th>Professor</th>
+		        <th>Professor Rating</th>
+		        <th>Enrollment</th>
+		        <th>Response Rate</th>
+		        <th>Overall Score</th>
+		        <th>Workload</th>
+		        <th>Difficulty</th>
+		        <th>Class Materials</th>
+		        <th>Assignment Quality</th>
+		        <th>Section</th>
+		        <th>Feedback given</th>
+		        <th>Recommended</th>
+		    </tr>
+	    </thead>
+	    <tbody>
+			{% for course in courses %}
+		    <tr>
+		        <td>{{ course.term_text }} {{ course.year }}</td>
+		        <td>{% for prof in course.get_profs %}
+		            <a href="{{ prof.get_absolute_url }}">{{ prof }}</a><br>
+		        {% endfor %}</td>
+		        <td>{% for prof in course.get_profs %}
+		            {{ prof.overall }} <br>
+		        {% endfor %}</td>
+		        <td>{{ course.enrollment }}</td>
+		        <td>{{ course.response_rate }}</td>
+		        <td style="background-color: {{ course.overall|get_color:"" }}">{{ course.overall }}</td>
+		        <td style="background-color: {{ course.workload|get_color:"true" }}">{{ course.workload }}</td>
+		        <td style="background-color: {{ course.difficulty|get_color:"true" }}">{{ course.difficulty }}</td>
+		        <td style="background-color: {{ course.materials|get_color:"" }}">{{ course.materials }}</td>
+		        <td style="background-color: {{ course.assignments|get_color:"" }}">{{ course.assignments }}</td>
+		        <td style="background-color: {{ course.section|get_color:"" }}">{{ course.section }}</td>
+		        <td style="background-color: {{ course.feedback|get_color:"" }}">{{ course.feedback }}</td>
+		        <td style="background-color: {{ course.recommend|get_color:"" }}">{{ course.recommend }}</td>
+		    </tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+<div class="row">
+	<div class="span12" id="comments">
+		<h3>Comments (most recent first):</h3>
+		{% for comment in courses.0.comments %}
+			<p class="comment">{{ comment.comment }}<i> - {{ courses.0.term_text }} {{ courses.0.year }} ({{ courses.0.get_profs.0 }})</i></p>
+		{% endfor %}
+		<div class="pagination">
+			<ul>
+			</ul>
+		</div>				
+	</div>
+</div>
+
 {% endblock %}

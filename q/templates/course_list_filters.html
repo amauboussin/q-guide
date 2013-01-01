@@ -90,8 +90,10 @@
 
         function setDefaults()
         {
+            // get associative array with get data
             var $_GET = getQueryParams(document.location.search);
 
+            //set the default values of each input to the value present in GET
             if($_GET["category"]){
                 var category = "#category-"+$_GET["category"];
                 $(category).attr("selected", "true");}
@@ -114,14 +116,6 @@
                 var reverse = "#reverse-"+$_GET["reverse"];
                 $(reverse).attr("checked", true);
             }
-
-
-
-
-            {#            enrollment = #}
-{#            year = #}
-{#                 #}
-{#            $("#category").attr("selected","true")#}
         }
 
         //credit to Ates Goral at http://stackoverflow.com/questions/439463/how-to-get-get-and-post-variables-with-jquery

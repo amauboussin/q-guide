@@ -36,6 +36,8 @@ class Qcourses(models.Model):
     def get_absolute_url(self):
         return '/courses/'+self.field+'/'+self.number
 
+    #gets a list of the professors who have taught this course.
+    #returns a list of Qinstructors objects
     def get_profs(self):
         profs =  Qinstructors.objects.filter(course_id__exact = self.course_id)
         if profs:
@@ -43,19 +45,20 @@ class Qcourses(models.Model):
         else:
             return None
 
-
+    #get the text representing this course's term
     def term_text(self):
         if self.term == 1:
             return 'Fall'
         elif self.term==2:
             return 'Spring'
         else: return 'Unknown'
+    
     class Meta:
         db_table = u'Qcourses'
 
 class Qcomments(models.Model):
     course = models.ForeignKey(Qcourses)
-    comment = models.CharField(max_length=24576)
+    comment = models.CharField(max_length=24576, primary_key=True)
     class Meta:
         db_table = u'Qcomments'
 

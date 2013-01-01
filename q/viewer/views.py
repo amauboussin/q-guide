@@ -9,19 +9,13 @@ from helper import *
 from django.db.models import Q
 from operator import attrgetter
 
-def index(request):
-    classes = Qcourses.objects.order_by('-overall')[:20]
-    return render_to_response('index.html', {'classes': classes}, context_instance=RequestContext(request))
 
-
-
+#homepage. presents 3 ways to find courses
 def course_root(request):
     fields = Qfields.objects.all()
     return render_to_response('course_root.html', {'fields': fields}, context_instance=RequestContext(request))
-def prof_root(request):
-    return ''
 
-
+#page to allow users to find the top courses according to the criteria they define
 def top_courses(request):
 
     #get number of courses to be on the page
@@ -59,6 +53,9 @@ def top_courses(request):
     courses = courses[:n]
 
     return render_to_response('course_list_filters.html', {'course_list': courses}, context_instance=RequestContext(request))
+
+
+#view all of the courses in a department
 def department_view(request, field):
 
     field = string.upper(field)
@@ -75,11 +72,12 @@ def department_view(request, field):
     return render_to_response('course_list.html', {'course_list': queryset},
         context_instance=RequestContext(request))
 
-
+#search results page for courses
 def course_search_results(request):
     courses_per_page = 30 #constant
     hints = "Type a course's abbreviation (cs50), catalog number (4949), or just try some keywords (introduction to computer science)."
 
+    #get query string from GET
     query_string = ''
     if ('q' in request.GET) and request.GET['q'].strip():
         query_string = request.GET['q']
@@ -105,15 +103,15 @@ def course_search_results(request):
     #make each unique course into a new course object
     course_list = []
 
+    #make the most recent instance of class (greatest year) the base isntance
     for years in unique.values():
         base = years[0]
         #assign the most recent year to the base
         for c in years:
             if c.year > base.year:
                 base = c
-
+        #gets the average rating for the course
         base.average_overall = average([c.overall for c in years ])
-        print base.year
         course_list.append(base)
 
 
@@ -122,7 +120,8 @@ def course_search_results(request):
     start =  (p-1) * courses_per_page
     this_page = []
     for i, c in enumerate(course_list[start:]):
-        if i == courses_per_page: #no more courses need to go on this page
+        #if true no more courses need to go on this page
+        if i == courses_per_page: 
             break
         this_page.append(c)
 
@@ -132,10 +131,12 @@ def course_search_results(request):
                                                       'num_pages': 1+num_courses/courses_per_page, 'page' : p, 'extend':"course_list.html", "form_action" : "/courses/search/"},
         context_instance=RequestContext(request))
 
+#search results page for professors
 def prof_search_results(request):
     profs_per_page = 20 # constant
     hints = 'Type the last name of any professor.'
 
+    #get the profs according to the defined query
     query_string = ''
     profs = []
     if ('q' in request.GET) and request.GET['q'].strip():
@@ -179,38 +180,43 @@ def prof_search_results(request):
         'num_pages': 1+num_profs/profs_per_page, 'page' : p, 'extend':"prof_list.html", "form_action" : "/profs/search/"},
         context_instance=RequestContext(request))
 
+#detailed view of a single course 
 def course_detail(request, course_field, course_number):
     course_number = string.replace(string.upper(course_number),'_',' ')
 
+<<<<<<< HEAD
     #get all instances of the course across years
+=======
+    #get all instances of the course
+>>>>>>> 9091d694ff928927aebff7361c02ae39815a44b9
     courses = Qcourses.objects.filter(field__exact = string.upper(course_field)).filter(number__exact = course_number).order_by('-year')
 
     if not courses:
         return render_to_response('no_course_found.html', {}, context_instance=RequestContext(request))
 
+    #add a comments attribute to each course with all of its comments
+    for course in courses:
+        course.comments = Qcomments.objects.filter(course_id = course.course_id)
+
     return render_to_response('course.html', {'courses': courses}, context_instance=RequestContext(request))
 
+#detailed view of a professor
 def prof_detail(request, id):
-
-    #get professor by first and last name
-    #first = string.replace(prof_first.title(), '_', ' ')
-    #last = string.replace(prof_last.title(), '_', ' ')
-    #prof_rows = Qinstructors.objects.filter(first__exact = first).filter(last__exact = last)
-
     #get professor by id number
     prof_rows = Qinstructors.objects.filter(prof_id = id)
 
-
+    #find the unique classes they teach
     classes = {}
     for row in prof_rows:
-
+        #get an instance of a course
         row.course = Qcourses.objects.filter(course_id__exact = row.course_id)[0]
+
+        #create a new table for the course if it is the first instance
+        #otherwise add it to the list of the course's instances
         if row.course.cat_num in classes:
             classes[row.course.cat_num].append(row)
         else:
             classes[row.course.cat_num] = [row]
-
-    #courses = Qcourses.objects.filter(reduce(lambda x, y: x | y, [Q(course_id__exact=id) for id in ids]))
 
     return render_to_response('prof_detail.html', {'classes': classes.values() }, context_instance=RequestContext(request))
 
