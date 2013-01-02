@@ -58,7 +58,7 @@ class Qcourses(models.Model):
 
 class Qcomments(models.Model):
     course = models.ForeignKey(Qcourses)
-    comment = models.CharField(max_length=24576)
+    comment = models.CharField(max_length=24576, primary_key=True)
     class Meta:
         db_table = u'Qcomments'
 

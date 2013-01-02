@@ -1,0 +1,223 @@
+#basic_stats
+{
+	margin-bottom: 0px
+}
+
+div.score-box
+{
+	height: 100px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+}
+
+div.score-box.course
+{
+	background-color: #E28899;
+}
+
+div.score-box.prof
+{
+	background-color: #C0C0FF;
+}
+
+div.score-box .score
+{
+	position: relative;
+	text-align: center;
+	font-size: 70px;
+	font-weight: bold;
+	top: 30px;
+}
+
+div.score-box .title
+{
+	position: relative;
+	text-align: center;
+	font-size: 20px;
+	bottom: -55px;
+}
+
+div.score-box .arrow
+{
+	/* eventually to be used to style the arrow indicates
+	   indicate the overall trend of the category */
+}
+
+div.info
+{
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	margin-top: 10px;
+}
+
+div.course.info
+{
+	background-color: #E28899;
+}
+
+div.prof.info
+{
+	background-color: #C0C0FF;
+}
+
+
+div.info, div.info  p, p.comment, #comments h3
+{
+	margin: 20px;
+}
+
+div.info  h3
+{
+	margin-left: 20px;
+}
+
+p.comment
+{
+	margin-top:      0px;
+	margin-bottom:   0px;
+	padding-top:     10px;
+	padding-bottom:  10px;
+	border-bottom: thin solid #AAAAAA;
+	overflow: hidden;
+}
+
+p.comment.firstcomment
+{
+	padding-top: 0px;
+}
+
+div.info .centered
+{
+	/* thanks, http://stackoverflow.com/questions/9554724/bootstrap-css-center-span7 */
+	float: none;
+	margin: 0 auto;
+}
+
+/* CSS/HTML for bars from http://css-tricks.com/css3-progress-bars/ */
+
+div.bar
+{
+	position:relative;
+	margin-top:     10px;
+	margin-right:   10px;
+	margin-bottom:  10px;
+	height: 25px;
+	background: #555;
+	-moz-border-radius: 25px;
+	-webkit-border-radius: 25px;
+	border-radius: 25px;
+	-webkit-box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);
+	-moz-box-shadow   : inset 0 -1px 1px rgba(255,255,255,0.3);
+	box-shadow        : inset 0 -1px 1px rgba(255,255,255,0.3);
+	font-size: 15px;
+}
+
+/* CSS/HTML for bars from http://css-tricks.com/css3-progress-bars/ */
+
+div.bar span {
+	display: block;
+	height: 100%;
+	-webkit-border-radius: 25px;
+	   -moz-border-radius: 25px;
+	        border-radius: 25px;
+	background-color: rgb(43,194,83);
+	background-image: -webkit-gradient(
+	  linear,
+	  left bottom,
+	  left top,
+	  color-stop(0, rgb(43,194,83)),
+	  color-stop(1, rgb(84,240,84))
+	 );
+	background-image: -webkit-linear-gradient(
+	  center bottom,
+	  rgb(43,194,83) 37%,
+	  rgb(84,240,84) 69%
+	 );
+	background-image: -moz-linear-gradient(
+	  center bottom,
+	  rgb(43,194,83) 37%,
+	  rgb(84,240,84) 69%
+	 );
+	background-image: -ms-linear-gradient(
+	  center bottom,
+	  rgb(43,194,83) 37%,
+	  rgb(84,240,84) 69%
+	 );
+	background-image: -o-linear-gradient(
+	  center bottom,
+	  rgb(43,194,83) 37%,
+	  rgb(84,240,84) 69%
+	 );
+	-webkit-box-shadow: 
+	  inset 0 2px 9px  rgba(255,255,255,0.3),
+	  inset 0 -2px 6px rgba(0,0,0,0.4);
+	-moz-box-shadow: 
+	  inset 0 2px 9px  rgba(255,255,255,0.3),
+	  inset 0 -2px 6px rgba(0,0,0,0.4);
+	position: relative;
+
+	/* text styling */
+	padding-left: 10px;
+	font-weight: bold;
+	color: #D8D2D3;
+
+	/* override previous styling */
+	margin: 0px;
+}
+
+div.course.bar span {
+	background-color: #BA0C2D;
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #BA0C2D),color-stop(1, #BA0C2D));
+	background-image: -webkit-linear-gradient(top, #BA0C2D, #BA0C2D); 
+        background-image: -moz-linear-gradient(top, #BA0C2D, #BA0C2D);
+        background-image: -ms-linear-gradient(top, #BA0C2D, #BA0C2D);
+        background-image: -o-linear-gradient(top, #BA0C2D, #BA0C2D);
+}
+
+div.prof.row
+{
+	margin-left: 20px;
+	margin-top:  10px;
+}
+
+#seemore
+{
+	margin-top:    20px;
+	margin-bottom: 5px;
+	font-size: 20px;
+	font-weight: bold;
+    text-align: center;
+}
+
+/* From https://s3.amazonaws.com/markosroom/style.css (thanks, Adam Palay) */
+a.hiddenlink
+{
+	text-decoration: none;
+	color: black;
+}
+
+
+#seemore a.hiddenlink
+{
+	background-color: #555555;
+	padding-top: 5px;
+	padding-bottom: 8px;
+	padding-left: 15px;
+	padding-right: 15px;
+	-moz-border-radius: 25px;
+	-webkit-border-radius: 25px;
+	border-radius: 25px;
+	text-decoration: none;
+    color: #D8D2D3;
+}
+
+#comments
+{
+	margin: 20px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+
+	height: 600px;
+	overflow: auto;
+	background-color: #FFFAFB;
+}
