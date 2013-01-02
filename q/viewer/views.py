@@ -40,7 +40,6 @@ def top_courses(request):
 
     #filter by various traits
     if ('year' in request.GET) and request.GET['year'].strip() and string.lower(request.GET['year']) != 'all':
-        print request.GET['year']
         courses=courses.filter(year__exact = int(request.GET['year']))
 
     if ('term' in request.GET) and request.GET['term'].strip() and string.lower(request.GET['term']) != 'both':
@@ -69,7 +68,9 @@ def department_view(request, field):
     if ('term' in request.GET) and request.GET['term'].strip():
         queryset=queryset.filter(term__exact = convert_term(request.GET['term']) )
 
-    return render_to_response('course_list.html', {'course_list': queryset},
+    course_list = group_courses(queryset)
+
+    return render_to_response('course_list.html', {'course_list': course_list},
         context_instance=RequestContext(request))
 
 #search results page for courses
@@ -91,28 +92,7 @@ def course_search_results(request):
         p = int(request.GET['p'])
 
 
-
-    #group unique courses together
-    unique = {}
-    for course in courses:
-        if course.cat_num in unique:
-            unique[course.cat_num].append(course)
-        else:
-            unique[course.cat_num] = [course]
-
-    #make each unique course into a new course object
-    course_list = []
-
-    #make the most recent instance of class (greatest year) the base isntance
-    for years in unique.values():
-        base = years[0]
-        #assign the most recent year to the base
-        for c in years:
-            if c.year > base.year:
-                base = c
-        #gets the average rating for the course
-        base.average_overall = average([c.overall for c in years ])
-        course_list.append(base)
+    course_list = group_courses(courses)
 
 
     #get the courses that should be on this page
@@ -125,9 +105,10 @@ def course_search_results(request):
             break
         this_page.append(c)
 
+    pages = [x+1 for x in range(1+num_courses/courses_per_page)]
 
     return render_to_response('search_results.html', {'course_list': this_page, 'q': query_string,
-                                                      'pages': [x+1 for x in range(1+num_courses/courses_per_page)], 'results' : num_courses, 'hints' : hints,
+                                                      'pages': pages, 'results' : num_courses, 'hints' : hints,
                                                       'num_pages': 1+num_courses/courses_per_page, 'page' : p, 'extend':"course_list.html", "form_action" : "/courses/search/"},
         context_instance=RequestContext(request))
 
@@ -143,7 +124,6 @@ def prof_search_results(request):
         query_string = request.GET['q']
         profs = search_for_profs(query_string)
 
-    print query_string
 
     #see what page is requested, default to 1
     p = 1

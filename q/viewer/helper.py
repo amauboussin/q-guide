@@ -54,6 +54,34 @@ def convert_term(term):
     else:
         return 0 #term is not valid. filtering for term by 0 will return an empty queryset
 
+
+#group instances of the same class together
+def group_courses(courses):
+
+    unique = {}
+    for course in courses:
+        if course.cat_num in unique:
+            unique[course.cat_num].append(course)
+        else:
+            unique[course.cat_num] = [course]
+
+    #make each unique course into a new course object
+    course_list = []
+
+    #make the most recent instance of class (greatest year) the base instance
+    for years in unique.values():
+        base = years[0]
+        #assign the most recent year to the base
+        for c in years:
+            if c.year > base.year:
+                base = c
+            #gets the average rating for the course
+        base.average_overall = average([c.overall for c in years ])
+        course_list.append(base)
+
+    return course_list
+
+
 #average a list of values
 def average(list):
 
