@@ -57,7 +57,8 @@ class Qcourses(models.Model):
         db_table = u'Qcourses'
 
 class Qcomments(models.Model):
-    course = models.ForeignKey(Qcourses, primary_key=True)
+    id = models.IntegerField(primary_key=True)
+    course = models.ForeignKey(Qcourses)
     comment = models.CharField(max_length=24576)
     class Meta:
         db_table = u'Qcomments'
@@ -81,6 +82,7 @@ class Qfields(models.Model):
 
 class Qinstructors(models.Model):
     course = models.ForeignKey(Qcourses)
+    id = models.IntegerField(primary_key=True)
     prof_id = models.CharField(max_length=255)
     first = models.CharField(max_length=384)
     last = models.CharField(max_length=384)
