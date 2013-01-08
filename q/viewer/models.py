@@ -1,7 +1,5 @@
-
-
 from django.db import models
-
+import string
 
 
 class Qcourses(models.Model):
@@ -34,7 +32,7 @@ class Qcourses(models.Model):
         return self.field+' '+self.number+': '+self.title
 
     def get_absolute_url(self):
-        return '/courses/'+self.field+'/'+self.number
+        return '/courses/%s/%s/%s/%s/' % (self.field, self.number, self.year, string.lower(self.term_text()))
 
     #gets a list of the professors who have taught this course.
     #returns a list of Qinstructors objects
