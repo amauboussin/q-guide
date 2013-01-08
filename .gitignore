@@ -44,3 +44,5 @@ q/q/settings.py
 q/.idea/workspace.xml
 
 q/viewer/static/.DS_Store
+.AppleDouble
+.DS_Store
