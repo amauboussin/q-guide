@@ -121,6 +121,7 @@
 		        <th>Section</th>
 		        <th>Feedback given</th>
 		        <th>Recommended</th>
+                <th>Full Report</th>
 		    </tr>
 	    </thead>
 	    <tbody>
@@ -143,6 +144,7 @@
 		        <td style="background-color: {{ course.section|get_color:"" }}">{{ course.section }}</td>
 		        <td style="background-color: {{ course.feedback|get_color:"" }}">{{ course.feedback }}</td>
 		        <td style="background-color: {{ course.recommend|get_color:"" }}">{{ course.recommend }}</td>
+                <td><a href="{{ course.get_absolute_url }}">See full report</a></td>
 		    </tr>
 			{% endfor %}
 		</tbody>
