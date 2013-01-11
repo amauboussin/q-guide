@@ -176,14 +176,6 @@ def course_detail(request, course_field, course_number, year = None, term = None
         term_num = 1 if string.upper(term) == "FALL" else 2
         courses = courses.filter(term__exact = term_num).order_by('-year')
 
-
-#    if ('year' in request.GET) and request.GET['year'].strip() and string.lower(request.GET['year']) != 'all':
-#        courses=courses.filter(year__exact = int(request.GET['year']))
-#
-#    if ('term' in request.GET) and request.GET['term'].strip() and string.lower(request.GET['term']) != 'both':
-#        courses=courses.filter(term__exact = convert_term(request.GET['term']) )
-
-
     if not courses:
         return render_to_response('no_course_found.html', {}, context_instance=RequestContext(request))
 
