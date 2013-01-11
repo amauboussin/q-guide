@@ -162,11 +162,11 @@ def prof_search_results(request):
 
 #detailed view of a single course 
 def course_detail(request, course_field, course_number, year = None, term = None):
-    
+
     course_number = string.replace(string.upper(course_number),'_',' ')
     #get all instances of the course
     courses = Qcourses.objects.filter(field__exact = string.upper(course_field)).filter(number__exact = string.upper(course_number)).order_by('-term').order_by('-year')
-    
+
     if year is not None:
         courses = courses.filter(year__exact = year).order_by('-term')
     if term is not None:
@@ -175,6 +175,7 @@ def course_detail(request, course_field, course_number, year = None, term = None
 
         term_num = 1 if string.upper(term) == "FALL" else 2
         courses = courses.filter(term__exact = term_num).order_by('-year')
+
 
 #    if ('year' in request.GET) and request.GET['year'].strip() and string.lower(request.GET['year']) != 'all':
 #        courses=courses.filter(year__exact = int(request.GET['year']))
