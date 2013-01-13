@@ -1,8 +1,8 @@
 from django.conf.urls import patterns, url
 from django.views.generic import ListView, TemplateView
-from viewer.views.course_views import *
-from viewer.views.prof_views import *
-from viewer.views.search_views import *
+from viewer.course_views import *
+from viewer.prof_views import *
+from viewer.search_views import *
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
