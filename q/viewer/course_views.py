@@ -8,6 +8,7 @@ import string
 from helper import *
 from django.db.models import Q
 from operator import attrgetter
+from ajax_helper import num_comments
 
 #homepage. presents 3 ways to find courses
 def course_root(request):
@@ -16,29 +17,35 @@ def course_root(request):
 
 #detailed view of a single course 
 def course_detail(request, course_field, course_number, year = None, term = None):
+    comments_per_page = 10
 
     course_number = string.replace(string.upper(course_number),'_',' ')
     #get all instances of the course
     courses = Qcourses.objects.filter(field__exact = string.upper(course_field)).filter(number__exact = string.upper(course_number)).order_by('-term').order_by('-year')
 
+    #filter courses by additional parameters (if given)
+    selected_courses = courses
+
     if year is not None:
-        courses = courses.filter(year__exact = year).order_by('-term')
+        selected_courses = selected_courses.filter(year__exact = year).order_by('-term')
     if term is not None:
         if string.upper(term) != "FALL" and string.upper(term) != "SPRING":
             return render_to_response('no_course_found.html', {}, context_instance=RequestContext(request))
 
         term_num = 1 if string.upper(term) == "FALL" else 2
-        courses = courses.filter(term__exact = term_num).order_by('-year')
+        selected_courses = selected_courses.filter(term__exact = term_num).order_by('-year')
 
-    if not courses:
+    if not selected_courses:
         return render_to_response('no_course_found.html', {}, context_instance=RequestContext(request))
 
-    #add a comments attribute to each course with all of its comments
-    for course in courses:
-        course.comments = Qcomments.objects.filter(course_id = course.course_id)
+    comments_per_page = 10
+    comment_count = num_comments(courses)
+    num_pages = comment_count / comments_per_page
 
+    if comment_count % comments_per_page != 0:
+        num_pages = num_pages + 1
 
-    return render_to_response('course.html', {'courses': courses}, context_instance=RequestContext(request))
+    return render_to_response('course.html', {'selected_course': selected_courses[0], 'courses': courses, 'num_pages': num_pages}, context_instance=RequestContext(request))
 
 #page to allow users to find the top courses according to the criteria they define
 def top_courses(request):

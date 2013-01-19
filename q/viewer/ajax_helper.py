@@ -32,3 +32,11 @@ def append_comments_to_list(comments, courses):
         for comment in comments_associated:
             entry = {"comment": comment.comment, "course_info": course_info}
             comments.append(entry)
+
+def num_comments(courses):
+
+    comment_count = 0
+    for course in courses:
+        comments = Qcomments.objects.filter(course_id__exact=course.course_id)
+        comment_count = comment_count + comments.count()
+    return comment_count

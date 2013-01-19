@@ -7,7 +7,17 @@ from ajax_helper import *
 from django.utils import simplejson
 
 # returns comments within an inclusive, zero-indexed range in JSON form
-def ajax_comments(request, course_field, course_number, first_comment, last_comment, year = None, term = None):
+def ajax_comments(request, course_field, course_number, year = None, term = None):
+
+    if request.method == 'POST':
+        return failure_json()
+
+    if not "first" in request.GET or not "last" in request.GET:
+        return failure_json()
+    else:
+        first_comment = request.GET["first"]
+        last_comment = request.GET["last"]
+
     # check that comment numbers are digits
     if not first_comment.isdigit() or not last_comment.isdigit():
         return failure_json()
@@ -89,30 +99,17 @@ def ajax_comments(request, course_field, course_number, first_comment, last_comm
         if i >= first_comment:
             comments_to_show.append(comments[i])
 
+    # full range indicates whether or not all comments from first_comment to last_comment (inclusive) could be retrieved
     full_range = i == last_comment
 
+    if not comments_to_show:
+        return failure_json()
+
     response = {
-                    "i":                 i,
                     "success":           True,
                     "full_range":        full_range,
-                    "first_comment":     first_comment, 
-                    "last_comment":      last_comment, 
                     "comments_to_show":  comments_to_show
                 }
-
-#    courses_after_debug = []
-#    for course in courses_after:
-#        courses_after_debug.append(str(course.year) + "_" + str(course.term))
-#
-#    courses_before_or_equal_debug = []
-#    for course in courses_before_or_equal:
-#        courses_before_or_equal_debug.append(str(course.year) + "_" + str(course.term))
-#
-#    response = {
-#                    "courses_after": courses_after_debug, 
-#                    "courses_before_or_equal": courses_before_or_equal_debug,
-#                    "term": selected_course.term
-#                }
 
     json = simplejson.dumps(response)
     return HttpResponse(json, mimetype='application/json')

@@ -1,82 +1,106 @@
 var comments_per_page = 10;
-var hidden = true;
-
-function pageturn(page)
-{
-	console.log(page);
-	var first_comment = comments_per_page * (page - 1) + 1;
-	var i;
-
-	// If first_comment not found, page out of range
-	if (!$("#comment" + first_comment).html())
-		return;
-
-	// reduce margin-top
-	$("#comment" + first_comment).addClass("firstcomment");
-
-	// hide comments before
-	for(i = 1; i < first_comment; i++)
-	{
-		$("#comment" + i).hide();
-	}
-
-	// show comments on page
-	for(i = first_comment; i < first_comment + comments_per_page && $("#comment" + i).html(); i++)
-	{
-		$("#comment" + i).show();
-	}
-
-	// hide comments after
-	for(i = first_comment + comments_per_page; $("#comment" + i).html(); i++)
-	{
-		$("#comment" + i).hide();
-	}
-
-	$(".pagination ul li").removeClass("active");
-	$("#page" + page).addClass("active");
-}
+var num_pages;
+var current_page;
 
 $(function()
 {
-	// number each comment
-	var count = 1;
-	$("#comments p.comment").each(function(){
-		this.id = "comment" + count;
-		count ++;
-	});
-	
-	// add page numbers to the bottom of the page
-	for(var page = 1; $("#comment" + (comments_per_page * (page - 1) + 1)).html(); page ++)
-	{
-		// id = "page<number>"
-		var elt = "<li id=\"page" + page + "\"><a href=\"#comments\">" + page + "</a></li>"
-		$(".pagination ul").append(elt);
-		$("#page" + page + " a").click(function(e){
-			e.preventDefault();
-			// http://stackoverflow.com/questions/448666/parsing-an-int-from-a-string-in-javascript
-			// find the page number clicked 
-			var p = $(this).parent().attr("id").match(/\d+/);
-			pageturn(p);
-		});
-	}
-	// start with page 1
-	pageturn(1);
-	// hide or show the table
-	$("#seemore").click(function(e){
-		e.preventDefault();
-		if(hidden)
-		{
-			$("#table").show();
-			hidden = false;
-			$("#seemore a").html("Hide previous years");
-		}
+	current_page = 1;
+	num_pages = Number($("#num_pages").html());
+	get_comments(current_page);
 
-		else
-		{
-			$("#table").hide();
-			hidden = true;
-			$("#seemore a").html("See previous years");
+	$("#right_arrow").click(function() {
+		turn_page(1);
+	});
+	$("#left_arrow").click(function() {
+		turn_page(-1);
+	});
+	$("#current_page").keypress(function(e) {
+		if (e.which == 13) {
+	    	get_comments($("#current_page").val());
+  		}
+	});
+});
+
+// Get a page of comments.  First page is page 1 (page 0 DNE), last page is page num_pages 
+function get_comments(page_n)
+{
+	if (!is_int(page_n))
+	{
+		$("#current_page").val(current_page);
+		console.log("Not an integer\n");
+		return;
+	}
+
+	page_n = Number(page_n);
+
+	if (page_n < 1 || page_n > num_pages)
+	{
+		$("#current_page").val(current_page);
+		console.log("Page out of bounds\n");
+		return;
+	}
+
+	var first_comment = (page_n - 1) * comments_per_page;
+	var last_comment = first_comment + comments_per_page - 1;
+	var field = $("#field").html();
+	var number = $("#number").html();
+	var term = $("#term").html();
+	var year = $("#year").html();
+	var url = "/courses/" + field + "/" + number + "/" + year + "/" + term + "/comments/?first=" + first_comment + "&last=" + last_comment;
+
+	$.ajax({
+		dataType: "json",
+		url: url,
+		success: function(data) {
+			if (!data.success)
+			{
+				$("#current_page").val(current_page);
+				return;
+			}
+
+			current_page = Number($("#current_page").val());
+
+			var comments = data.comments_to_show;
+			$("#comments").empty();
+
+			comments.forEach(function(element, index, array) {
+
+				var term = (element.term == 1) ? "Fall" : "Spring";
+
+				$("#comments").append('<p class="comment">' + element.comment + "<i> - " + term + " " 
+					                  + element.course_info.year + " (Instructor: " + element.course_info.profs[0] + ")</i>"+ '</p>');
+				if (index == 0)
+				{
+					$("#comments p.comment").addClass("firstcomment");
+				}
+			});
 		}
 	});
 }
-)
+
+// from user karim79 at http://stackoverflow.com/questions/1019515/javascript-test-for-an-integer#answer-1019526
+function is_int(str)
+{
+	var intRegex = /^\d+$/;
+
+	if (intRegex.test(str))
+		return true;
+	else
+		return false;
+
+}
+
+function turn_page(delta)
+{
+	page_n = current_page + delta;
+	if (page_n > 0 && page_n <= num_pages)
+	{
+		$("#current_page").val(page_n);
+		get_comments(page_n);
+	}
+}
+
+
+
+
+

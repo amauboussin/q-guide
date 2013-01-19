@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load get_color %}
 
-{% block title %}{{ courses.0.field }} {{ courses.0.number }}{% endblock %}
+{% block title %}{{ selected_course.field }} {{ selected_course.number }}{% endblock %}
 
 {% block head %}
 <link href="{{ STATIC_URL }}css/courses.css" rel="stylesheet">
@@ -11,34 +11,34 @@
 {% block content %}
 
 
-<h1>{{ courses.0.field }} {{ courses.0.number }}: {{ courses.0.title }} ({{ courses.0.term_text }} {{ courses.0.year }})</h1>
-<p id="basic_stats">{{ courses.0.enrollment }} students, {{ courses.0.evaluations }} responses (response rate: {{ courses.0.response_rate }}%)</p>
-<p>{{ courses.0.get_profs.0.first }} {{ courses.0.get_profs.0.last }}</p>
+<h1><span id="field">{{ selected_course.field }}</span> <span id="number">{{ selected_course.number }}</span>: {{ selected_course.title }} (<span id="term">{{ selected_course.term_text }}</span> <span id="year">{{ selected_course.year }}</span>)</h1>
+<p id="basic_stats">{{ selected_course.enrollment }} students, {{ selected_course.evaluations }} responses (response rate: {{ selected_course.response_rate }}%)</p>
+<p>{{ selected_course.get_profs.0.first }} {{ selected_course.get_profs.0.last }}</p>
 
 <div class="row">
 	<div class="span2 score-box course">
-		<div class="score">{{ courses.0.overall }}</div>
+		<div class="score">{{ selected_course.overall }}</div>
 		<div class="title">overall</div>
 	</div>
 
 	<div class="span2 score-box course">
-		<div class="score">{{ courses.0.difficulty }}</div>
+		<div class="score">{{ selected_course.difficulty }}</div>
 		<div class="title">difficulty</div>
 	</div>
 
 	<div class="span2 score-box course">
-		<div class="score">{{ courses.0.workload }}</div>
+		<div class="score">{{ selected_course.workload }}</div>
 		<div class="title">workload</div>
 	</div>
 	<div class="span2 score-box course">
-		<div class="score">{{ courses.0.recommend }}</div>
+		<div class="score">{{ selected_course.recommend }}</div>
 		<div class="title">recommendation</div>
 	</div>
 
-	<a class = "hiddenlink" href = "{{ courses.0.get_profs.0.get_absolute_url }}">
+	<a class = "hiddenlink" href = "{{ selected_course.get_profs.0.get_absolute_url }}">
 		<div class="span4 score-box prof">
-			<div class="score">{{ courses.0.get_profs.0.overall }}</div>
-			<div class="title">{{ courses.0.get_profs.0.last }}</div>
+			<div class="score">{{ selected_course.get_profs.0.overall }}</div>
+			<div class="title">{{ selected_course.get_profs.0.last }}</div>
 		</div>
 	</a>
 </div>
@@ -47,24 +47,24 @@
 <div class="row" style="margin-left: -20px">
 	<div class="span8 course info">
 		<p class = "text">
-			{{ courses.0.description }}
+			{{ selected_course.description }}
 		</p>
 		<div class="row">
 			<div class="span3 course bar offset1">
-				<!-- width: courses.0.assignments / 5.0 * 100% -->
-				<span style="width: {% widthratio courses.0.assignments 5.0 100 %}%">assignments: {{ courses.0.assignments }}</span>
+				<!-- width: selected_course.assignments / 5.0 * 100% -->
+				<span style="width: {% widthratio selected_course.assignments 5.0 100 %}%">assignments: {{ selected_course.assignments }}</span>
 			</div>			
 			<div class="span3 course bar">
-				<span style="width: {% widthratio courses.0.feedback 5.0 100 %}%">feedback: {{ courses.0.feedback }}</span>
+				<span style="width: {% widthratio selected_course.feedback 5.0 100 %}%">feedback: {{ selected_course.feedback }}</span>
 			</div>
 		</div>
 		<div class="row">
 			<div class="span3 course bar offset1">
-				<span style="width: {% widthratio courses.0.section 5.0 100 %}%">section: {{ courses.0.section }}</span>
+				<span style="width: {% widthratio selected_course.section 5.0 100 %}%">section: {{ selected_course.section }}</span>
 			</div>
 
 			<div class="span3 course bar">
-				<span style="width: {% widthratio courses.0.materials 5.0 100 %}%">materials: {{ courses.0.materials }}</span>
+				<span style="width: {% widthratio selected_course.materials 5.0 100 %}%">materials: {{ selected_course.materials }}</span>
 			</div>
 		</div>
 		
@@ -78,27 +78,27 @@
 	<div class="span4 prof info" style="margin-left: 10px">
 		<div class="prof row">
 			<div class="span3 course bar">
-				<span style="width: {% widthratio courses.0.get_profs.0.lectures 5.0 100 %}%">lectures: {{ courses.0.get_profs.0.lectures }}</span>
+				<span style="width: {% widthratio selected_course.get_profs.0.lectures 5.0 100 %}%">lectures: {{ selected_course.get_profs.0.lectures }}</span>
 			</div>
 		</div>
 		<div class="prof row">
 			<div class="span3 course bar">
-				<span style="width: {% widthratio courses.0.get_profs.0.accessible 5.0 100 %}%">accessibility: {{ courses.0.get_profs.0.accessible }}</span>
+				<span style="width: {% widthratio selected_course.get_profs.0.accessible 5.0 100 %}%">accessibility: {{ selected_course.get_profs.0.accessible }}</span>
 			</div>
 		</div>
 		<div class="prof row">
 			<div class="span3 course bar">
-				<span style="width: {% widthratio courses.0.get_profs.0.enthusiasm 5.0 100 %}%">enthusiasm: {{ courses.0.get_profs.0.enthusiasm }}</span>
+				<span style="width: {% widthratio selected_course.get_profs.0.enthusiasm 5.0 100 %}%">enthusiasm: {{ selected_course.get_profs.0.enthusiasm }}</span>
 			</div>
 		</div>
 		<div class="prof row">
 			<div class="span3 course bar">
-				<span style="width: {% widthratio courses.0.get_profs.0.discussion 5.0 100 %}%">discussion: {{ courses.0.get_profs.0.discussion }}</span>
+				<span style="width: {% widthratio selected_course.get_profs.0.discussion 5.0 100 %}%">discussion: {{ selected_course.get_profs.0.discussion }}</span>
 			</div>
 		</div>
 		<div class="prof row">
 			<div class="span3 course bar">
-				<span style="width: {% widthratio courses.0.get_profs.0.feedback 5.0 100 %}%">feedback: {{ courses.0.get_profs.0.feedback }}</span>
+				<span style="width: {% widthratio selected_course.get_profs.0.feedback 5.0 100 %}%">feedback: {{ selected_course.get_profs.0.feedback }}</span>
 			</div>
 		</div>
 	</div>
@@ -121,19 +121,14 @@
 		        <th>Section</th>
 		        <th>Feedback given</th>
 		        <th>Recommended</th>
-                <th>Full Report</th>
 		    </tr>
 	    </thead>
 	    <tbody>
 			{% for course in courses %}
 		    <tr>
-		        <td>{{ course.term_text }} {{ course.year }}</td>
-		        <td>{% for prof in course.get_profs %}
-		            <a href="{{ prof.get_absolute_url }}">{{ prof }}</a><br>
-		        {% endfor %}</td>
-		        <td>{% for prof in course.get_profs %}
-		            {{ prof.overall }} <br>
-		        {% endfor %}</td>
+		        <td><a href="{{ course.get_absolute_url }}">{{ course.term_text }} {{ course.year }}</a</td>
+		        <td>{% for prof in course.get_profs %} <a href="{{ prof.get_absolute_url }}">{{ prof }}</a><br> {% endfor %}</td>
+		        <td>{% for prof in course.get_profs %} {{ prof.overall }} <br> {% endfor %}</td>
 		        <td>{{ course.enrollment }}</td>
 		        <td>{{ course.response_rate }}</td>
 		        <td style="background-color: {{ course.overall|get_color:"" }}">{{ course.overall }}</td>
@@ -144,7 +139,6 @@
 		        <td style="background-color: {{ course.section|get_color:"" }}">{{ course.section }}</td>
 		        <td style="background-color: {{ course.feedback|get_color:"" }}">{{ course.feedback }}</td>
 		        <td style="background-color: {{ course.recommend|get_color:"" }}">{{ course.recommend }}</td>
-                <td><a href="{{ course.get_absolute_url }}">See full report</a></td>
 		    </tr>
 			{% endfor %}
 		</tbody>
@@ -152,16 +146,37 @@
 </div>
 
 <div class="row">
-	<div class="span12" id="comments">
-		<h3>Comments (most recent first):</h3>
-		{% for comment in courses.0.comments %}
-			<p class="comment">{{ comment.comment }}<i> - {{ courses.0.term_text }} {{ courses.0.year }} ({{ courses.0.get_profs.0 }})</i></p>
-		{% endfor %}
-		<div class="pagination">
-			<ul>
-			</ul>
-		</div>				
+	<div class="span12" id="comment_box">
+		<h3>Comments:</h3>
+		<div id="comments"> </div>
+		<!-- Icons provided by http://glyphicons.com/ -->
+		<br/>
+		<div class="centered">
+			<a href="#comments" id="left_arrow">
+				<i class="icon-chevron-left"></i>
+			</a> <input id="current_page" type="text" class="input-mini centered" value="1"/> of <span id="num_pages">{{ num_pages }}</span> <a id="right_arrow" href="#comments"><i class="icon-chevron-right"></i></a>
+		</div>
 	</div>
 </div>
 
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

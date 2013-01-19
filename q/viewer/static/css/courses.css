@@ -61,7 +61,7 @@ div.prof.info
 }
 
 
-div.info, div.info  p, p.comment, #comments h3
+div.info, div.info  p, p.comment, #comment_box h3
 {
 	margin: 20px;
 }
@@ -84,6 +84,11 @@ p.comment
 p.comment.firstcomment
 {
 	padding-top: 0px;
+}
+
+.centered
+{
+	text-align: center;
 }
 
 div.info .centered
@@ -211,7 +216,7 @@ a.hiddenlink
     color: #D8D2D3;
 }
 
-#comments
+#comment_box
 {
 	margin: 20px;
 	-moz-border-radius: 15px;
