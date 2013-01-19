@@ -9,6 +9,8 @@ from helper import *
 from django.db.models import Q
 from operator import attrgetter
 
+from course_views import course_detail
+
 #search results page for courses
 def course_search_results(request):
     courses_per_page = 30 #constant
@@ -22,13 +24,18 @@ def course_search_results(request):
     else:
         courses = []
 
+    course_list = group_courses(courses)
+
+#    if len(course_list) == 1:
+#        course_detail(request, course_field, course_number, year = None, term = None)
+
     #see what page is requested, default to 1
     p = 1
     if ('p' in request.GET) and request.GET['p'].isdigit():
         p = int(request.GET['p'])
 
 
-    course_list = group_courses(courses)
+
 
 
     #get the courses that should be on this page

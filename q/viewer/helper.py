@@ -34,7 +34,7 @@ def search_for_courses(q):
     # | chains queries together. i denotes a case insensitive lookup.
     # first see if any results come from querying the course number
     #next add keyword queries. first require q to be its own word then relax that constraint
-    return Qcourses.objects.filter(field__iexact = field).filter(number__iexact = num) | \
+    return Qcourses.objects.filter(field__iexact = field).filter(number__istartswith = num) | \
            Qcourses.objects.filter(title__icontains = ' '+q+ ' ').order_by('-enrollment') |\
            Qcourses.objects.filter(title__istartswith = q).order_by('-enrollment') |\
            Qcourses.objects.filter(title__icontains = q).order_by('-enrollment')
@@ -53,6 +53,31 @@ def convert_term(term):
         return 2
     else:
         return 0 #term is not valid. filtering for term by 0 will return an empty queryset
+
+
+def filter_courses(courses, parameters):
+    print courses
+    if ('category' in parameters) and parameters['category'].strip():
+        filter = parameters['category']
+    else:
+        filter = 'overall'
+    #set order of values
+    if ('reverse' in parameters) and parameters['reverse'].strip() and string.lower(parameters['reverse']) == 'true':
+        courses=courses.order_by(filter)
+    else:
+        courses = courses.order_by('-'+filter)
+
+    #filter by various traits
+    if ('year' in parameters) and parameters['year'].strip() and string.lower(parameters['year']) != 'all':
+        courses=courses.filter(year__exact = int(parameters['year']))
+
+    if ('term' in parameters) and parameters['term'].strip() and string.lower(parameters['term']) != 'both':
+        courses=courses.filter(term__exact = convert_term(parameters['term']) )
+
+    if ('enrollment' in parameters) and parameters['enrollment'].strip():
+        courses=courses.filter(enrollment__gte = (parameters['enrollment']) ) #greater than or equal to min enrollment
+
+    return courses
 
 
 #group instances of the same class together
