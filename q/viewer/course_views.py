@@ -55,30 +55,17 @@ def top_courses(request):
     if ('n' in request.GET) and request.GET['n'].isdigit():
         n = request.GET['n']
 
-    if ('category' in request.GET) and request.GET['category'].strip():
-        filter = request.GET['category']
-    else:
-        filter = 'overall'
+#    if ('category' in request.GET) and request.GET['category'].strip():
+#        filter = request.GET['category']
+#    else:
+#        filter = 'overall'
 
 
-    #filter out generic expos 20 and courses that do not have scores in the database
+    #filter out generic expos 20 and courses that do not have scores in the database to get baseline courses
     courses = Qcourses.objects.all().exclude(overall = None).exclude(cat_num = 5518)
 
-    #set order of values
-    if ('reverse' in request.GET) and request.GET['reverse'].strip() and string.lower(request.GET['reverse']) == 'true':
-        courses=courses.order_by(filter)
-    else:
-        courses = courses.order_by('-'+filter)
+    courses = filter_courses(courses, request.GET)
 
-    #filter by various traits
-    if ('year' in request.GET) and request.GET['year'].strip() and string.lower(request.GET['year']) != 'all':
-        courses=courses.filter(year__exact = int(request.GET['year']))
-
-    if ('term' in request.GET) and request.GET['term'].strip() and string.lower(request.GET['term']) != 'both':
-        courses=courses.filter(term__exact = convert_term(request.GET['term']) )
-
-    if ('enrollment' in request.GET) and request.GET['enrollment'].strip():
-        courses=courses.filter(enrollment__gte = (request.GET['enrollment']) ) #greater than or equal to min enrollment
 
     #take first n courses
     courses = courses[:n]
@@ -90,17 +77,25 @@ def top_courses(request):
 def department_view(request, field):
 
     field = string.upper(field)
-
     queryset = Qcourses.objects.filter(field__startswith = field).order_by('-overall')
+    filtered = filter_courses(queryset, request.GET)
+    course_list = group_courses(filtered)
 
-    #check if additional filters are in get and refine accordingly
-    if ('year' in request.GET) and request.GET['year'].strip():
-        queryset=queryset.filter(year__exact = request.GET['year'])
 
-    if ('term' in request.GET) and request.GET['term'].strip():
-        queryset=queryset.filter(term__exact = convert_term(request.GET['term']) )
+    #reorder courses
+    if ('reverse' in request.GET) and request.GET['reverse'].strip() and string.lower(request.GET['reverse']) == 'true':
+        to_reverse = False
+    else:
+        to_reverse = True
 
-    course_list = group_courses(queryset)
+    if ('category' in request.GET) and request.GET['category'].strip():
+            field_name = request.GET['category']
+    else:
+        field_name = 'overall'
 
-    return render_to_response('course_list.html', {'course_list': course_list},
+
+    course_list.sort( key = lambda x: getattr(x, field_name), reverse = to_reverse)
+
+
+    return render_to_response('course_list_filters.html', {'course_list': course_list},
         context_instance=RequestContext(request))

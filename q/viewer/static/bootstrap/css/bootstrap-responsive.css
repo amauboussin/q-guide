@@ -679,7 +679,8 @@
   }
 }
 
-@media (max-width: 979px) {
+/*changed from 979 because navbar is not that big*/
+@media (max-width: 780px) {
   body {
     padding-top: 0;
   }
