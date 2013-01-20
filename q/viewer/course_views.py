@@ -36,7 +36,9 @@ def course_detail(request, course_field, course_number, year = None, term = None
         selected_courses = selected_courses.filter(term__exact = term_num).order_by('-year')
 
     if not selected_courses:
-        return render_to_response('no_course_found.html', {}, context_instance=RequestContext(request))
+        return render_to_response('404.html', {}, context_instance=RequestContext(request))
+
+    selected = selected_courses[0]
 
     comments_per_page = 10
     comment_count = num_comments(courses)
@@ -45,7 +47,7 @@ def course_detail(request, course_field, course_number, year = None, term = None
     if comment_count % comments_per_page != 0:
         num_pages = num_pages + 1
 
-    return render_to_response('course.html', {'selected_course': selected_courses[0], 'courses': courses, 'num_pages': num_pages}, context_instance=RequestContext(request))
+    return render_to_response('course.html', {'selected_course': selected, 'courses': courses, 'num_pages': num_pages}, context_instance=RequestContext(request))
 
 #page to allow users to find the top courses according to the criteria they define
 def top_courses(request):
@@ -54,12 +56,6 @@ def top_courses(request):
     n = 50
     if ('n' in request.GET) and request.GET['n'].isdigit():
         n = request.GET['n']
-
-#    if ('category' in request.GET) and request.GET['category'].strip():
-#        filter = request.GET['category']
-#    else:
-#        filter = 'overall'
-
 
     #filter out generic expos 20 and courses that do not have scores in the database to get baseline courses
     courses = Qcourses.objects.all().exclude(overall = None).exclude(cat_num = 5518)

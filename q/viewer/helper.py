@@ -2,6 +2,10 @@ __author__ = 'Andrew'
 from models import *
 import string, re
 
+
+def unified_search(q):
+    return search_for_courses(q) | search_for_profs()
+
 def search_for_courses(q):
 
     # if the query is a catalog number
