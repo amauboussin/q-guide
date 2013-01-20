@@ -116,6 +116,7 @@ def ajax_comments(request, course_field, course_number, year = None, term = None
     courses_before_or_equal = []
     courses_after = []
 
+
     for course in courses:
 
         if course.year > selected_course.year:

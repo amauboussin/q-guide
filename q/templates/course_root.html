@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Harvard-Q{% endblock %}
 
+{% block javascript %}
+    <script src="{{ STATIC_URL }}js/typeahead.js"> </script>
+{% endblock %}
 {% block content %}
 <div class="row-fluid">
     <div class="span4">
@@ -16,8 +19,8 @@
 
     <div class="span4">
         <h3>Search</h3>
-        <form class ="form-search" action="/courses/search/">
-            <input type="text" class="input-large search-query" name="q" placeholder="Number (cs50) or keyword"
+        <form class ="form-search typeahead" action="/courses/search/">
+            <input type="text" class="input-large search-query typeahead" name="q" placeholder="Number (cs50) or keyword"
                    value="">
             <input type=submit class="btn" value=Go formaction="/courses/search/">
         </form>
@@ -37,3 +40,4 @@
 
 </div>
 {% endblock %}
+

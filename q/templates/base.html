@@ -62,7 +62,7 @@
             <a class="brand" href="/">Harvard-Q</a>
             <div class="nav-collapse collapse">
                 <form class="navbar-form pull-right" action="/courses/search/" method="get">
-                    <input type="text" name="q" class="span2" placeholder="Jump to a class" formaction="/courses/search/" >
+                    <input type="text" name="q" class="span2" placeholder="Jump to a class" formaction="/courses/search/">
                 </form>
                 <ul class="nav">
                     <li id="navbar-home"><a href="/">Home</a></li>
@@ -94,7 +94,8 @@
 <script src="{{ STATIC_URL }}bootstrap/js/bootstrap-button.js"></script>
 <script src="{{ STATIC_URL }}bootstrap/js/bootstrap-collapse.js"></script>
 <script src="{{ STATIC_URL }}bootstrap/js/bootstrap-carousel.js"></script>
-<script src="{{ STATIC_URL }}bootstrap/js/bootstrap-typeahead.js"></script>
+<script src="{{ STATIC_URL }}bootstrap/js/bootstrap-typeahead-2.0.3.js"></script>
+
 {% block javascript %}{% endblock %}
 </body>
 </html>

@@ -8,6 +8,8 @@ import string
 from helper import *
 from django.db.models import Q
 from operator import attrgetter
+from django.http import HttpResponseRedirect
+
 
 from course_views import course_detail
 
@@ -26,8 +28,9 @@ def course_search_results(request):
 
     course_list = group_courses(courses)
 
-#    if len(course_list) == 1:
-#        course_detail(request, course_field, course_number, year = None, term = None)
+    #redirect directly to page if only one result
+    if len(course_list) == 1:
+        return HttpResponseRedirect(course_list[0].get_absolute_url())
 
     #see what page is requested, default to 1
     p = 1
