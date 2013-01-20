@@ -19,6 +19,10 @@ $(function()
 	    	get_comments($("#current_page").val());
   		}
 	});
+	$("#seemore").click(function(e){
+		e.preventDefault();
+		$("#table").toggle();
+	});
 });
 
 // Get a page of comments.  First page is page 1 (page 0 DNE), last page is page num_pages 
