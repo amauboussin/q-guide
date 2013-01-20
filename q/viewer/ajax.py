@@ -14,9 +14,9 @@ def ajax_comments(request, course_field, course_number, year = None, term = None
 
     if not "first" in request.GET or not "last" in request.GET:
         return failure_json()
-    else:
-        first_comment = request.GET["first"]
-        last_comment = request.GET["last"]
+
+    first_comment = request.GET["first"]
+    last_comment = request.GET["last"]
 
     # check that comment numbers are digits
     if not first_comment.isdigit() or not last_comment.isdigit():
@@ -60,6 +60,7 @@ def ajax_comments(request, course_field, course_number, year = None, term = None
 
     courses_before_or_equal = []
     courses_after = []
+
 
     for course in courses:
 
