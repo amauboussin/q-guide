@@ -72,7 +72,6 @@ def top_courses(request):
 
     return render_to_response('course_list_filters.html', {'course_list': courses}, context_instance=RequestContext(request))
 
-
 #view all of the courses in a department
 def department_view(request, field):
 

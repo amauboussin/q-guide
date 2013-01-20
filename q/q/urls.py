@@ -18,7 +18,6 @@ urlpatterns = patterns('',
     url(r'^courses/(?P<course_field>[a-zA-Z&-]+)/(?P<course_number>[0-9.a-zA-Z]+)/(?P<term>[a-zA-Z]+)/comments/$', ajax_comments, name = "comments" ), # inclusive, zero-indexed range of comments for latest course in term
     url(r'^courses/(?P<course_field>[a-zA-Z&-]+)/(?P<course_number>[0-9.a-zA-Z]+)/comments/$', ajax_comments, name = "comments" ), # inclusive, zero-indexed range of comments for latest course
 
-
     url(r'^$', course_root, name = "course_root" ), #homepage
     url(r'^courses/$', course_root, name = "course_root" ), #homepage
     url(r'^courses/search/$', course_search_results, name='search'), #course search
@@ -32,6 +31,9 @@ urlpatterns = patterns('',
     # instructor URLs
     url(r'^profs/search/$', prof_search_results, name = "prof_search" ), #page with professor search box
     url(r'^profs/(?P<id>\w+)/$', prof_detail, name = "prof_detail" ), #all of the professor's courses in one page
+
+
+    (r'^compare/$', 'django.views.generic.simple.direct_to_template', {'template': 'static/compare_courses.html'}),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
