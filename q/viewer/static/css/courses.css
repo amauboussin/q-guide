@@ -11,35 +11,69 @@
 	border-width: 3px;
 	left: 20px;
 	margin-right: 30px;
-	width: 900px;
+	width: 1100px;
+	height: 600px;
 }
 
 .score
 {
 	position: absolute;
 	background-color: #FFFFF0;
-	width: 223px;
+	width: 273px;
 	border-style: solid;
 	padding: 0px;
 	border-width: 1px;
 	height: 100px;
+	line-height: 100px;
 	text-align: center;
 	font-size: 50pt;
 	font-weight: bold;
-	vertical-align: bottom;
 }
 
-.score.middle
+.middle
 {
-	left: 225px;
+	left: 275px;
 }
 
-.score.right
+.right
 {
-	left: 450px;
+	left: 550px;
 }
 
-.score.prof
+.prof
 {
-	left: 675px;
+	left: 825px;
+}
+
+.tab
+{
+	position: absolute;
+	top: 102px;
+	background-color: #FFFFF0;
+	width: 273px;
+	border-style: solid;
+	padding: 0px;
+	border-width: 1px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	font-weight:bold;
+
+	cursor: pointer;
+}
+
+.content
+{
+	position: absolute;
+	top: 134px;
+	padding: 20px;
+	padding-top: 10px;
+	height: 436px;
+	overflow: scroll;
+}
+
+.content h3
+{
+	line-height: normal;
+	margin-top: 0px;
 }

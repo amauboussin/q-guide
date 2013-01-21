@@ -1,4 +1,4 @@
-var comments_per_page = 10;
+var comments_per_page = 50;
 var num_pages;
 var current_page;
 
