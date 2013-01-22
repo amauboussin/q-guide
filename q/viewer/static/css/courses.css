@@ -3,73 +3,199 @@
 	margin: 0px;
 }
 
-#course-info-container
+/*
+.row-fluid .right
 {
-	position: absolute;
-	border-style: solid;
-	border-color: #000;
-	border-width: 3px;
-	left: 20px;
-	margin-right: 30px;
-	width: 1100px;
-	height: 600px;
+	margin-left: 0px;
+	padding-left: 2.564102564%;
 }
 
-.score
+.row-fluid .left, 
 {
-	position: absolute;
-	background-color: #FFFFF0;
-	width: 273px;
+	margin-right: 0px;
+	margin-left: 2.564102564%;
+}*/
+
+#course-info-container
+{
+/*	position: absolute;
 	border-style: solid;
-	padding: 0px;
-	border-width: 1px;
-	height: 100px;
-	line-height: 100px;
+	border-color: #000;
+*/	
+	border-width: 3px;
+	/*left: 20px;*/
+	/*margin-right: 30px;*/
+/*	width: 1100px;
+	height: 600px;
+*/
+	-webkit-border-radius: 4px;
+}
+
+#labels, #scores, #divider, #tabs, #content-row .content
+{
+	/*margin-left: 50px;*/
+	/*margin-right: 50px;*/
+}
+
+#scores
+{
+/*	box-shadow: 0 3px 4px -4px rgba(0, 0, 0, 0.7), inset 0 1px rgba(255, 255, 255, 0.34);
+*/	
+	/*border-bottom: solid 1px rgba(168, 168, 168, 0.5);*/
+/*	height: 100px;
+*/	
+	 /*, inset 0 1px rgba(255, 255, 255, 0.34)*/
+}
+
+#scores .score
+{
+/*	position: absolute;
+	width: 275px;
+*/	
+	/*border-bottom: solid 1px rgba(168, 168, 168, 0.5);*/
+
+	/*height: 100px;*/
+	line-height: 75px;
 	text-align: center;
 	font-size: 50pt;
 	font-weight: bold;
 }
 
-.middle
+/*.middle
 {
-	left: 275px;
+
 }
 
 .right
 {
-	left: 550px;
+
 }
 
 .prof
 {
-	left: 825px;
+
+}*/
+
+#labels
+{
+/*	position: absolute;
+	top: 101px;
+	height: 30px;
+*/	
+/*	position: relative;
+	top: 1px;
+*/
+	position: relative;
+	top: -10px;
+  	border-bottom: solid 1px rgba(168, 168, 168, 0.5);
+	/*border-top: solid 1px rgba(0, 0, 0, 0.5);*/
+
 }
 
-.tab
+#labels .score-label
 {
-	position: absolute;
-	top: 102px;
-	background-color: #FFFFF0;
-	width: 273px;
-	border-style: solid;
-	padding: 0px;
-	border-width: 1px;
-	height: 30px;
+/*	position: absolute;
+	width: 275px;
+	border-top: solid 1px rgba(168, 168, 168, 0.5);
+*/	
+	/*padding: 0px;*/
+	/*border-bottom: solid 1px rgba(0, 0, 0, 0.5);
+	border-top: solid 1px rgba(0, 0, 0, 0.5);*/
+
+	line-height: 30px;
+	text-align: center;
+	font-weight:bold;
+	margin-bottom: 0px;
+	
+  	/*border-bottom: solid 1px rgba(168, 168, 168, 0.5);*/
+
+	/*cursor: pointer;*/
+}
+
+#divider
+{
+	position: relative;
+	top: -10px;
+	height: 10px;
+
+	background-image: url('img/wood.gif');
+	border-top: solid 1px rgba(0, 0, 0, 0.5);
+	border-bottom: solid 1px rgba(0, 0, 0, 0.5);
+}
+
+#divider .filler
+{
+	/*background-image: url('wood.png');*/
+	/*height: 10px;*/
+/*	border-top: solid 1px rgba(0, 0, 0, 0.5);
+	border-bottom: solid 1px rgba(168, 168, 168, 0.5);
+*/}
+
+#tabs
+{
+	position: relative;
+	top: -10px;
+	/*border-bottom: solid 1px rgba(0, 0, 0, 0.5);*/
+	/*border-top: solid 1px rgba(0, 0, 0, 0.5);*/
+}
+
+#tabs .tab
+{
+	/*padding: 0px;*/
+	width: 25%;
+	margin: 0px;
+
 	line-height: 30px;
 	text-align: center;
 	font-weight:bold;
 
 	cursor: pointer;
+
+
+/*	margin: 0px;
+	padding-left: 1.282051282%;
+	padding-right: 1.282051282%;
+*/
+
+	border-bottom: solid 1px rgba(0, 0, 0, 0.5);
+	border-top: solid 1px rgba(0, 0, 0, 0.5);
+
+}
+
+#tabs .left
+{
+	border-right: solid 1px rgba(168, 168, 168, 0.5);
+}
+
+#tabs .middle
+{
+	border-left: solid 1px rgba(0, 0, 0, 0.5);
+	border-right: solid 1px rgba(168, 168, 168, 0.5);
+}
+
+#tabs .right
+{
+	border-left: solid 1px rgba(0, 0, 0, 0.5);
+}
+
+.half-border
+{
+	width:0px;
+	border-left: 1px solid #000;
 }
 
 .content
 {
-	position: absolute;
-	top: 134px;
+/*	position: absolute;
+	top: 133px;
+*/	
+	position: relative;
+	top: -10px;
 	padding: 20px;
 	padding-top: 10px;
-	height: 436px;
+	height: 600px;
 	overflow: scroll;
+	border-top: solid 1px rgba(168, 168, 168, 0.5);
 }
 
 .content h3

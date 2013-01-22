@@ -14,42 +14,63 @@
 	<h2 id="course-title"><span id="field">{{ selected_course.field }}</span> <span id="number">{{ selected_course.number }}</span>: <span id="title">{{ selected_course.title }}</span> (<span id="term">{{ selected_course.term_text }}</span> <span id="year">{{ selected_course.year }}</span>)</h2>
 	<div id="additional-info">{{ selected_course.get_profs.0 }}</div>
 
-	<div id="course-info-container">
-		<div id="scores">
-			<div id="overall" class="score left">{{ selected_course.overall }}</div>
-			<div id="difficulty" class="score middle">{{ selected_course.difficulty }}</div>
-			<div id="work" class="score right">{{ selected_course.workload }}</div>
-			<div id="profs" class="score prof">{{ selected_course.get_profs.0.overall }}</div>
-		</div>
-		<div id="tabs">
-			<div id="comments-tab" class="tab left">Comments</div>
-			<div id="more-info-tab" class="tab middle">More Info</div>
-			<div id="history-tab" class="tab right">Course History</div>
-			<div id="prof-detail-tab" class="tab prof">Instructor Details</div>
-		</div>
+	<div id="course-info-container" class="row-fluid no-space">
+		<div class="row-fluid no-space">
+			<div class="spacer span1"></div>
+			<div class="span10">
+				<div id="scores" class="row-fluid no-space">
+					<div id="overall" class="score left span3">4.27</div>
+					<div id="difficulty" class="score middle span3">3.83</div>
+					<div id="work" class="score right span3">4.08</div>
+					<div id="profs" class="score prof span3">4.52</div>
+				</div>
 
-		<div id="comments-content" class="content">
-			<h3>Comments:</h3>
-			<div id="comments"> </div>
-			<!-- Icons provided by http://glyphicons.com/ -->
-			<br/>
-			<div class="centered">
-				<a href="#comments" id="left_arrow">
-					<i class="icon-chevron-left"></i>
-				</a> <input id="current_page" type="text" class="input-mini centered" value="1"/> of <span id="num_pages">{{ num_pages }}</span> <a id="right_arrow" href="#comments"><i class="icon-chevron-right"></i></a>
+				<div id="labels" class="row-fluid no-space">
+					<div id="overall-label" class="score-label left span3">Overall</div>
+					<div id="difficulty-label" class="score-label middle span3">Difficulty</div>
+					<div id="work-label" class="score-label right span3">Workload</div>
+					<div id="prof-label" class="score-label prof span3">Professors</div>
+				</div>
+
+				<div id="divider" class="row-fluid no-space"></div>
+
+				<div id="tabs" class="row-fluid no-space">
+					<div id="details-tab" class="tab left span3">More details</div>
+					<div id="comments-tab" class="tab middle span3">Comments</div>
+					<div id="history-tab" class="tab middle span3">History</div>
+					<div id="prof-tab" class="tab right span3">Instructors</div>
+				</div>
 			</div>
+			<div class="spacer span1"></div>
 		</div>
 
-		<div id="more-info-content" style="display:none" class="content">
-			asonetuhasnotuhasnoteuhaosntoeuh
-		</div>
+		<div id="content-row" class="row-fluid no-space">
+			<div class="spacer span1"></div>
+			<div id="comments-content" class="content span10">
+				<h3>Comments:</h3>
+				<div id="comments"> </div>
+				<!-- Icons provided by http://glyphicons.com/ -->
+				<br/>
+				<div class="centered">
+					<a href="#comments" id="left_arrow">
+						<i class="icon-chevron-left"></i>
+					</a> <input id="current_page" type="text" class="input-mini centered" value="1"/> of <span id="num_pages">26</span> <a id="right_arrow" href="#comments"><i class="icon-chevron-right"></i></a>
+				</div>
+			</div>
+		
 
-		<div id="history-content" style="display:none" class="content">
-			asnteuhasnteuhasnteuhasntoeuhasntoeuhsanotuhasnoteuhasntoehusnatoehu
-		</div>
+			<div id="details-content" class="content span10">
+				asonetuhasnotuhasnoteuhaosntoeuh
+			</div>
 
-		<div id="prof-detail-content" style="display:none" class="content">
-			asnetouhasnetouhasontuhasnoteuhasntoeuha
+			<div id="history-content" class="content span10">
+				asnteuhasnteuhasnteuhasntoeuhasntoeuhsanotuhasnoteuhasntoehusnatoehu
+			</div>
+
+			<div id="prof-content" class="content span10">
+				asnetouhasnetouhasontuhasnoteuhasntoeuha
+			</div>
+			<div class="spacer span1"></div>
 		</div>
 	</div>
 </div>
