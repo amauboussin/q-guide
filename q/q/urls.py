@@ -11,6 +11,9 @@ from viewer.ajax import *
 
 urlpatterns = patterns('',
     
+    # Splash page
+    url(r'^preview/$', splash, name = "preview"),
+
     # URLs that return JSON (for Ajax)
     # Comments URLs: course_url/comments/?first=num1&last=num2
     url(r'^courses/(?P<course_field>[a-zA-Z&-]+)/(?P<course_number>[0-9.a-zA-Z]+)/(?P<year>[0-9]+)/(?P<term>[a-zA-Z]+)/comments/$', ajax_comments, name = "comments" ), # inclusive, zero-indexed range of comments for  course in term/year

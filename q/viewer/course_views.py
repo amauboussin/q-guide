@@ -11,6 +11,10 @@ from django.db.models import Q
 from operator import attrgetter
 from ajax_helper import num_comments
 
+#Splash page
+def splash(request):
+    return render_to_response('splash.html', {}, context_instance=RequestContext(request))
+
 #homepage. presents 3 ways to find courses
 def course_root(request):
     fields = Qfields.objects.all()
