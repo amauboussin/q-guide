@@ -1,7 +1,7 @@
 __author__ = 'Andrew'
 from models import *
 import string, re
-
+import constants
 
 def unified_search(q):
     return search_for_courses(q) | search_for_profs()
@@ -20,28 +20,86 @@ def search_for_courses(q):
     #check to see if the query is a course number i.e. compsci50 or cs50
     field = ''
     num = ''
-    for char in q:
-        if char.isdigit():
-            field, num = q.split(char, 1)
-            num = char+num #re-add the splitting digit
-            break
 
-    #strip whitespace
-    field = string.strip(field)
-    num = string.strip(num)
+    matched_department_code = []
+    matched_whole_alias = []
+    matched_partial_alias = []
+    skip_step_3 = False
 
-    print field, num
-    #check if the query contains an abbreviation
-    if field in departments:
-        field = departments[field]
+    for key, value in constants.DEPARTMENTS.items():
+        
+        # Step 1: exact match for department code?
+        regex = re.compile("^\s*" + value + "\s*(?P<num>[a-zA-Z0-9&-_]+)", re.IGNORECASE)
+        result = regex.search(q)
+        if result is not None:
+            # If exact match, add values 
+            matched_department_code.append((value, result.group("num")))
+            # forget about partial aliases if we're pretty certain we have a real course on our hands (i.e. if num contains a number)
+            if re.search(re.compile("[0-9]"), result.group("num")):
+                matched_partial_alias = []
+                skip_step_3 = True
 
-    # | chains queries together. i denotes a case insensitive lookup.
-    # first see if any results come from querying the course number
-    #next add keyword queries. first require q to be its own word then relax that constraint
-    return Qcourses.objects.filter(field__iexact = field).filter(number__istartswith = num) | \
-           Qcourses.objects.filter(title__icontains = ' '+q+ ' ').order_by('-enrollment') |\
-           Qcourses.objects.filter(title__istartswith = q).order_by('-enrollment') |\
-           Qcourses.objects.filter(title__icontains = q).order_by('-enrollment')
+        # Step 2: matched whole alias?
+        regex = re.compile("^\s*" + key + "\s*(?P<num>[a-zA-Z&-_]+)", re.IGNORECASE)
+        result = regex.search(q)
+        if result is not None:
+            # If exact match, add values 
+            matched_whole_alias.append((value, result.group("num")))
+            # forget about partial aliases if we're pretty certain we have a real course on our hands (i.e. if num contains a number)
+            if re.search(re.compile("[0-9]"), result.group("num")):
+                matched_partial_alias = []
+                skip_step_3 = True
+
+        # Step 3: matched partial alias?
+        if not skip_step_3:
+            partial_aliases = key.split()
+            for word in partial_aliases:
+                regex = re.compile("^\s*" + word + "\s*(?P<num>[a-zA-Z&-_]+)", re.IGNORECASE)
+                result = regex.search(q)
+                if result is not None:
+                    matched_partial_alias.append((value, result.group("num")))
+            
+    print matched_department_code
+    print matched_whole_alias
+    print matched_partial_alias
+
+    result_set = Qcourses.objects.none()
+    for match in matched_department_code:
+        result_set = result_set | Qcourses.objects.filter(field__iexact = match[0]).filter(number__istartswith = match[1])
+
+    for match in matched_whole_alias:
+        result_set = result_set | Qcourses.objects.filter(field__iexact = match[0]).filter(number__istartswith = match[1])
+
+    for match in matched_partial_alias:
+        result_set = result_set | Qcourses.objects.filter(field__iexact = match[0]).filter(number__istartswith = match[1])
+
+    return result_set
+    # print result_set
+
+
+
+    # for char in q:
+    #     if char.isdigit():
+    #         field, num = q.split(char, 1)
+    #         num = char+num #re-add the splitting digit
+    #         break
+
+    # #strip whitespace
+    # field = string.strip(field)
+    # num = string.strip(num)
+
+    # print field, num
+    # #check if the query contains an abbreviation
+    # if field in departments:
+    #     field = departments[field]
+
+    # # | chains queries together. i denotes a case insensitive lookup.
+    # # first see if any results come from querying the course number
+    # #next add keyword queries. first require q to be its own word then relax that constraint
+    # return Qcourses.objects.filter(field__iexact = field).filter(number__istartswith = num) | \
+    #        Qcourses.objects.filter(title__icontains = ' '+q+ ' ').order_by('-enrollment') |\
+    #        Qcourses.objects.filter(title__istartswith = q).order_by('-enrollment') |\
+    #        Qcourses.objects.filter(title__icontains = q).order_by('-enrollment')
 
 
 #get a prof given his last name
