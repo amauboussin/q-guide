@@ -89,7 +89,7 @@ function get_comments(page_n)
 
 				var term = (element.term == 1) ? "Fall" : "Spring";
 
-				$("#comments").append('<p class="comment">' + element.comment + "<i> - " + term + " " 
+				$("#comments").append('<p class="comment raised">' + element.comment + "<i> - " + term + " " 
 					                  + element.course_info.year + " (Instructor: " + element.course_info.profs[0] + ")</i>"+ '</p>');
 				if (index == 0)
 				{
