@@ -20,7 +20,7 @@ def course_info(request):
     term = None if "term" not in request.GET else request.GET["term"];
 
     # Get data for course.  Copy/pasted from course_views.course_detail
-    comments_per_page = 10
+    comments_per_page = 50
 
     course_number = string.replace(string.upper(request.GET["num"]),'_',' ')
     # get all instances of the course

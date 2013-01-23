@@ -18,7 +18,7 @@ def course_root(request):
 
 #detailed view of a single course 
 def course_detail(request, course_field, course_number, year = None, term = None):
-    comments_per_page = 10
+    comments_per_page = 50
 
     course_number = string.replace(string.upper(course_number),'_',' ')
     #get all instances of the course
@@ -49,8 +49,6 @@ def course_detail(request, course_field, course_number, year = None, term = None
     enrollment_data = get_enrollment_chart(courses)
     ratings_data = get_ratings_chart(courses)
 
-
-    comments_per_page = 10
     comment_count = num_comments(courses)
     num_pages = comment_count / comments_per_page
 

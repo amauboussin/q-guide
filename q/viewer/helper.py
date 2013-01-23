@@ -29,15 +29,16 @@ def search_for_courses(q):
     for key, value in constants.DEPARTMENTS.items():
         
         # Step 1: exact match for department code?
-        regex = re.compile("^\s*" + value + "\s*(?P<num>[a-zA-Z0-9&-_]+)", re.IGNORECASE)
+        regex = re.compile("^\s*" + value + "\s*(?P<num>[a-zA-Z0-9&-_]+)?", re.IGNORECASE)
         result = regex.search(q)
         if result is not None:
             # If exact match, add values 
             matched_department_code.append((value, result.group("num")))
             # forget about partial aliases if we're pretty certain we have a real course on our hands (i.e. if num contains a number)
-            if re.search(re.compile("[0-9]"), result.group("num")):
-                matched_partial_alias = []
-                skip_step_3 = True
+            if result.group("num"):
+                if re.search(re.compile("[0-9]"), result.group("num")):
+                    matched_partial_alias = []
+                    skip_step_3 = True
 
         # Step 2: matched whole alias?
         regex = re.compile("^\s*" + key + "\s*(?P<num>[a-zA-Z&-_]+)", re.IGNORECASE)
@@ -46,9 +47,10 @@ def search_for_courses(q):
             # If exact match, add values 
             matched_whole_alias.append((value, result.group("num")))
             # forget about partial aliases if we're pretty certain we have a real course on our hands (i.e. if num contains a number)
-            if re.search(re.compile("[0-9]"), result.group("num")):
-                matched_partial_alias = []
-                skip_step_3 = True
+            if result.group("num"):
+                if re.search(re.compile("[0-9]"), result.group("num")):
+                    matched_partial_alias = []
+                    skip_step_3 = True
 
         # Step 3: matched partial alias?
         if not skip_step_3:
@@ -59,21 +61,41 @@ def search_for_courses(q):
                 if result is not None:
                     matched_partial_alias.append((value, result.group("num")))
             
+
+    if matched_department_code and matched_department_code[0][1]:
+        query = Qcourses.objects.filter(field__iexact = matched_department_code[0][0]).filter(number__istartswith = matched_department_code[0][1])
+        if query.count() >= 1:
+            return query
+
+    if matched_whole_alias and matched_whole_alias[0][1]:
+        query = Qcourses.objects.filter(field__iexact = matched_whole_alias[0][0]).filter(number__istartswith = matched_whole_alias[0][1])
+        if query.count() >= 1:
+            return query
+
     print matched_department_code
     print matched_whole_alias
     print matched_partial_alias
 
     result_set = Qcourses.objects.none()
-    for match in matched_department_code:
-        result_set = result_set | Qcourses.objects.filter(field__iexact = match[0]).filter(number__istartswith = match[1])
+    results = []
 
-    for match in matched_whole_alias:
-        result_set = result_set | Qcourses.objects.filter(field__iexact = match[0]).filter(number__istartswith = match[1])
+    # title_results = Qcourses.objects.filter(title__icontains = q).order_by('-enrollment')
+    result_set = Qcourses.objects.filter(title__icontains = q).order_by('-enrollment')
+    for match in matched_department_code + matched_whole_alias + matched_partial_alias:
+        next_filter = Qcourses.objects.filter(field__iexact = match[0])
+        if (match[1] is not None):
+            next_filter.filter(number__istartswith = match[1])
+        result_set = result_set | next_filter
 
-    for match in matched_partial_alias:
-        result_set = result_set | Qcourses.objects.filter(field__iexact = match[0]).filter(number__istartswith = match[1])
+    # for course in title_results:
+    #     results.append(course)
+
+    # for course in result_set:
+    #     results.append(course)
 
     return result_set
+
+    # return results
     # print result_set
 
 
