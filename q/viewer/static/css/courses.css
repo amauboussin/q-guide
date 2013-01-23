@@ -39,6 +39,7 @@
 
 #scores
 {
+	margin-top: 30px;
 /*	box-shadow: 0 3px 4px -4px rgba(0, 0, 0, 0.7), inset 0 1px rgba(255, 255, 255, 0.34);
 */	
 	/*border-bottom: solid 1px rgba(168, 168, 168, 0.5);*/
@@ -55,10 +56,21 @@
 	/*border-bottom: solid 1px rgba(168, 168, 168, 0.5);*/
 
 	/*height: 100px;*/
-	line-height: 75px;
+	line-height: 50px;
 	text-align: center;
 	font-size: 50pt;
 	font-weight: bold;
+	margin: 0px;
+	width: 25%;
+
+	border-right: solid;
+	border-right-width: 1px;
+}
+
+#scores .left
+{
+	border-left: solid;
+	border-left-width: 1px;
 }
 
 /*.middle
@@ -85,8 +97,8 @@
 /*	position: relative;
 	top: 1px;
 */
-	position: relative;
-	top: -10px;
+/*	position: relative;
+	top: -10px;*/
   	border-bottom: solid 1px rgba(168, 168, 168, 0.5);
 	/*border-top: solid 1px rgba(0, 0, 0, 0.5);*/
 
@@ -112,10 +124,59 @@
 	/*cursor: pointer;*/
 }
 
+#secondary_scores .secondary-score
+{
+/*	position: absolute;
+	width: 275px;
+*/	
+	/*border-bottom: solid 1px rgba(168, 168, 168, 0.5);*/
+
+	/*height: 100px;*/
+
+	line-height: 40px;
+	text-align: center;
+	font-size: 40pt;
+	font-weight: bold;
+}
+
+#secondary_scores .secondary-score.push_down
+{
+/*	position: absolute;
+	width: 275px;
+*/	
+	/*border-bottom: solid 1px rgba(168, 168, 168, 0.5);*/
+
+	/*height: 100px;*/
+
+	margin-top: 35px;
+}
+
+
+#secondary_scores .secondary-score-label
+{
+/*	position: absolute;
+	width: 275px;
+	border-top: solid 1px rgba(168, 168, 168, 0.5);
+*/	
+	/*padding: 0px;*/
+	/*border-bottom: solid 1px rgba(0, 0, 0, 0.5);
+	border-top: solid 1px rgba(0, 0, 0, 0.5);*/
+
+	line-height: 25px;
+	text-align: center;
+	font-weight:bold;
+	margin-bottom: 0px;
+	margin-top: 0px;
+
+  	/*border-bottom: solid 1px rgba(168, 168, 168, 0.5);*/
+
+	/*cursor: pointer;*/
+}
+
 #divider
 {
-	position: relative;
-	top: -10px;
+/*	position: relative;
+	top: -10px;*/
 	height: 10px;
 
 	background-image: url('img/wood.gif');
@@ -133,17 +194,19 @@
 
 #tabs
 {
-	position: relative;
-	top: -10px;
+	/*position: relative;
+	top: -10px;*/
 	/*border-bottom: solid 1px rgba(0, 0, 0, 0.5);*/
 	/*border-top: solid 1px rgba(0, 0, 0, 0.5);*/
 }
 
-#tabs .tab
-{
+/*#tabs .tab
+{*/
 	/*padding: 0px;*/
-	width: 25%;
+	/*width: 25%;
 	margin: 0px;
+
+	background: -webkit-linear-gradient(top, white, #F0F0F0);
 
 	line-height: 30px;
 	text-align: center;
@@ -151,15 +214,32 @@
 
 	cursor: pointer;
 
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4), 0 0 1px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4), 0 0 1px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4), 0 0 1px rgba(0, 0, 0, 0.2);
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+*/
 
 /*	margin: 0px;
 	padding-left: 1.282051282%;
 	padding-right: 1.282051282%;
 */
-
+/*
 	border-bottom: solid 1px rgba(0, 0, 0, 0.5);
 	border-top: solid 1px rgba(0, 0, 0, 0.5);
 
+}*/
+
+#tabs .btn-tab
+{
+	margin: 0px;
+	width: 25%;
 }
 
 #tabs .left
@@ -189,13 +269,23 @@
 /*	position: absolute;
 	top: 133px;
 */	
-	position: relative;
-	top: -10px;
+	/*position: relative;
+	top: -10px;*/
 	padding: 20px;
 	padding-top: 10px;
 	height: 600px;
 	overflow: scroll;
 	border-top: solid 1px rgba(168, 168, 168, 0.5);
+}
+
+#details-content h4
+{
+	margin-bottom: 5px;
+}
+
+#gened
+{
+	margin-left: 20px;
 }
 
 .content h3

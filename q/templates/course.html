@@ -19,10 +19,10 @@
 			<div class="spacer span1"></div>
 			<div class="span10">
 				<div id="scores" class="row-fluid no-space">
-					<div id="overall" class="score left span3">4.27</div>
-					<div id="difficulty" class="score middle span3">3.83</div>
-					<div id="work" class="score right span3">4.08</div>
-					<div id="profs" class="score prof span3">4.52</div>
+					<div id="overall" class="score left span3">{{ selected_course.overall }}</div>
+					<div id="difficulty" class="score middle span3">{{ selected_course.difficulty }}</div>
+					<div id="work" class="score right span3">{{ selected_course.workload }}</div>
+					<div id="profs" class="score prof span3">{{ selected_course.get_profs.0.overall }}</div>
 				</div>
 
 				<div id="labels" class="row-fluid no-space">
@@ -35,10 +35,21 @@
 				<div id="divider" class="row-fluid no-space"></div>
 
 				<div id="tabs" class="row-fluid no-space">
+
+					<div class="btn-group span12" data-toggle="buttons-radio">
+						<button id="details-tab"  class="btn span3 btn-tab">More details</button>
+						<button id="comments-tab" class="btn span3 btn-tab">Comments</button>
+						<button id="history-tab"  class="btn span3 btn-tab">History</button>
+						<button id="prof-tab"     class="btn span3 btn-tab">Instructors</button>
+					</div>
+
+					<!-- 
 					<div id="details-tab" class="tab left span3">More details</div>
 					<div id="comments-tab" class="tab middle span3">Comments</div>
 					<div id="history-tab" class="tab middle span3">History</div>
 					<div id="prof-tab" class="tab right span3">Instructors</div>
+					`-->
+
 				</div>
 			</div>
 			<div class="spacer span1"></div>
@@ -46,7 +57,7 @@
 
 		<div id="content-row" class="row-fluid no-space">
 			<div class="spacer span1"></div>
-			<div id="comments-content" class="content span10">
+			<div id="comments-content" class="content span10" style:"display: none">
 				<h3>Comments:</h3>
 				<div id="comments"> </div>
 				<!-- Icons provided by http://glyphicons.com/ -->
@@ -54,21 +65,71 @@
 				<div class="centered">
 					<a href="#comments" id="left_arrow">
 						<i class="icon-chevron-left"></i>
-					</a> <input id="current_page" type="text" class="input-mini centered" value="1"/> of <span id="num_pages">26</span> <a id="right_arrow" href="#comments"><i class="icon-chevron-right"></i></a>
+					</a> <input id="current_page" type="text" class="input-mini centered" value="1"/> of <span id="num_pages">{{ num_pages }}</span> <a id="right_arrow" href="#comments"><i class="icon-chevron-right"></i></a>
 				</div>
 			</div>
 		
 
-			<div id="details-content" class="content span10">
-				asonetuhasnotuhasnoteuhaosntoeuh
+			<div id="details-content" class="content span10" style:"display: none">
+				<div class="row-fluid">
+					<div class="span6">
+						<h4>Description: </h4>
+						<p>
+							{{ selected_course.description }}
+						</p>
+
+						<h4>Pre-reqs: </h4>
+						<p id="pre-reqs">
+							{{ selected_course.prerequisites }}
+						</p>
+						<h4>Graduation requirements:</h4>
+						<p id="gened" style="display:none">
+							{{ selected_course.notes }}
+						</p>
+					</div>
+					<div id="secondary_scores" class="span6">
+						<div class="row-fluid">
+							<div class="secondary-score push_down span6">{{ selected_course.section }}</div>
+							<div class="secondary-score push_down span6">{{ selected_course.feedback }}</div>
+						</div>
+
+						<div class="row-fluid">
+							<div class="span6 secondary-score-label">Section</div>
+							<div class="span6 secondary-score-label">Feedback</div>
+						</div>
+
+						<div class="row-fluid">
+							<div class="secondary-score push_down span6">{{ selected_course.assignments }}</div>
+							<div class="secondary-score push_down span6">{{ selected_course.materials }}</div>
+						</div>
+						<div class="row-fluid">
+							<div class="span6 secondary-score-label">Assignments</div>
+							<div class="span6 secondary-score-label">Materials</div>
+						</div>
+					</div>
+				</div>
 			</div>
 
-			<div id="history-content" class="content span10">
-				asnteuhasnteuhasnteuhasntoeuhasntoeuhsanotuhasnoteuhasntoehusnatoehu
+			<div id="history-content" class="content span10" style:"display: none">
+				<p>
+					Veggies sunt bona vobis, proinde vos postulo esse magis squash celtuce mung bean arugula quandong plantain brussels sprout sweet pepper kohlrabi chickweed corn fava bean asparagus burdock pumpkin coriander.	
+				</p>
+
+				<p>
+					Beetroot tatsoi rock melon watercress gram epazote groundnut onion squash lotus root maize bunya nuts radish earthnut pea parsley cabbage broccoli jícama. Wattle seed maize scallion summer purslane plantain sierra leone bologi brussels sprout kohlrabi leek courgette garbanzo tomato onion. Sorrel chickpea prairie turnip jícama horseradish scallion lentil cucumber.	
+				</p>
+				<p>
+					Spinach zucchini lettuce sorrel radicchio watercress celery maize spinach okra parsnip. Tomato garlic earthnut pea turnip summer purslane groundnut aubergine broccoli bamboo shoot green bean sea lettuce corn peanut parsley broccoli rabe dandelion grape radish. Eggplant coriander collard greens rutabaga turnip greens desert raisin kohlrabi kombu azuki bean epazote bush tomato bamboo shoot earthnut pea pumpkin tomato. Chard pea sprouts collard greens peanut plantain potato swiss chard aubergine leek bush tomato spring onion earthnut pea daikon quandong black-eyed pea lettuce mung bean. Caulie celery maize beetroot yarrow chard sorrel kale dandelion rutabaga zucchini mung bean welsh onion water spinach.
+				</p>
 			</div>
 
-			<div id="prof-content" class="content span10">
-				asnetouhasnetouhasontuhasnoteuhasntoeuha
+			<div id="prof-content" class="content span10" style:"display: none">
+				<p>
+					Mixtape assumenda tattooed, cillum tempor plaid brunch adipisicing aliquip delectus. Whatever pug bushwick tousled nostrud, cardigan fanny pack voluptate williamsburg quinoa narwhal officia. Pop-up commodo enim, viral officia irure minim biodiesel placeat. Irony nulla butcher blue bottle minim banh mi. Helvetica cliche odd future mumblecore irony. Banksy ex kale chips plaid dreamcatcher. Gentrify pork belly intelligentsia skateboard, blog non fanny pack Austin biodiesel.
+				</p>
+				<p>
+					In wes anderson incididunt wolf, bushwick high life labore terry richardson kogi reprehenderit nulla quinoa. Reprehenderit thundercats master cleanse, nulla sustainable ex twee dolor eu. Salvia you probably haven't heard of them banh mi direct trade portland, street art sunt. Dreamcatcher ethical commodo etsy, veniam blue bottle fashion axe YOLO aliqua mlkshk vinyl gastropub cray bushwick eu. Leggings literally intelligentsia butcher irure cray, selfies fugiat exercitation labore PBR YOLO thundercats shoreditch in. Small batch intelligentsia DIY, twee deserunt laborum locavore veniam carles raw denim street art odio leggings messenger bag laboris. Thundercats est aliqua flexitarian ad.
+				</p>
 			</div>
 			<div class="spacer span1"></div>
 		</div>

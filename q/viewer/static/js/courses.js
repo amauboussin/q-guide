@@ -23,6 +23,36 @@ $(function()
 		e.preventDefault();
 		$("#table").toggle();
 	});
+
+	$(".content").hide();
+
+	var regex = /^(\w+)-tab$/;
+	$(".btn-tab").click(function(){
+		var category = $(this).attr("id").match(regex)[1];
+		$(".content").hide();
+		$("#" + category + "-content").show();
+
+	});
+
+	var default_tab = "comments";
+	$("#" + default_tab + "-tab").click();
+	$("#" + default_tab + "-tab").addClass("active");
+
+	var prereqs_regex = /[^\s]/;
+	if (prereqs_regex.exec($("#pre-reqs").html() == null))
+		$("#pre-reqs").html("None");
+
+	var gened_regex = /General Education requirement for [a-z\s]*([A-Z][a-zA-Z ]+) or the Core area requirement for [a-z\s]*([A-Z][a-zA-Z ]+)\./;
+	var gened_info = gened_regex.exec($("#gened").html());
+
+	if (gened_info == null)
+	{
+		gened_info = [];
+		for (var i = 0; i < 3; i++)
+			gened_info[i] = "None";
+	}
+
+	$("#gened").html("<b>General Education:</b> " + gened_info[1] + "<br/><b>Core:</b> " + gened_info[2]).show();
 });
 
 // Get a page of comments.  First page is page 1 (page 0 DNE), last page is page num_pages 
@@ -96,6 +126,7 @@ function is_int(str)
 
 function turn_page(delta)
 {
+	console.log("delta: " + delta + " num_pages: " + num_pages);
 	page_n = current_page + delta;
 	if (page_n > 0 && page_n <= num_pages)
 	{
