@@ -21,7 +21,8 @@ urlpatterns = patterns('',
     url(r'^courses/(?P<course_field>[a-zA-Z&-]+)/(?P<course_number>[0-9.a-zA-Z]+)/(?P<term>[a-zA-Z]+)/comments/$', ajax_comments, name = "comments" ), # inclusive, zero-indexed range of comments for latest course in term
     url(r'^courses/(?P<course_field>[a-zA-Z&-]+)/(?P<course_number>[0-9.a-zA-Z]+)/comments/$', ajax_comments, name = "comments" ), # inclusive, zero-indexed range of comments for latest course
 
-    url(r'^$', course_root, name = "course_root" ), #homepage
+ #   url(r'^$', course_root, name = "course_root" ), #homepage
+    url(r'^$', home, name = "homepage" ), #homepage
     url(r'^courses/$', course_root, name = "course_root" ), #homepage
     url(r'^courses/search/$', course_search_results, name='search'), #course search
     url(r'^courses/top/$', top_courses, name='top_courses'), # top courses page. parameters are defined by get variables
@@ -35,7 +36,7 @@ urlpatterns = patterns('',
     url(r'^profs/search/$', prof_search_results, name = "prof_search" ), #page with professor search box
     url(r'^profs/(?P<id>\w+)/$', prof_detail, name = "prof_detail" ), #all of the professor's courses in one page
 
-    url(r'^home/$', home, name = "home" ),
+    # url(r'^home/$', home, name = "home" ),
 
     (r'^compare/$', 'django.views.generic.simple.direct_to_template', {'template': 'static/compare_courses.html'}),
 

@@ -1,0 +1,46 @@
+/*doesnt work right now*/
+.form-search .icon-search
+{
+    position: absolute;
+    top: 7px;
+    left: 11px;
+    background-image: url("http://twitter.github.com/bootstrap/assets/img/glyphicons-halflings-white.png");
+}
+
+.welcome
+{
+    padding-bottom: 15px;
+    font-family: 'Open Sans', sans-serif;
+    box-shadow: 0px 3px 2px -2px #BBB;
+}
+
+.q
+{
+    font-family: "Helvetica Neue";
+    color: #A51C30;
+}
+
+#bigsearch{
+    height: 35px;
+    width: 80%;
+    margin-top: 15px;
+    line-height: 25px;
+    font-size: 20px;
+}
+
+#departments{
+    height: 200px;
+    overflow: auto;
+}
+
+.invisible
+{
+    display: none;
+}
+
+ul
+{
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}

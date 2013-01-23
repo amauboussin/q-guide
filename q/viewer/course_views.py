@@ -10,6 +10,7 @@ from charts import *
 from django.db.models import Q
 from operator import attrgetter
 from ajax_helper import num_comments
+import constants
 
 #Splash page
 def splash(request):
