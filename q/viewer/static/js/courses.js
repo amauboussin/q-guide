@@ -26,18 +26,6 @@ $(function()
 
 	$(".content").hide();
 
-	var regex = /^(\w+)-tab$/;
-	$(".btn-tab").click(function(){
-		var category = $(this).attr("id").match(regex)[1];
-		$(".content").hide();
-		$("#" + category + "-content").show();
-
-	});
-
-	var default_tab = "comments";
-	$("#" + default_tab + "-tab").click();
-	$("#" + default_tab + "-tab").addClass("active");
-
 	var prereqs_regex = /[^\s]/;
 	if (prereqs_regex.exec($("#pre-reqs").html() == null))
 		$("#pre-reqs").html("None");

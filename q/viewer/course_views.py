@@ -17,17 +17,19 @@ def course_root(request):
 
 #detailed view of a single course 
 def course_detail(request, course_field, course_number, year = None, term = None):
-    comments_per_page = 50
+    comments_per_page = 10
 
     course_number = string.replace(string.upper(course_number),'_',' ')
     #get all instances of the course
     courses = Qcourses.objects.filter(field__exact = string.upper(course_field)).filter(number__exact = string.upper(course_number)).order_by('-term').order_by('-year')
+
 
     #filter courses by additional parameters (if given)
     selected_courses = courses
 
     if year is not None:
         selected_courses = selected_courses.filter(year__exact = year).order_by('-term')
+
     if term is not None:
         if string.upper(term) != "FALL" and string.upper(term) != "SPRING":
             return render_to_response('no_course_found.html', {}, context_instance=RequestContext(request))
@@ -38,16 +40,52 @@ def course_detail(request, course_field, course_number, year = None, term = None
     if not selected_courses:
         return render_to_response('404.html', {}, context_instance=RequestContext(request))
 
+
     selected = selected_courses[0]
+
+
+    #reverse so it starts with the earliest
+    data = ""
+
+    prof_history = {}
+
+    for i, c in enumerate(courses.reverse()):
+        print c.year
+        if selected == c:
+            selected_index = i
+
+
+
+        #data += "{\n key: '" +  prof.__unicode__() + "',\n"
+
+        for prof in c.get_profs():
+            value = { 'x' :c.year, 'y':float(prof.overall), 'size': 10}
+            #value = [float(c.year), float(prof.overall)]
+
+            if prof.get_name() in prof_history:
+                prof_history[prof.get_name()].append(value)
+
+            else:
+                prof_history[prof.get_name()] = [value]
+
+    data = ""
+    for k,v in prof_history.items():
+        data += "{\n"
+        data += "key: '" + k +"'"
+        data += ",\n"
+        data += "values: " + string.replace(str(v),"'", '') + ",\n},"
+
+        print str(v)
+
 
     comments_per_page = 10
     comment_count = num_comments(courses)
     num_pages = comment_count / comments_per_page
 
     if comment_count % comments_per_page != 0:
-        num_pages = num_pages + 1
+        num_pages += 1
 
-    return render_to_response('course.html', {'selected_course': selected, 'courses': courses, 'num_pages': num_pages}, context_instance=RequestContext(request))
+    return render_to_response('course.html', {'selected_course': selected, 'courses': courses, 'num_pages': num_pages, 'prof_history_data' : data}, context_instance=RequestContext(request))
 
 #page to allow users to find the top courses according to the criteria they define
 def top_courses(request):
@@ -93,4 +131,22 @@ def department_view(request, field):
 
 
     return render_to_response('course_list_filters.html', {'course_list': course_list},
+        context_instance=RequestContext(request))
+
+def trends(request):
+    fields = list(Qfields.objects.all())
+    for field in fields:
+        courses = list(Qcourses.objects.filter(field__startswith = field.field).filter(year = 2011))
+        field.n = len(courses)
+        sum = 0
+        for c in courses:
+            if c.enrollment is not None:
+                sum += c.enrollment
+        field.enrollment = sum
+
+
+    fields[:] = [f for f in fields if f.enrollment > 50]
+
+
+    return render_to_response('trends.html', {'fields': fields},
         context_instance=RequestContext(request))

@@ -293,3 +293,15 @@
 	line-height: normal;
 	margin-top: 0px;
 }
+
+/* Chart CSS */
+#prof-chart .tick:not(.zero)
+    {
+        opacity: 0;
+    }
+
+#prof-history-chart .nv-lineChart circle.nv-point, #history .nv-lineChart circle.nv-point, #enrollment-chart .nv-lineChart circle.nv-point
+{
+    fill-opacity: 1;
+}
+

@@ -6,6 +6,7 @@
 {% block head %}
 <script src="{{ STATIC_URL }}js/courses.js"> </script>
 <link href="{{ STATIC_URL }}css/courses.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}nvd3/src/nv.d3.css" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block content %}
@@ -38,9 +39,9 @@
 
 					<div class="btn-group span12" data-toggle="buttons-radio">
 						<button id="details-tab"  class="btn span3 btn-tab">More details</button>
-						<button id="comments-tab" class="btn span3 btn-tab">Comments</button>
 						<button id="history-tab"  class="btn span3 btn-tab">History</button>
 						<button id="prof-tab"     class="btn span3 btn-tab">Instructors</button>
+						<button id="comments-tab" class="btn span3 btn-tab">Comments</button>
 					</div>
 
 					<!-- 
@@ -111,36 +112,293 @@
 			</div>
 
 			<div id="history-content" class="content span10" style:"display: none">
-				<p>
-					Veggies sunt bona vobis, proinde vos postulo esse magis squash celtuce mung bean arugula quandong plantain brussels sprout sweet pepper kohlrabi chickweed corn fava bean asparagus burdock pumpkin coriander.	
-				</p>
+				{% if courses|length > 1 %}
+					<div id="history" class="row-fluid">
+					    <div class="span6">
+					        <h3 style="text-align: center"> Past Ratings</h3>
+					        <div id="ratings-chart" >
+					            <svg  style="height: 300px;"></svg>
+					        </div>
+					    </div>
+					    <div class="span6">
+					        <h3 style="text-align: center"> Past Enrollment</h3>
+					        <div id="enrollment-chart" >
+					            <svg  style="height: 300px;"></svg>
+					        </div>
+					    </div>
+					</div>
 
-				<p>
-					Beetroot tatsoi rock melon watercress gram epazote groundnut onion squash lotus root maize bunya nuts radish earthnut pea parsley cabbage broccoli jícama. Wattle seed maize scallion summer purslane plantain sierra leone bologi brussels sprout kohlrabi leek courgette garbanzo tomato onion. Sorrel chickpea prairie turnip jícama horseradish scallion lentil cucumber.	
-				</p>
-				<p>
-					Spinach zucchini lettuce sorrel radicchio watercress celery maize spinach okra parsnip. Tomato garlic earthnut pea turnip summer purslane groundnut aubergine broccoli bamboo shoot green bean sea lettuce corn peanut parsley broccoli rabe dandelion grape radish. Eggplant coriander collard greens rutabaga turnip greens desert raisin kohlrabi kombu azuki bean epazote bush tomato bamboo shoot earthnut pea pumpkin tomato. Chard pea sprouts collard greens peanut plantain potato swiss chard aubergine leek bush tomato spring onion earthnut pea daikon quandong black-eyed pea lettuce mung bean. Caulie celery maize beetroot yarrow chard sorrel kale dandelion rutabaga zucchini mung bean welsh onion water spinach.
-				</p>
+				{% else %}
+				    <h3>No historical data available</h3>
+				{% endif %}
 			</div>
 
 			<div id="prof-content" class="content span10" style:"display: none">
-				<p>
-					Mixtape assumenda tattooed, cillum tempor plaid brunch adipisicing aliquip delectus. Whatever pug bushwick tousled nostrud, cardigan fanny pack voluptate williamsburg quinoa narwhal officia. Pop-up commodo enim, viral officia irure minim biodiesel placeat. Irony nulla butcher blue bottle minim banh mi. Helvetica cliche odd future mumblecore irony. Banksy ex kale chips plaid dreamcatcher. Gentrify pork belly intelligentsia skateboard, blog non fanny pack Austin biodiesel.
-				</p>
-				<p>
-					In wes anderson incididunt wolf, bushwick high life labore terry richardson kogi reprehenderit nulla quinoa. Reprehenderit thundercats master cleanse, nulla sustainable ex twee dolor eu. Salvia you probably haven't heard of them banh mi direct trade portland, street art sunt. Dreamcatcher ethical commodo etsy, veniam blue bottle fashion axe YOLO aliqua mlkshk vinyl gastropub cray bushwick eu. Leggings literally intelligentsia butcher irure cray, selfies fugiat exercitation labore PBR YOLO thundercats shoreditch in. Small batch intelligentsia DIY, twee deserunt laborum locavore veniam carles raw denim street art odio leggings messenger bag laboris. Thundercats est aliqua flexitarian ad.
-				</p>
+				<div class="row-fluid">
+
+				    <div class="span6">
+				        <h3 style="text-align: center"> {{ selected_course.get_profs.0 }}</h3>
+				        <div id="prof-chart" >
+				            <svg  class = "nogrid" style="height: 300px;"></svg>
+				        </div>
+				    </div>
+
+				    <div class="span6">
+				        <h3 style="text-align: center"> Professor History</h3>
+				        <div id="prof-history-chart" >
+				            <svg  style="height: 300px;"></svg>
+				        </div>
+				    </div>
+
+				</div>
 			</div>
 			<div class="spacer span1"></div>
 		</div>
 	</div>
 </div>
 
-
-
 {% endblock %}
 
+{% block javascript %}
+{% if courses|length > 1 %}
 
+<script src="{{ STATIC_URL }}nvd3/lib/d3.v2.js"></script>
+<script src="{{ STATIC_URL }}nvd3/nv.d3.js"></script>
+<script src="{{ STATIC_URL }}nvd3/src/tooltip.js"></script>
+<script src="{{ STATIC_URL }}nvd3/src/utils.js"></script>
+<script src="{{ STATIC_URL }}nvd3/src/models/legend.js"></script>
+<script src="{{ STATIC_URL }}nvd3/src/models/axis.js"></script>
+<script src="{{ STATIC_URL }}nvd3/src/models/scatter.js"></script>
+<script src="{{ STATIC_URL }}nvd3/src/models/line.js"></script>
+<script src="{{ STATIC_URL }}nvd3/src/models/lineChart.js"></script>
+<script>
+
+
+    var labels = [ {% for course in courses %} "{{ course.term_text }} {{ course.year }}" , {% endfor %}].reverse();
+    function getLabel(i){
+        return labels[i];
+    }
+
+
+
+    var prof_chart;
+
+    nv.addGraph(function() {
+        prof_chart = nv.models.discreteBarChart()
+                .x(function(d) { return d.label })
+                .y(function(d) { return d.value })
+                .staggerLabels(true)
+                .tooltips(false)
+                .showValues(true)
+                .forceY([0,5]);
+
+        d3.select('#prof-chart svg')
+                .datum(getProfData())
+                .transition().duration(500)
+                .call(prof_chart);
+
+        nv.utils.windowResize(prof_chart.update);
+
+        return prof_chart;
+    });
+
+    var prof_history_chart;
+    nv.addGraph(function() {
+        prof_history_chart = nv.models.lineChart();
+
+        prof_history_chart
+                .margin({right: 35})
+                .color(d3.scale.category10().range());
+        prof_history_chart.xAxis // chart sub-models (ie. xAxis, yAxis, etc) when accessed directly, return themselves, not the partent chart, so need to chain separately
+                .tickFormat(d3.format(',.0f')) //d3.format(',.1f')
+                .axisLabel('Year');
+        prof_history_chart.yAxis
+                .tickFormat(d3.format(',.1f'));
+        prof_history_chart.forceY([0]);
+        d3.scale.ordinal();
+        d3.select('#prof-history-chart svg')
+                .datum(getProfHistory())
+                .transition().duration(500)
+                .call(prof_history_chart);
+        nv.utils.windowResize(prof_history_chart.update);
+        prof_history_chart.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
+        return prof_history_chart;
+    });
+
+    // Wrapping in nv.addGraph allows for '0 timeout render', stors rendered charts in nv.graphs, and may do more in the future js. it's NOT required
+    var history_chart;
+
+    nv.addGraph(function() {
+        history_chart = nv.models.lineChart();
+
+        history_chart
+                .x(function(d,i) { return i })
+                .margin({right: 35})
+                .color(d3.scale.category10().range());
+
+        history_chart.xAxis // chart sub-models (ie. xAxis, yAxis, etc) when accessed directly, return themselves, not the partent chart, so need to chain separately
+                .tickFormat(getLabel) //d3.format(',.1f')
+                .axisLabel('Year');
+
+        history_chart.yAxis
+                .tickFormat(d3.format(',.2f'));
+
+        history_chart.forceY([0,5]);
+        history_chart.tooltipContent(function(key, year, e, graph) { return key+":" + e + " in "+ year })
+
+        d3.scale.ordinal();
+        d3.select('#ratings-chart svg')
+                .datum(getRatingsData())
+                .transition().duration(500)
+                .call(history_chart);
+
+        nv.utils.windowResize(history_chart.update);
+
+        history_chart.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
+
+        return history_chart;
+    });
+
+    var enrollment_chart;
+
+    nv.addGraph(function() {
+        enrollment_chart = nv.models.lineChart();
+
+        enrollment_chart
+                .x(function(d,i) { return i })
+                .margin({right: 35})
+                .color(d3.scale.category10().range());
+        enrollment_chart.xAxis // chart sub-models (ie. xAxis, yAxis, etc) when accessed directly, return themselves, not the partent chart, so need to chain separately
+                .tickFormat(getLabel) //d3.format(',.1f')
+                .axisLabel('Year');
+        enrollment_chart.yAxis
+                .tickFormat(d3.format(',.0f'));
+        enrollment_chart.forceY([0]);
+        d3.scale.ordinal();
+        d3.select('#enrollment-chart svg')
+                .datum(getEnrollmentData())
+                .transition().duration(500)
+                .call(enrollment_chart);
+        nv.utils.windowResize(enrollment_chart.update);
+        enrollment_chart.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
+        return enrollment_chart;
+    });
+
+    function getRatingsData(){
+        return [
+            {
+                area: false,
+                values: [ {% for course in courses %} { y:{{ course.overall }} }, {% endfor %}].reverse(),
+                key: "Overall"
+            },
+            {
+                area: false,
+                values: [ {% for course in courses %} { y:{{ course.difficulty }} }, {% endfor %}].reverse(),
+                key: "Difficulty"
+            },
+            {
+                area: false,
+                values: [ {% for course in courses %} { y:{{ course.workload }} }, {% endfor %}].reverse(),
+                key: "Workload"
+            },
+            {
+                area: false,
+                disabled: true,
+                values: [ {% for course in courses %} { y:{{ course.recommend }} }, {% endfor %}].reverse(),
+                key: "Recommended"
+            },
+            {
+                area: false,
+                disabled: true,
+                values: [ {% for course in courses %} { y:{{ course.materials }} }, {% endfor %}].reverse(),
+                key: "Materials"
+            },
+            {
+                area: false,
+                disabled: true,
+                values: [ {% for course in courses %} { y:{{ course.assignments }} }, {% endfor %}].reverse(),
+                key: "Assignments"
+            },
+            {
+                area: false,
+                disabled: true,
+                values: [ {% for course in courses %} { y:{{ course.feedback }} }, {% endfor %}].reverse(),
+                key: "Feedback"
+            },
+            {
+                area: false,
+                disabled: true,
+                values: [ {% for course in courses %} { y:{{ course.section }} }, {% endfor %}].reverse(),
+                key: "Section"
+            }
+        ];
+
+    }
+
+    function getEnrollmentData(){
+        return [
+            {
+                area: false,
+                values: [ {% for course in courses %} { y:{{ course.enrollment }} }, {% endfor %}].reverse(),
+                key: "Enrollment"
+            }
+        ];
+    }
+
+    function getProfData(){
+        {% autoescape off %}
+        return [{{ selected_course.get_prof_chart }}];
+        {% endautoescape %}
+    }
+
+
+    function getProfHistory(){
+    {% autoescape off %}
+        return [ {{ prof_history_data }} ];
+    {% endautoescape %}
+
+
+    }
+
+    $(document).ready(function() {
+
+        setTimeout(do_this_on_load, 500);
+
+        function do_this_on_load()
+        {
+        	$('#prof-history-chart .nv-lineChart circle.nv-point, #history .nv-lineChart circle.nv-point, #enrollment-chart .nv-lineChart circle.nv-point').attr("r", "3.5");
+        	var regex = /^(\w+)-tab$/;
+			$(".btn-tab").click(function(){
+				var category = $(this).attr("id").match(regex)[1];
+				$(".content").hide();
+				$("#" + category + "-content").show();
+
+				if (category == "history")
+				{
+					history_chart.update();
+					enrollment_chart.update();
+				}
+				
+				if (category == "prof")
+				{
+					prof_chart.update();
+					prof_history_chart.update();
+				}
+			});
+
+			var default_tab = "history";
+			$("#" + default_tab + "-tab").click();
+			$("#" + default_tab + "-tab").addClass("active");
+        }
+
+        
+
+    });
+
+</script>
+
+{% endif %}
+{% endblock %}
 
 
 

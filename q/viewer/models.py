@@ -43,6 +43,24 @@ class Qcourses(models.Model):
         else:
             return None
 
+    def get_prof_chart(self):
+        data = ""
+        for p in Qinstructors.objects.filter(course_id__exact = self.course_id):
+            scores = [
+            {"label":"Overall", "value": float(p.overall)},
+            {"label":"Lectures","value": float(p.lectures)},
+            {"label":"Accessible", "value": float(p.accessible)},
+            {"label":"Enthusiasm","value": float(p.enthusiasm)},
+            {"label":"Discussion","value": float(p.discussion)},
+            {"label": "Feedback","value": float(p.feedback)}
+            ]
+
+            data+= "{\n key:'"
+            data+= p.__unicode__()+"'"
+            data+=",\n values: " + str(scores)
+            data+="\n},"
+        return data
+
     #get the text representing this course's term
     def term_text(self):
         if self.term == 1:
@@ -93,6 +111,9 @@ class Qinstructors(models.Model):
     returns_assignments = models.DecimalField(decimal_places=2, null=True, max_digits=5, db_column='ReturnsAssignmentsinTimelyFashion', blank=True) # Field name made lowercase.
 
     def __unicode__(self):
+        return self.first+' '+self.last
+
+    def get_name(self):
         return self.first+' '+self.last
 
     def get_absolute_url(self):
