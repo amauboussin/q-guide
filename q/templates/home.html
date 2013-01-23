@@ -1,17 +1,39 @@
 {% extends "base.html" %}
 
 {% block head %}
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <style>
-.bottom-line
+
+{#doesnt work right now#}
+.form-search .icon-search {
+        position: absolute;
+        top: 7px;
+        left: 11px;
+        background-image: url("http://twitter.github.com/bootstrap/assets/img/glyphicons-halflings-white.png");
+    }
+.welcome
 {
-    box-shadow: 0px 3px 2px -2px #BBB;
     padding-bottom: 15px;
+    font-family: 'Open Sans', sans-serif;
+    box-shadow: 0px 3px 2px -2px #BBB;
+}
+.q
+{
+    font-family: "Helvetica Neue";
+    color: #A51C30;
 }
 
 #bigsearch{
     height: 35px;
     width: 80%;
+    margin-top: 15px;
 
+}
+
+#departments{
+    height: 200px;
+    overflow: auto;"
 }
 </style>
 {% endblock %}
@@ -19,19 +41,73 @@
 
 {% block content %}
 <div class="row">
+
     <div class="span9 offset1">
-        <h1 class="bottom-line"> Welcome to Harvard<b>Q</b> </h1>
+        <h1 class="welcome"> Welcome to Harvard<b class="q">Q</b> </h1>
+    </div>
+</div>
+<div class="row">
+    <div class="span8 offset1">
+        <h4>Start by typing in the name of a course:</h4>
+    </div>
+</div>
+<div class="row">
+
+    <div class="span8 offset2">
+{#        <form class="form-search">#}
+{#             <input type="text" class="search-query bigsearch input-append" placeholder="Search&hellip;"><span class="fornav"><i class="icon-search"></i></span>#}
+{#        </form>#}
+        <form class="form-search" >
+            <input  id="bigsearch" type="text" class="input-large search-query" placeholder="Search">
+        </form>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="span8 offset1">
+        <h4>Or selecting a department:</h4>
     </div>
 </div>
 
 <div class="row">
-    <div class="span8 offset2">
-        <form class="form-search" style="margin-top: 30px;">
-            <input  id="bigsearch" type="text" class="input-large search-query" placeholder="Find a class">
-        </form>
-    </div>
+    <div class="span4 offset2">
+        <input id="dfilter" class="span4">
+        <div id= "departments" class="well" >
 
+            {% for field in fields %}
+                <a href="{{ field.get_absolute_url }}" > {{ field }} </a> <br>
+            {% endfor %}
+
+        </div>
+    </div>
 </div>
 
 
+<div class="row">
+    <div class="span8 offset1">
+        <h4>...or <a href="/courses/top/">check out the courses with the highest and lowest ratings.</a></h4>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+
+        $("#dfilter").keypress(function() {
+            var filter = $(this).val();
+            $('#departments').hide();
+            if (filter) {
+                //$('#departments').filter(':contains('+filter')').show();
+                //$('#departments').find("a:not(:contains(" + filter + "))").hide();
+                //$('#departments').find("a:contains(" + filter + ")").show();
+            } else {
+                //$('#departments').find("a").hide();
+                $('#departments').show();
+            }
+        });
+
+
+    //}
+    </script>
 {% endblock %}
