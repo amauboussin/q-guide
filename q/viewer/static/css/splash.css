@@ -1,4 +1,4 @@
-#details{
+ #details{
     margin-top: 10px;
     width: 85%;
     height: 85%;
@@ -32,7 +32,7 @@
 .grey
 {
     background-color: #f5f5f5;
-    padding-bottom: 150px;
+    padding-bottom: 30px;
     padding-top: 30px;
 
     -moz-border-radius: 4px;
@@ -44,8 +44,16 @@
     -webkit-box-shadow: 0px 1px 3px #666;
     border-radius: 2px;
 
+    margin-bottom: 60px;
+
     text-shadow:  0px 2px 3px white;
 }
+
+.crimson
+{
+    color: #A51C30;
+}
+
 body
 {
     background-color: #A51C30;
