@@ -22,21 +22,23 @@
 		<div class="row-fluid no-space">
 			<div class="spacer span1"></div>
 			<div class="span10">
-				<div id="scores" class="row-fluid no-space">
-					<div id="overall" class="score left span3">{{ selected_course.overall }}</div>
-					<div id="difficulty" class="score middle span3">{{ selected_course.difficulty }}</div>
-					<div id="work" class="score right span3">{{ selected_course.workload }}</div>
-					<div id="profs" class="score prof span3">{{ selected_course.get_profs.0.overall }}</div>
-				</div>
+                <div>
+    				<div id="scores" class="row-fluid no-space">
+    					<div id="overall" class="score left span3">{{ selected_course.overall }}</div>
+    					<div id="difficulty" class="score middle span3">{{ selected_course.difficulty }}</div>
+    					<div id="work" class="score right span3">{{ selected_course.workload }}</div>
+    					<div id="profs" class="score prof span3">{{ selected_course.get_profs.0.overall }}</div>
+    				</div>
 
-				<div id="labels" class="row-fluid no-space">
-					<div id="overall-label" class="score-label left span3">Overall</div>
-					<div id="difficulty-label" class="score-label middle span3">Difficulty</div>
-					<div id="work-label" class="score-label right span3">Workload</div>
-					<div id="prof-label" class="score-label prof span3">Professors</div>
-				</div>
+    				<div id="labels" class="row-fluid no-space">
+    					<div id="overall-label" class="score-label left span3">Overall</div>
+    					<div id="difficulty-label" class="score-label middle span3">Difficulty</div>
+    					<div id="work-label" class="score-label right span3">Workload</div>
+    					<div id="prof-label" class="score-label prof span3">Professors</div>
+    				</div>
+                </div>
 
-				<div id="divider" class="row-fluid no-space"></div>
+				<!-- <div id="divider" class="row-fluid no-space"></div> -->
 
 				<div id="tabs" class="row-fluid no-space">
 
