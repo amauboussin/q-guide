@@ -39,8 +39,6 @@ def course_search_results(request):
 
 
 
-
-
     #get the courses that should be on this page
     num_courses = len(course_list)
     start =  (p-1) * courses_per_page

@@ -4,7 +4,7 @@ import string, re
 import constants
 
 def unified_search(q):
-    return search_for_courses(q) | search_for_profs()
+    return search_for_courses(q) | search_for_profs(q)
 
 def search_for_courses(q):
 
@@ -172,13 +172,11 @@ def group_courses(courses):
 #average a list of values
 def average(list):
 
-    #get rid of bad values
-    pop = []
-    for i in range(len(list)):
-        if list[i] == 'Null' or list[i] < 1:
-            pop.append(i)
-    for i in pop:
-        list.pop(i)
+    if list is None:
+        return 'NA'
+
+    list[:] = filter(None, list)
+    print 'one class'
 
     if len(list) > 0:
         return '%.2f' % (float(sum(list))/len(list))
