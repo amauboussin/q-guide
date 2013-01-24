@@ -13,16 +13,19 @@ def search_for_courses(q):
         return Qcourses.objects.filter(cat_num = q).order_by('-year')
 
     #hardcode in commonly used abbreviations for departments
-    departments = {'cs':'compsci', 'am':'apmth', 'ec':'econ', 'ls': 'lifesci',
-                   'neuro':'neurobio','spanish':'spansh', 'sls':'sci-livsys' }
+#    departments = {'cs':'compsci', 'am':'apmth', 'ec':'econ', 'ls': 'lifesci',
+#                   'neuro':'neurobio','spanish':'spansh', 'sls':'sci-livsys' }
 
 
     #check to see if the query is a course number i.e. compsci50 or cs50
     field = ''
     num = ''
 
+    #matches COMPSCI
     matched_department_code = []
+    #matches "Computer Science" or "cs"
     matched_whole_alias = []
+    #contains computer or science
     matched_partial_alias = []
     skip_step_3 = False
 
@@ -61,12 +64,13 @@ def search_for_courses(q):
                 if result is not None:
                     matched_partial_alias.append((value, result.group("num")))
             
-
+    # is it compsci50?
     if matched_department_code and matched_department_code[0][1]:
         query = Qcourses.objects.filter(field__iexact = matched_department_code[0][0]).filter(number__istartswith = matched_department_code[0][1])
         if query.count() >= 1:
             return query
 
+    # is it cs 50?
     if matched_whole_alias and matched_whole_alias[0][1]:
         query = Qcourses.objects.filter(field__iexact = matched_whole_alias[0][0]).filter(number__istartswith = matched_whole_alias[0][1])
         if query.count() >= 1:
@@ -80,12 +84,18 @@ def search_for_courses(q):
     results = []
 
     # title_results = Qcourses.objects.filter(title__icontains = q).order_by('-enrollment')
-    result_set = Qcourses.objects.filter(title__icontains = q).order_by('-enrollment')
+
+
+    #does the title contain the query?
+    #result_set = Qcourses.objects.filter(title__icontains = q).order_by('-enrollment')
+
+    result_set = list(Qcourses.objects.filter(title__icontains = q).order_by('-enrollment'))
     for match in matched_department_code + matched_whole_alias + matched_partial_alias:
         next_filter = Qcourses.objects.filter(field__iexact = match[0])
-        if (match[1] is not None):
+        if match[1] is not None:
             next_filter.filter(number__istartswith = match[1])
-        result_set = result_set | next_filter
+        #result_set = result_set | next_filter
+        result_set +=  list(next_filter)
 
     # for course in title_results:
     #     results.append(course)
@@ -93,6 +103,7 @@ def search_for_courses(q):
     # for course in result_set:
     #     results.append(course)
 
+    print result_set
     return result_set
 
     # return results
@@ -166,6 +177,11 @@ def filter_courses(courses, parameters):
 
 #group instances of the same class together
 def group_courses(courses):
+    print 'hi im here in group courses'
+    print courses
+
+    order = map(lambda c:c.cat_num, courses)
+    print 'order: ',order
 
     unique = {}
     for course in courses:
@@ -188,7 +204,15 @@ def group_courses(courses):
         base.average_overall = average([c.overall for c in years ])
         course_list.append(base)
 
-    return course_list
+    ordered_list = []
+    for old_course in order:
+        for new_course in course_list:
+            if old_course == new_course.cat_num:
+                ordered_list.append(new_course)
+
+    print 'about to return from group courses ', ordered_list
+
+    return ordered_list
 
 
 #average a list of values
@@ -196,10 +220,7 @@ def average(list):
 
     if list is None:
         return 'NA'
-
     list[:] = filter(None, list)
-    print 'one class'
-
     if len(list) > 0:
         return '%.2f' % (float(sum(list))/len(list))
     else:

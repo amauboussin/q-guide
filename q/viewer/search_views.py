@@ -38,7 +38,8 @@ def course_search_results(request):
         p = int(request.GET['p'])
 
 
-
+    print 'im here in search views'
+    print course_list
     #get the courses that should be on this page
     num_courses = len(course_list)
     start =  (p-1) * courses_per_page
@@ -51,6 +52,8 @@ def course_search_results(request):
 
     pages = [x+1 for x in range(1+num_courses/courses_per_page)]
 
+    print 'im here later in search views'
+    print  this_page
     return render_to_response('search_results.html', {'course_list': this_page, 'q': query_string,
                                                       'pages': pages, 'results' : num_courses, 'hints' : hints,
                                                       'num_pages': 1+num_courses/courses_per_page, 'page' : p, 'extend':"course_list.html", "form_action" : "/courses/search/"},
