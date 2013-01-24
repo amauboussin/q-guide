@@ -27,20 +27,38 @@ $(function()
 	$(".content").hide();
 
 	var prereqs_regex = /[^\s]/;
-	if (prereqs_regex.exec($("#pre-reqs").html() == null))
+	if (prereqs_regex.exec($("#pre-reqs").html()) == null)
 		$("#pre-reqs").html("None");
 
-	var gened_regex = /General Education requirement for [a-z\s]*([A-Z][a-zA-Z ]+) or the Core area requirement for [a-z\s]*([A-Z][a-zA-Z ]+)\./;
-	var gened_info = gened_regex.exec($("#gened").html());
+	var gened_regex = /\.(.*)(General Education requirement for [a-z\s]*)([A-Z][a-zA-Z ]+)( or the Core area requirement for [a-z\s]*)([A-Z][a-zA-Z ]+)(\.\s*)/;
+	var notes = $("#notes").html();
+	var gened_info = gened_regex.exec(notes);
+	
 
 	if (gened_info == null)
 	{
 		gened_info = [];
-		for (var i = 0; i < 3; i++)
+		for (var i = 0; i < 6; i++)
 			gened_info[i] = "None";
 	}
 
-	$("#gened").html("<b>General Education:</b> " + gened_info[1] + "<br/><b>Core:</b> " + gened_info[2]).show();
+	else
+	{
+		var first_to_cut_out = notes.indexOf(gened_info[1]);
+		var last_to_cut_out = notes.indexOf(gened_info[6]) + gened_info[4].length;
+		var first_part = notes.substring(0, first_to_cut_out);
+		var last_part = "";
+		if (last_to_cut_out < notes.length)
+		{
+			last_part = notes.substring(last_to_cut_out, notes.length);
+		}
+
+		notes = first_part + last_part;
+	}
+
+	$("#gened").html("<b>General Education:</b> " + gened_info[3] + "<br/><b>Core:</b> " + gened_info[5]);
+	$("#notes").html(notes).show();
+	// $("#notes").show();
 });
 
 // Get a page of comments.  First page is page 1 (page 0 DNE), last page is page num_pages 

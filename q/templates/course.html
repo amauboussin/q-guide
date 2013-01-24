@@ -116,15 +116,12 @@
     						</p>
                         </div>
 
-						<div class="raised addmargin">
-                            <h4>Pre-reqs</h4>
-    						<p id="pre-reqs">
-    							{{ selected_course.prerequisites }}
-    						</p>
+                        <div class="raised addmargin">
+                            <h4>Additional notes:</h4>
+                            <p id="notes" style="display:none">
+                                {{ selected_course.notes }}
+                            </p>
                         </div>
-
-						
-
 					</div>
 					<div class="span6">
                         <div id="secondary_scores">
@@ -150,11 +147,16 @@
                             </div>
                         </div>
 
+                        <div class="raised addmargin">
+                            <h4>Pre-reqs</h4>
+                            <p id="pre-reqs">
+                                {{ selected_course.prerequisites }}
+                            </p>
+                        </div>
+                        
                         <div id="fulfills" class="raised addmargin">
                             <h4>Fulfills</h4>
-                            <p id="gened" style="display:none">
-                                {{ selected_course.notes }}
-                            </p>
+                            <p id="gened" style=""></p>
                         </div>
 					</div>
 				</div>
@@ -440,17 +442,23 @@
 				$(".content").hide();
 				$("#" + category + "-content").show();
 
+
+                {% if courses|length > 1 %}
 				if (category == "history")
 				{
 					history_chart.update();
 					enrollment_chart.update();
 				}
 				
+                {% endif %}
+
 				if (category == "prof")
 				{
+                    {% if courses|length > 1 %}
 					prof_chart.update();
-					prof_history_chart.update();
                     
+					prof_history_chart.update();
+                    {% endif %}
 				}
 			});
 
