@@ -181,7 +181,14 @@ def group_courses(courses):
     print courses
 
     order = map(lambda c:c.cat_num, courses)
+    # order = list(set(order))
     print 'order: ',order
+
+    order_no_repeats = []
+    for num in order:
+        if num not in order_no_repeats:
+            order_no_repeats.append(num)
+
 
     unique = {}
     for course in courses:
@@ -205,7 +212,7 @@ def group_courses(courses):
         course_list.append(base)
 
     ordered_list = []
-    for old_course in order:
+    for old_course in order_no_repeats:
         for new_course in course_list:
             if old_course == new_course.cat_num:
                 ordered_list.append(new_course)
