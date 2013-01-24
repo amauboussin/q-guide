@@ -13,6 +13,8 @@ urlpatterns = patterns('',
     
     # Splash page
     url(r'^preview/$', splash, name = "preview"),
+    # demo page - open to the world
+    url(r'^demo/$', demo, name = "demo"),
 
     # URLs that return JSON (for Ajax)
     # Comments URLs: course_url/comments/?first=num1&last=num2
@@ -38,7 +40,7 @@ urlpatterns = patterns('',
 
     # url(r'^home/$', home, name = "home" ),
 
-    (r'^compare/$', 'django.views.generic.simple.direct_to_template', {'template': 'static/compare_courses.html'}),
+    # (r'^compare/$', 'django.views.generic.simple.direct_to_template', {'template': 'static/compare_courses.html'}),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
