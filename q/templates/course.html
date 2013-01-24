@@ -197,7 +197,9 @@
                 .transition().duration(500)
                 .call(prof_chart);
 
-        nv.utils.windowResize(prof_chart.update);
+        nv.utils.windowResize(function(){ prof_chart.update;
+            $('#prof-history-chart .nv-lineChart circle.nv-point, #history .nv-lineChart circle.nv-point, #enrollment-chart .nv-lineChart circle.nv-point').attr("r", "3.5");
+        });
 
         return prof_chart;
     });
@@ -220,7 +222,8 @@
                 .datum(getProfHistory())
                 .transition().duration(500)
                 .call(prof_history_chart);
-        nv.utils.windowResize(prof_history_chart.update);
+        nv.utils.windowResize(function(){prof_history_chart.update; $('#prof-history-chart .nv-lineChart circle.nv-point, #history .nv-lineChart circle.nv-point, #enrollment-chart .nv-lineChart circle.nv-point').attr("r", "3.5");
+        });
         prof_history_chart.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
         return prof_history_chart;
     });
@@ -284,66 +287,71 @@
         return enrollment_chart;
     });
 
+
     function getRatingsData(){
-        return [
-            {
-                area: false,
-                values: [ {% for course in courses %} { y:{{ course.overall }} }, {% endfor %}].reverse(),
-                key: "Overall"
-            },
-            {
-                area: false,
-                values: [ {% for course in courses %} { y:{{ course.difficulty }} }, {% endfor %}].reverse(),
-                key: "Difficulty"
-            },
-            {
-                area: false,
-                values: [ {% for course in courses %} { y:{{ course.workload }} }, {% endfor %}].reverse(),
-                key: "Workload"
-            },
-            {
-                area: false,
-                disabled: true,
-                values: [ {% for course in courses %} { y:{{ course.recommend }} }, {% endfor %}].reverse(),
-                key: "Recommended"
-            },
-            {
-                area: false,
-                disabled: true,
-                values: [ {% for course in courses %} { y:{{ course.materials }} }, {% endfor %}].reverse(),
-                key: "Materials"
-            },
-            {
-                area: false,
-                disabled: true,
-                values: [ {% for course in courses %} { y:{{ course.assignments }} }, {% endfor %}].reverse(),
-                key: "Assignments"
-            },
-            {
-                area: false,
-                disabled: true,
-                values: [ {% for course in courses %} { y:{{ course.feedback }} }, {% endfor %}].reverse(),
-                key: "Feedback"
-            },
-            {
-                area: false,
-                disabled: true,
-                values: [ {% for course in courses %} { y:{{ course.section }} }, {% endfor %}].reverse(),
-                key: "Section"
-            }
-        ];
+    {% autoescape off %}
+        return {{ ratings_data }}
+    {% endautoescape %}
 
     }
+{#    function getRatingsData(){#}
+{#        return [#}
+{#            {#}
+{#                area: false,#}
+{#                values: [ {% for course in courses %} { y:{{ course.overall }} }, {% endfor %}].reverse(),#}
+{#                key: "Overall"#}
+{#            },#}
+{#            {#}
+{#                area: false,#}
+{#                values: [ {% for course in courses %} { y:{{ course.difficulty }} }, {% endfor %}].reverse(),#}
+{#                key: "Difficulty"#}
+{#            },#}
+{#            {#}
+{#                area: false,#}
+{#                values: [ {% for course in courses %} { y:{{ course.workload }} }, {% endfor %}].reverse(),#}
+{#                key: "Workload"#}
+{#            },#}
+{#            {#}
+{#                area: false,#}
+{#                disabled: true,#}
+{#                values: [ {% for course in courses %} { y:{{ course.recommend }} }, {% endfor %}].reverse(),#}
+{#                key: "Recommended"#}
+{#            },#}
+{#            {#}
+{#                area: false,#}
+{#                disabled: true,#}
+{#                values: [ {% for course in courses %} { y:{{ course.materials }} }, {% endfor %}].reverse(),#}
+{#                key: "Materials"#}
+{#            },#}
+{#            {#}
+{#                area: false,#}
+{#                disabled: true,#}
+{#                values: [ {% for course in courses %} { y:{{ course.assignments }} }, {% endfor %}].reverse(),#}
+{#                key: "Assignments"#}
+{#            },#}
+{#            {#}
+{#                area: false,#}
+{#                disabled: true,#}
+{#                values: [ {% for course in courses %} { y:{{ course.feedback }} }, {% endfor %}].reverse(),#}
+{#                key: "Feedback"#}
+{#            },#}
+{#            {#}
+{#                area: false,#}
+{#                disabled: true,#}
+{#                values: [ {% for course in courses %} { y:{{ course.section }} }, {% endfor %}].reverse(),#}
+{#                key: "Section"#}
+{#            }#}
+{#        ];#}
+{##}
+{#    }#}
+
+
 
     function getEnrollmentData(){
-        return [
-            {
-                area: false,
-                values: [ {% for course in courses %} { y:{{ course.enrollment }} }, {% endfor %}].reverse(),
-                key: "Enrollment"
-            }
-        ];
+    {% autoescape off %}
+        return {{ enrollment_data }}
     }
+    {% endautoescape %}
 
     function getProfData(){
         {% autoescape off %}

@@ -43,6 +43,7 @@ class Qcourses(models.Model):
         else:
             return None
 
+    #json data for professor bar chart
     def get_prof_chart(self):
         data = ""
         for p in Qinstructors.objects.filter(course_id__exact = self.course_id):
@@ -56,10 +57,22 @@ class Qcourses(models.Model):
             ]
 
             data+= "{\n key:'"
-            data+= p.__unicode__()+"'"
+            data+= p.get_name()+"'"
             data+=",\n values: " + str(scores)
             data+="\n},"
         return data
+
+    #one data point for enrollment chart
+    def get_enrollment_point(self):
+        return "{ y:%.0f }" % self.enrollment
+
+    #given a field name gets one point of ratings chart
+    def get_ratings_point(self, rating):
+        value = getattr(self, rating)
+        if value is  None:
+            return ''
+        return "{ y:%.2f }" % value
+
 
     #get the text representing this course's term
     def term_text(self):

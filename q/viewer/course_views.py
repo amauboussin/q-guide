@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404
 import string
 from helper import *
+from charts import *
 from django.db.models import Q
 from operator import attrgetter
 from ajax_helper import num_comments
@@ -44,39 +45,18 @@ def course_detail(request, course_field, course_number, year = None, term = None
     selected = selected_courses[0]
 
 
-    #reverse so it starts with the earliest
-    data = ""
+    prof_history_data = get_prof_history_chart(courses)
 
-    prof_history = {}
+    enrollment_data = get_enrollment_chart(courses)
+    ratings_data = get_ratings_chart(courses)
 
-    for i, c in enumerate(courses.reverse()):
-        print c.year
-        if selected == c:
-            selected_index = i
-
-
-
-        #data += "{\n key: '" +  prof.__unicode__() + "',\n"
-
-        for prof in c.get_profs():
-            value = { 'x' :c.year, 'y':float(prof.overall), 'size': 10}
-            #value = [float(c.year), float(prof.overall)]
-
-            if prof.get_name() in prof_history:
-                prof_history[prof.get_name()].append(value)
-
-            else:
-                prof_history[prof.get_name()] = [value]
-
-    data = ""
-    for k,v in prof_history.items():
-        data += "{\n"
-        data += "key: '" + k +"'"
-        data += ",\n"
-        data += "values: " + string.replace(str(v),"'", '') + ",\n},"
-
-        print str(v)
-
+    print enrollment_data
+#    return [
+#        {
+#            area: false,
+#            values: [ {% for course in courses %} { y:{{ course.overall }} }, {% endfor %}].reverse(),
+#                                                                                            key: "Overall"
+#    },
 
     comments_per_page = 10
     comment_count = num_comments(courses)
@@ -85,7 +65,9 @@ def course_detail(request, course_field, course_number, year = None, term = None
     if comment_count % comments_per_page != 0:
         num_pages += 1
 
-    return render_to_response('course.html', {'selected_course': selected, 'courses': courses, 'num_pages': num_pages, 'prof_history_data' : data}, context_instance=RequestContext(request))
+    return render_to_response('course.html', {'selected_course': selected, 'courses': courses, 'num_pages': num_pages,
+            'enrollment_data': enrollment_data, 'prof_history_data' : prof_history_data,
+            'ratings_data': ratings_data}, context_instance=RequestContext(request))
 
 #page to allow users to find the top courses according to the criteria they define
 def top_courses(request):

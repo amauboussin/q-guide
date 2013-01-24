@@ -4,7 +4,7 @@ import string, re
 
 
 def unified_search(q):
-    return search_for_courses(q) | search_for_profs()
+    return search_for_courses(q) | search_for_profs(q)
 
 def search_for_courses(q):
 
@@ -25,6 +25,8 @@ def search_for_courses(q):
             field, num = q.split(char, 1)
             num = char+num #re-add the splitting digit
             break
+
+
 
     #strip whitespace
     field = string.strip(field)
