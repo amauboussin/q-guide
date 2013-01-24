@@ -11145,7 +11145,8 @@ nv.models.scatter = function() {
         d3.transition(points)
             .attr('cx', function(d,i) { return x(getX(d,i)) })
             .attr('cy', function(d,i) { return y(getY(d,i)) })
-            .attr('r', function(d,i) { return Math.sqrt(z(getSize(d,i))/Math.PI) });
+            // Hacked source here - Josh Palay
+            .attr('r', function(d,i) { return 3.5 });
 
       } else {
 

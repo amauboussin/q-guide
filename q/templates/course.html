@@ -13,27 +13,32 @@
 
 <div id="wrapper">
 	<h2 id="course-title"><span id="field">{{ selected_course.field }}</span> <span id="number">{{ selected_course.number }}</span>: <span id="title">{{ selected_course.title }}</span> (<span id="term">{{ selected_course.term_text }}</span> <span id="year">{{ selected_course.year }}</span>)</h2>
-	<div id="additional-info">{{ selected_course.get_profs.0 }}</div>
+	<div id="additional-info">
+        <p>{{ selected_course.get_profs.0 }}</p>
+        <p>{{ selected_course.enrollment }} students</p>
+    </div>
 
 	<div id="course-info-container" class="row-fluid no-space">
 		<div class="row-fluid no-space">
 			<div class="spacer span1"></div>
 			<div class="span10">
-				<div id="scores" class="row-fluid no-space">
-					<div id="overall" class="score left span3">{{ selected_course.overall }}</div>
-					<div id="difficulty" class="score middle span3">{{ selected_course.difficulty }}</div>
-					<div id="work" class="score right span3">{{ selected_course.workload }}</div>
-					<div id="profs" class="score prof span3">{{ selected_course.get_profs.0.overall }}</div>
-				</div>
+                <div id="scores_label_container">
+    				<div id="scores" class="row-fluid no-space">
+    					<div id="overall" class="score left span3">{{ selected_course.overall }}</div>
+    					<div id="difficulty" class="score middle span3">{{ selected_course.difficulty }}</div>
+    					<div id="work" class="score right span3">{{ selected_course.workload }}</div>
+    					<div id="profs" class="score prof span3">{{ selected_course.get_profs.0.overall }}</div>
+    				</div>
 
-				<div id="labels" class="row-fluid no-space">
-					<div id="overall-label" class="score-label left span3">Overall</div>
-					<div id="difficulty-label" class="score-label middle span3">Difficulty</div>
-					<div id="work-label" class="score-label right span3">Workload</div>
-					<div id="prof-label" class="score-label prof span3">Professors</div>
-				</div>
+    				<div id="labels" class="row-fluid no-space">
+    					<div id="overall-label" class="score-label left span3">Overall</div>
+    					<div id="difficulty-label" class="score-label middle span3">Difficulty</div>
+    					<div id="work-label" class="score-label right span3">Workload</div>
+    					<div id="prof-label" class="score-label prof span3">Professors</div>
+    				</div>
+                </div>
 
-				<div id="divider" class="row-fluid no-space"></div>
+				<!-- <div id="divider" class="row-fluid no-space"></div> -->
 
 				<div id="tabs" class="row-fluid no-space">
 
@@ -74,39 +79,54 @@
 			<div id="details-content" class="content span10" style="display: none">
 				<div class="row-fluid">
 					<div class="span6">
-						<h4>Description: </h4>
-						<p>
-							{{ selected_course.description }}
-						</p>
 
-						<h4>Pre-reqs: </h4>
-						<p id="pre-reqs">
-							{{ selected_course.prerequisites }}
-						</p>
-						<h4>Graduation requirements:</h4>
-						<p id="gened" style="display:none">
-							{{ selected_course.notes }}
-						</p>
+                        <div class="raised addmargin">
+    						<h4>Description</h4>
+    						<p>
+    							{{ selected_course.description }}
+    						</p>
+                        </div>
+
+						<div class="raised addmargin">
+                            <h4>Pre-reqs</h4>
+    						<p id="pre-reqs">
+    							{{ selected_course.prerequisites }}
+    						</p>
+                        </div>
+
+						
+
 					</div>
-					<div id="secondary_scores" class="span6">
-						<div class="row-fluid">
-							<div class="secondary-score push_down span6">{{ selected_course.section }}</div>
-							<div class="secondary-score push_down span6">{{ selected_course.feedback }}</div>
-						</div>
+					<div class="span6">
+                        <div id="secondary_scores">
+                            <div class="raised addmargin">
+        						<div class="row-fluid">
+        							<div class="secondary-score push_down span6">{{ selected_course.section }}</div>
+        							<div class="secondary-score push_down span6">{{ selected_course.feedback }}</div>
+        						</div>
 
-						<div class="row-fluid">
-							<div class="span6 secondary-score-label">Section</div>
-							<div class="span6 secondary-score-label">Feedback</div>
-						</div>
+        						<div class="row-fluid">
+        							<div class="span6 secondary-score-label">Section</div>
+        							<div class="span6 secondary-score-label">Feedback</div>
+        						</div>
 
-						<div class="row-fluid">
-							<div class="secondary-score push_down span6">{{ selected_course.assignments }}</div>
-							<div class="secondary-score push_down span6">{{ selected_course.materials }}</div>
-						</div>
-						<div class="row-fluid">
-							<div class="span6 secondary-score-label">Assignments</div>
-							<div class="span6 secondary-score-label">Materials</div>
-						</div>
+        						<div class="row-fluid">
+        							<div class="secondary-score push_down span6">{{ selected_course.assignments }}</div>
+        							<div class="secondary-score push_down span6">{{ selected_course.materials }}</div>
+        						</div>
+        						<div class="row-fluid">
+        							<div class="span6 secondary-score-label">Assignments</div>
+        							<div class="span6 secondary-score-label">Materials</div>
+        						</div>
+                            </div>
+                        </div>
+
+                        <div id="fulfills" class="raised addmargin">
+                            <h4>Fulfills</h4>
+                            <p id="gened" style="display:none">
+                                {{ selected_course.notes }}
+                            </p>
+                        </div>
 					</div>
 				</div>
 			</div>
@@ -164,12 +184,12 @@
 
 <script src="{{ STATIC_URL }}nvd3/lib/d3.v2.js"></script>
 <script src="{{ STATIC_URL }}nvd3/nv.d3.js"></script>
-<script src="{{ STATIC_URL }}nvd3/src/tooltip.js"></script>
-<script src="{{ STATIC_URL }}nvd3/src/utils.js"></script>
-<script src="{{ STATIC_URL }}nvd3/src/models/legend.js"></script>
-<script src="{{ STATIC_URL }}nvd3/src/models/axis.js"></script>
-<script src="{{ STATIC_URL }}nvd3/src/models/scatter.js"></script>
-<script src="{{ STATIC_URL }}nvd3/src/models/line.js"></script>
+<!-- <script src="{{ STATIC_URL }}nvd3/src/tooltip.js"></script> -->
+<!-- <script src="{{ STATIC_URL }}nvd3/src/utils.js"></script> -->
+<!-- <script src="{{ STATIC_URL }}nvd3/src/models/legend.js"></script> -->
+<!-- <script src="{{ STATIC_URL }}nvd3/src/models/axis.js"></script> -->
+<!-- <script src="{{ STATIC_URL }}nvd3/src/models/scatter.js"></script> -->
+<!-- <script src="{{ STATIC_URL }}nvd3/src/models/line.js"></script> -->
 <script src="{{ STATIC_URL }}nvd3/src/models/lineChart.js"></script>
 <script>
 
@@ -374,7 +394,6 @@
 
         function do_this_on_load()
         {
-        	$('#prof-history-chart .nv-lineChart circle.nv-point, #history .nv-lineChart circle.nv-point, #enrollment-chart .nv-lineChart circle.nv-point').attr("r", "3.5");
         	var regex = /^(\w+)-tab$/;
 			$(".btn-tab").click(function(){
 				var category = $(this).attr("id").match(regex)[1];
@@ -391,6 +410,7 @@
 				{
 					prof_chart.update();
 					prof_history_chart.update();
+                    
 				}
 			});
 
@@ -398,6 +418,8 @@
 			$("#" + default_tab + "-tab").click();
 			$("#" + default_tab + "-tab").addClass("active");
         }
+
+        // do_this_on_load();
 
         
 
