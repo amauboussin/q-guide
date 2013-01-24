@@ -1,6 +1,19 @@
+#title_spacer
+{
+	margin: 0px;
+	width: 1%;
+}
+
 #course-title
 {
 	margin: 0px;
+	margin-top: 20px;
+}
+
+#additional-info h4
+{
+	margin-top: 0px;
+	margin-left: 10px;
 }
 
 /*

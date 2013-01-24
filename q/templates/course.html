@@ -31,10 +31,14 @@
 {% block content %}
 
 <div id="wrapper">
-	<h2 id="course-title"><span id="field">{{ selected_course.field }}</span> <span id="number">{{ selected_course.number }}</span>: <span id="title">{{ selected_course.title }}</span> (<span id="term">{{ selected_course.term_text }}</span> <span id="year">{{ selected_course.year }}</span>)</h2>
-	<div id="additional-info">
-        <p>{{ selected_course.get_profs.0 }}</p>
-        <p>{{ selected_course.enrollment }} students</p>
+    <div class="row-fluid">
+        <div id="title_spacer" class="span1 spacer"></div>
+        <div class="span11">
+        	<h2 id="course-title"><span id="field">{{ selected_course.field }}</span> <span id="number">{{ selected_course.number }}</span>: <span id="title">{{ selected_course.title }}</span> (<span id="term">{{ selected_course.term_text }}</span> <span id="year">{{ selected_course.year }}</span>)</h2>
+        	<div id="additional-info">
+                <h4>{{ selected_course.enrollment }} students, {{ selected_course.evaluations }} responses ({{ selected_course.response_rate }}%)</h4>
+            </div>
+        </div>
     </div>
 
 	<div id="course-info-container" class="row-fluid no-space">
@@ -53,7 +57,13 @@
     					<div id="overall-label" class="score-label left span3">Overall</div>
     					<div id="difficulty-label" class="score-label middle span3">Difficulty</div>
     					<div id="work-label" class="score-label right span3">Workload</div>
-    					<div id="prof-label" class="score-label prof span3">Professors</div>
+    					<div id="prof-label" class="score-label prof span3">
+                            {% if one_prof %}
+                            {{ selected_course.get_profs.0.last }}
+                            {% else %}
+                            {{ selected_course.get_profs.0.last }} and others
+                            {% endif %}
+                        </div>
     				</div>
                 </div>
 
