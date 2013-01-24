@@ -1,7 +1,17 @@
 body
 {
 	background-color: #F9F9F9;
+    /*font-family: 'Lato', sans-serif;*/
 }
+
+/*.header{*/
+    /*font-family: 'Droid Sans', sans-serif;*/
+/*}*/
+/*h1, h2*/
+/*{*/
+    /*font-family: 'Droid Sans', sans-serif;*/
+/*}*/
+
 
 .centered{
     text-align: center;
