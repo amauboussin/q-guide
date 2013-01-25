@@ -1,20 +1,40 @@
 import string
 
-def get_prof_history_chart(courses):
+def get_prof_history_chart(courses, selected):
+
+    labels = []
+    label_index = 0
+
     data = ""
     prof_history = {}
-
     for i, c in enumerate(courses.reverse()):
+
         for prof in c.get_profs():
             if prof is not None:
-                value = { 'x' :c.year, 'y':float(prof.overall), 'size': 10}
-                #value = [float(c.year), float(prof.overall)]
-
+                #create value
+                value = { 'x' :label_index, 'y':float(prof.overall) }
+                #add value to appropriate prof
                 if prof.get_name() in prof_history:
                     prof_history[prof.get_name()].append(value)
 
                 else:
                     prof_history[prof.get_name()] = [value]
+
+        #create label
+        label_index += 1
+        labels.append(get_label(c))
+
+    # too many profs1!!!!
+    if len(prof_history.items()) > 8:
+        include = []
+        for prof, values in prof_history.items():
+
+            #take only the profs that taught in the selected year
+            for value in values:
+                if labels[value['x']] == get_label(selected):
+                    include.append(prof)
+
+        prof_history = {k:v for k, v in prof_history.iteritems() if k in include}
 
     data = ""
     for k,v in prof_history.items():
@@ -23,7 +43,12 @@ def get_prof_history_chart(courses):
         data += ",\n"
         data += "values: " + string.replace(str(v),"'", '') + ",\n},"
 
-    return data
+    print labels
+    return data, labels
+
+
+def get_label(course):
+    return "%s %s" % (course.term_text(), course.year)
 
 def get_ratings_chart(courses):
     series = ['overall', 'workload','difficulty', 'materials','assignments','feedback','section','recommend']

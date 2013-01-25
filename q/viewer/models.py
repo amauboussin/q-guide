@@ -46,8 +46,10 @@ class Qcourses(models.Model):
     #json data for professor bar chart
     def get_prof_chart(self):
         data = ""
+        num_profs = 0
         for p in Qinstructors.objects.filter(course_id__exact = self.course_id):
             if p is not None:
+                num_profs += 1
                 scores = [
                     {"label":"Overall", "value": float(p.overall)},
                     {"label":"Lectures","value": float(p.lectures)},
@@ -61,7 +63,7 @@ class Qcourses(models.Model):
                 data+= p.get_name()+"'"
                 data+=",\n values: " + str(scores)
                 data+="\n},"
-        return data
+        return data, num_profs
 
     #one data point for enrollment chart
     def get_enrollment_point(self):

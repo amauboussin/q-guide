@@ -199,10 +199,20 @@
         return labels[i];
     }
 
+    {% autoescape off %}
+    var prof_history_labels = {{ prof_history_labels }};
+    {% endautoescape %}
+
+
+    function getProfHistoryLabel(i){
+        return prof_history_labels[i];
+    }
+
 
 
     var prof_chart;
 
+    {%  if one_prof %}
     nv.addGraph(function() {
         prof_chart = nv.models.discreteBarChart()
                 .x(function(d) { return d.label })
@@ -220,9 +230,35 @@
         nv.utils.windowResize(function(){ prof_chart.update;
             $('#prof-history-chart .nv-lineChart circle.nv-point, #history .nv-lineChart circle.nv-point, #enrollment-chart .nv-lineChart circle.nv-point').attr("r", "3.5");
         });
-
         return prof_chart;
     });
+
+    {% else %}
+
+    nv.addGraph(function() {
+        prof_chart = nv.models.multiBarChart()
+                .x(function(d) { return d.label })
+                .y(function(d) { return d.value })
+                //.staggerLabels(true)
+                .tooltips(false)
+                //.showValues(true)
+                .forceY([0,5]);
+
+        d3.select('#prof-chart svg')
+                .datum(getProfData())
+                .transition().duration(500)
+                .call(prof_chart);
+
+        nv.utils.windowResize(function(){ prof_chart.update;
+            $('#prof-history-chart .nv-lineChart circle.nv-point, #history .nv-lineChart circle.nv-point, #enrollment-chart .nv-lineChart circle.nv-point').attr("r", "3.5");
+        });
+        return prof_chart;
+        });
+
+
+
+        {% endif %}
+
 
     var prof_history_chart;
     nv.addGraph(function() {
@@ -230,9 +266,10 @@
 
         prof_history_chart
                 .margin({right: 35})
-                .color(d3.scale.category10().range());
+                .color(d3.scale.category10().range())
+                .forceY([0,5]);
         prof_history_chart.xAxis // chart sub-models (ie. xAxis, yAxis, etc) when accessed directly, return themselves, not the partent chart, so need to chain separately
-                .tickFormat(d3.format(',.0f')) //d3.format(',.1f')
+                .tickFormat(getProfHistoryLabel)
                 .axisLabel('Year');
         prof_history_chart.yAxis
                 .tickFormat(d3.format(',.1f'));
@@ -257,7 +294,9 @@
         history_chart
                 .x(function(d,i) { return i })
                 .margin({right: 35})
+                //.staggerLabels()
                 .color(d3.scale.category10().range());
+
 
         history_chart.xAxis // chart sub-models (ie. xAxis, yAxis, etc) when accessed directly, return themselves, not the partent chart, so need to chain separately
                 .tickFormat(getLabel) //d3.format(',.1f')
@@ -326,7 +365,7 @@
 
     function getProfData(){
         {% autoescape off %}
-        return [{{ selected_course.get_prof_chart }}];
+        return [{{ prof_chart_data }}];
         {% endautoescape %}
     }
 

@@ -45,9 +45,11 @@ def course_detail(request, course_field, course_number, year = None, term = None
     selected = selected_courses[0]
 
 
-    prof_history_data = get_prof_history_chart(courses)
+    prof_history_data, prof_history_labels = get_prof_history_chart(courses, selected)
+    prof_chart_data, num_profs = selected.get_prof_chart()
     enrollment_data = get_enrollment_chart(courses)
     ratings_data = get_ratings_chart(courses)
+
 
 
     comments_per_page = 10
@@ -58,7 +60,7 @@ def course_detail(request, course_field, course_number, year = None, term = None
         num_pages += 1
 
     return render_to_response('course.html', {'selected_course': selected, 'courses': courses, 'num_pages': num_pages,
-            'enrollment_data': enrollment_data, 'prof_history_data' : prof_history_data,
+            'enrollment_data': enrollment_data, 'prof_chart_data': prof_chart_data, 'one_prof': num_profs <2, 'prof_history_labels': str(prof_history_labels),'prof_history_data' : prof_history_data,
             'ratings_data': ratings_data}, context_instance=RequestContext(request))
 
 #page to allow users to find the top courses according to the criteria they define
