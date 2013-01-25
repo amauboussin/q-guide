@@ -192,8 +192,6 @@
 <!-- <script src="{{ STATIC_URL }}nvd3/src/models/line.js"></script> -->
 <script src="{{ STATIC_URL }}nvd3/src/models/lineChart.js"></script>
 <script>
-
-
     var labels = [ {% for course in courses %} "{{ course.term_text }} {{ course.year }}" , {% endfor %}].reverse();
     function getLabel(i){
         return labels[i];
@@ -259,7 +257,6 @@
 
         {% endif %}
 
-
     var prof_history_chart;
     nv.addGraph(function() {
         prof_history_chart = nv.models.lineChart();
@@ -284,6 +281,7 @@
         prof_history_chart.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
         return prof_history_chart;
     });
+
 
     // Wrapping in nv.addGraph allows for '0 timeout render', stors rendered charts in nv.graphs, and may do more in the future js. it's NOT required
     var history_chart;
