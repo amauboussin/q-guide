@@ -45,7 +45,7 @@ def get_prof_history_chart(courses, selected):
 
 
     data = ""
-    for k,v in prof_history.items():
+    for k,v in filtered_prof_history.items():
         data += "{\n"
         data += "key: '" + k +"'"
         data += ",\n"
