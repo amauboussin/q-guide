@@ -46,17 +46,9 @@ def course_detail(request, course_field, course_number, year = None, term = None
 
 
     prof_history_data = get_prof_history_chart(courses)
-
     enrollment_data = get_enrollment_chart(courses)
     ratings_data = get_ratings_chart(courses)
 
-    print enrollment_data
-#    return [
-#        {
-#            area: false,
-#            values: [ {% for course in courses %} { y:{{ course.overall }} }, {% endfor %}].reverse(),
-#                                                                                            key: "Overall"
-#    },
 
     comments_per_page = 10
     comment_count = num_comments(courses)

@@ -6,14 +6,15 @@ def get_prof_history_chart(courses):
 
     for i, c in enumerate(courses.reverse()):
         for prof in c.get_profs():
-            value = { 'x' :c.year, 'y':float(prof.overall), 'size': 10}
-            #value = [float(c.year), float(prof.overall)]
+            if prof is not None:
+                value = { 'x' :c.year, 'y':float(prof.overall), 'size': 10}
+                #value = [float(c.year), float(prof.overall)]
 
-            if prof.get_name() in prof_history:
-                prof_history[prof.get_name()].append(value)
+                if prof.get_name() in prof_history:
+                    prof_history[prof.get_name()].append(value)
 
-            else:
-                prof_history[prof.get_name()] = [value]
+                else:
+                    prof_history[prof.get_name()] = [value]
 
     data = ""
     for k,v in prof_history.items():

@@ -41,25 +41,26 @@ class Qcourses(models.Model):
         if profs:
             return profs
         else:
-            return None
+            return []
 
     #json data for professor bar chart
     def get_prof_chart(self):
         data = ""
         for p in Qinstructors.objects.filter(course_id__exact = self.course_id):
-            scores = [
-            {"label":"Overall", "value": float(p.overall)},
-            {"label":"Lectures","value": float(p.lectures)},
-            {"label":"Accessible", "value": float(p.accessible)},
-            {"label":"Enthusiasm","value": float(p.enthusiasm)},
-            {"label":"Discussion","value": float(p.discussion)},
-            {"label": "Feedback","value": float(p.feedback)}
-            ]
+            if p is not None:
+                scores = [
+                    {"label":"Overall", "value": float(p.overall)},
+                    {"label":"Lectures","value": float(p.lectures)},
+                    {"label":"Accessible", "value": float(p.accessible)},
+                    {"label":"Enthusiasm","value": float(p.enthusiasm)},
+                    {"label":"Discussion","value": float(p.discussion)},
+                    {"label": "Feedback","value": float(p.feedback)}
+                ]
 
-            data+= "{\n key:'"
-            data+= p.get_name()+"'"
-            data+=",\n values: " + str(scores)
-            data+="\n},"
+                data+= "{\n key:'"
+                data+= p.get_name()+"'"
+                data+=",\n values: " + str(scores)
+                data+="\n},"
         return data
 
     #one data point for enrollment chart

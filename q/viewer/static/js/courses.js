@@ -4,8 +4,8 @@ var current_page;
 
 $(function()
 {
-	current_page = 1;
-	num_pages = Number($("#num_pages").html());
+    current_page = 1;
+    num_pages = Number($("#num_pages").html());
 	get_comments(current_page);
 
 	$("#right_arrow").click(function() {
