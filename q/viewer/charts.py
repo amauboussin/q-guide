@@ -34,7 +34,13 @@ def get_prof_history_chart(courses, selected):
                 if labels[value['x']] == get_label(selected):
                     include.append(prof)
 
-        prof_history = {k:v for k, v in prof_history.items() if k in include}
+        #prof_history = {k:v for k, v in prof_history.items() if k in include}
+
+        filtered_prof_history = {}
+        for k,v in prof_history.items():
+            if k in include:
+                filtered_prof_history[k] = v
+
 
 
 
