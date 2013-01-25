@@ -245,7 +245,7 @@
                 .tooltips(false)
                 //.showValues(true)
                 .forceY([0,5]);
-
+        prof_chart.xAxis.rotateLabels(45);
         d3.select('#prof-chart svg')
                 .datum(getProfData())
                 .transition().duration(500)
