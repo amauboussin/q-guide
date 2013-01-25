@@ -164,10 +164,15 @@
 				    </div>
 
 				    <div class="span6">
-				        <h3 style="text-align: center"> Professor History</h3>
+                        {% if courses|length > 1 %}
+
+                        <h3 style="text-align: center"> Professor History</h3>
 				        <div id="prof-history-chart" >
 				            <svg  style="height: 300px;"></svg>
 				        </div>
+                        {% else %}
+                            <h3 style="text-align: center"> No Professor History Available</h3>
+                        {% endif %}
 				    </div>
 
 				</div>
@@ -180,7 +185,6 @@
 {% endblock %}
 
 {% block javascript %}
-{% if courses|length > 1 %}
 
 <script src="{{ STATIC_URL }}nvd3/lib/d3.v2.js"></script>
 <script src="{{ STATIC_URL }}nvd3/nv.d3.js"></script>
@@ -257,6 +261,7 @@
 
         {% endif %}
 
+    {% if courses|length > 1 %}
     var prof_history_chart;
     nv.addGraph(function() {
         prof_history_chart = nv.models.lineChart();
@@ -281,6 +286,8 @@
         prof_history_chart.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
         return prof_history_chart;
     });
+
+    {% endif %}
 
 
     // Wrapping in nv.addGraph allows for '0 timeout render', stors rendered charts in nv.graphs, and may do more in the future js. it's NOT required
@@ -414,5 +421,4 @@
 
 </script>
 
-{% endif %}
 {% endblock %}
