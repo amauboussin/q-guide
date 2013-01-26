@@ -180,7 +180,8 @@ def group_courses(courses):
     print 'hi im here in group courses'
     print courses
 
-    #order = map(lambda c:c.cat_num, courses)
+    order = map(lambda c:c.cat_num, courses)
+    print 'order: ',order
 
     unique = {}
     for course in courses:
@@ -203,15 +204,15 @@ def group_courses(courses):
         base.average_overall = average([c.overall for c in years ])
         course_list.append(base)
 
-#    ordered_list = []
-#    for old_course in order:
-#        for new_course in course_list:
-#            if old_course == new_course.cat_num:
-#                ordered_list.append(new_course)
-#
-#    print ordered_list
+    ordered_list = []
+    for old_course in order:
+        for new_course in course_list:
+            if old_course == new_course.cat_num:
+                ordered_list.append(new_course)
 
-    return course_list
+    print 'about to return from group courses ', ordered_list
+
+    return ordered_list
 
 
 #average a list of values
