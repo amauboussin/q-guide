@@ -241,6 +241,7 @@
         prof_chart = nv.models.multiBarChart()
                 .x(function(d) { return d.label })
                 .y(function(d) { return d.value })
+                .labelThreshold(.08)
                 //.staggerLabels(true)
                 .tooltips(false)
                 //.showValues(true)
@@ -269,6 +270,7 @@
         prof_history_chart
                 .margin({right: 35})
                 .color(d3.scale.category10().range())
+                .tooltipContent(makeTooltip)
                 .forceY([0,5]);
         prof_history_chart.xAxis // chart sub-models (ie. xAxis, yAxis, etc) when accessed directly, return themselves, not the partent chart, so need to chain separately
                 .tickFormat(getProfHistoryLabel)
@@ -311,7 +313,7 @@
                 .tickFormat(d3.format(',.2f'));
 
         history_chart.forceY([0,5]);
-        history_chart.tooltipContent(function(key, year, e, graph) { return key+":" + e + " in "+ year })
+        history_chart.tooltipContent(makeTooltip)
 
         d3.scale.ordinal();
         d3.select('#ratings-chart svg')
@@ -334,6 +336,7 @@
         enrollment_chart
                 .x(function(d,i) { return i })
                 .margin({right: 35})
+                .tooltipContent(makeTooltip)
                 .color(d3.scale.category10().range());
         enrollment_chart.xAxis // chart sub-models (ie. xAxis, yAxis, etc) when accessed directly, return themselves, not the partent chart, so need to chain separately
                 .tickFormat(getLabel) //d3.format(',.1f')
@@ -382,6 +385,11 @@
 
 
     }
+    function makeTooltip(key, year, e, graph) {
+        return '<b>' + key + '</b>' +': ' + e + ' in '+ year  ;
+
+    }
+
 
     $(document).ready(function() {
         setTimeout(do_this_on_load, 500);
