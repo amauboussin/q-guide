@@ -72,6 +72,7 @@
 
 <div class="row">
     <div class="span4 offset2">
+        <input id="dfilter" class="span4">
         <div id= "departments" class="well" >
 
             {% for field in fields %}
@@ -81,4 +82,32 @@
         </div>
     </div>
 </div>
+
+
+<div class="row">
+    <div class="span8 offset1">
+        <h4>...or <a href="/courses/top/">check out the courses with the highest and lowest ratings.</a></h4>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+
+        $("#dfilter").keypress(function() {
+            var filter = $(this).val();
+            $('#departments').hide();
+            if (filter) {
+                //$('#departments').filter(':contains('+filter')').show();
+                //$('#departments').find("a:not(:contains(" + filter + "))").hide();
+                //$('#departments').find("a:contains(" + filter + ")").show();
+            } else {
+                //$('#departments').find("a").hide();
+                $('#departments').show();
+            }
+        });
+
+
+    //}
+    </script>
 {% endblock %}
