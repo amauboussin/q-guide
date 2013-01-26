@@ -1,0 +1,47 @@
+#details{
+    margin-top: 10px;
+    width: 70%;
+    height: 70%;
+}
+#enrollment{
+    width: 70%;
+    height: 70%;
+}
+#email{
+    height: 35px;
+    width: 30%;
+    margin-top: 15px;
+    line-height: 25px;
+    font-size: 20px;
+}
+#submit-button{
+    margin-top: 15px;
+    height: 40px;"
+}
+.centered
+{
+    text-align: center;
+}
+
+.grey
+{
+    background-color: #f9f9f9;
+    padding-bottom: 150px;
+    padding-top: 30px;
+
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    border-radius: 4px;
+}
+body
+{
+    background-color: #A51C30;
+    /*background-color: #f4f4f4;*/
+}
+
+.input-huge
+{
+    font-size: 20px;
+    line-height: 25px;
+}
