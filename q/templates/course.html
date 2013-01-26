@@ -454,11 +454,11 @@
 
 				if (category == "prof")
 				{
+                    prof_chart.update();
                     {% if courses|length > 1 %}
-					prof_chart.update();
-                    
 					prof_history_chart.update();
                     {% endif %}
+
 				}
 			});
 
