@@ -39,31 +39,3 @@
 </div>
 {% endif %}
 {% endblock %}
-
-{% block javascript %}
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.tablesorter.min.js"></script>
-    <script type="text/javascript">
-        $(function()
-        {
-            // sort course results by the third column (enrollment) by default
-            {% if extend == "course_list.html" %} 
-
-            $("#course_list").tablesorter({
-                // sort on the third column, order asc
-                sortList: [[2,1]]
-            });
-
-            //don't sort professor results by default
-            {% else %}
-
-
-                $(function()
-                {
-                    $("#course_list").tablesorter();
-                });
-
-
-            {% endif %}
-        });
-    </script>
-{% endblock %}
