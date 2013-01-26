@@ -32,7 +32,7 @@ urlpatterns = patterns('',
     url(r'^profs/search/$', prof_search_results, name = "prof_search" ), #page with professor search box
     url(r'^profs/(?P<id>\w+)/$', prof_detail, name = "prof_detail" ), #all of the professor's courses in one page
 
-    (r'^home/$', 'django.views.generic.simple.direct_to_template', {'template': 'home.html'}),
+    url(r'^home/$', home, name = "home" ),
 
     (r'^compare/$', 'django.views.generic.simple.direct_to_template', {'template': 'static/compare_courses.html'}),
 

@@ -16,6 +16,12 @@ def course_root(request):
     fields = Qfields.objects.all()
     return render_to_response('course_root.html', {'fields': fields}, context_instance=RequestContext(request))
 
+#new homepage
+
+def home(request):
+    fields = Qfields.objects.all()
+    return render_to_response('home.html', {'fields': fields}, context_instance=RequestContext(request))
+
 #detailed view of a single course 
 def course_detail(request, course_field, course_number, year = None, term = None):
     comments_per_page = 50
