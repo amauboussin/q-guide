@@ -7,6 +7,25 @@
 <script src="{{ STATIC_URL }}js/courses.js"> </script>
 <link href="{{ STATIC_URL }}css/courses.css" rel="stylesheet">
 <link href="{{ STATIC_URL }}nvd3/src/nv.d3.css" rel="stylesheet" type="text/css">
+
+
+<style>
+#prof-history-frame{
+{% if one_prof %}
+    height: 350px;
+{% else %}
+    height:  400px;
+{% endif %}
+}
+
+#prof-chart-frame{
+{% if one_prof %}
+    height: 350px;
+{% else %}
+    height:  400px;
+{% endif %}
+}
+</style>
 {% endblock %}
 
 {% block content %}
@@ -157,9 +176,15 @@
 				<div class="row-fluid">
 
 				    <div class="span6">
-				        <h3 style="text-align: center"> {{ selected_course.get_profs.0 }}</h3>
+				        <h3 style="text-align: center">
+                            {% if one_prof %}
+                            {{ selected_course.get_profs.0 }}
+                            {% else %}
+                            Instructor Ratings
+                            {% endif %}
+                        </h3>
 				        <div id="prof-chart" >
-				            <svg  class = "nogrid" style="height: 300px;"></svg>
+				            <svg  id="prof-chart-frame" class = "nogrid" ></svg>
 				        </div>
 				    </div>
 
@@ -168,7 +193,7 @@
 
                         <h3 style="text-align: center"> Professor History</h3>
 				        <div id="prof-history-chart" >
-				            <svg  style="height: 300px;"></svg>
+				            <svg  id="prof-history-frame" ></svg>
 				        </div>
                         {% else %}
                             <h3 style="text-align: center"> No Professor History Available</h3>
@@ -241,12 +266,15 @@
         prof_chart = nv.models.multiBarChart()
                 .x(function(d) { return d.label })
                 .y(function(d) { return d.value })
-                .labelThreshold(.08)
+                .showControls(false)
+                .reduceXTicks(false)
+                .margin({bottom: 60})
+
                 //.staggerLabels(true)
                 .tooltips(false)
                 //.showValues(true)
                 .forceY([0,5]);
-        prof_chart.xAxis.rotateLabels(45);
+        //prof_chart.xAxis.rotateLabels(45);
         d3.select('#prof-chart svg')
                 .datum(getProfData())
                 .transition().duration(500)
@@ -277,7 +305,6 @@
                 .axisLabel('Year');
         prof_history_chart.yAxis
                 .tickFormat(d3.format(',.1f'));
-        prof_history_chart.forceY([0]);
         d3.scale.ordinal();
         d3.select('#prof-history-chart svg')
                 .datum(getProfHistory())
@@ -302,6 +329,7 @@
                 .x(function(d,i) { return i })
                 .margin({right: 35})
                 //.staggerLabels()
+                .forceY([0,5])
                 .color(d3.scale.category10().range());
 
 
