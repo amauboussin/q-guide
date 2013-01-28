@@ -143,6 +143,8 @@ def trends(request):
             field.workload = float(workload_sum) / enrollment_sum
             field.difficulty = float(difficulty_sum) / enrollment_sum
 
+            to_chart.append(field)
+
 
     #fields[:] = [f for f in fields if f.enrollment > 50]
 
@@ -151,13 +153,16 @@ def trends(request):
     for f in to_chart:
         values.append(
             {
-                'x': fields.workload,
-                'y': fields.difficulty,
-                'size' : field.enrollment,
-                'label' : field.name
+                'x': '%f' % f.enrollment,
+                'y': '%f' % f.difficulty,
+                'size' : '%f' % (f.workload),#/1000.0),
+                'label' : "'%s'" % str (f.name)
+
+
             }
         )
 
+    print values
     data = "[ {key: 'Fields of Study',\v values: " + string.replace(str(values), "'", '') + "} ]"
 
     return render_to_response('trends.html', {'data': data},
