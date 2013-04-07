@@ -12,6 +12,3 @@ DATABASES = {
         'PORT': '', # Set to empty string for default. Not used with sqlite3.
     }
 }
-
-STATIC_ROOT = (os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static'))
-TEMPLATE_DIRS = (os.path.join(os.path.abspath(os.path.dirname(__file__)), 'templates'))

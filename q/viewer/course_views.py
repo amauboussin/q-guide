@@ -28,7 +28,7 @@ def home(request):
 
 # Show CS50 page to the world, no password required
 def demo(request):
-    return course_detail(request, "COMPSCI", "50")
+    return course_detail(request, "COMPSCI", "50", "2011", "Fall")
 
 #detailed view of a single course 
 def course_detail(request, course_field, course_number, year = None, term = None):

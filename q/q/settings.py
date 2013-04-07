@@ -56,7 +56,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/var/www/q2/q-guide/q/viewer/static/'
+STATIC_ROOT = (os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static'))
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -113,7 +113,7 @@ ROOT_URLCONF = 'q.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'q.wsgi.application'
 
-TEMPLATE_DIRS = ('/var/www/q2/q-guide/q/templates/',)
+TEMPLATE_DIRS = (os.path.join(os.path.abspath(os.path.dirname(__file__)), 'templates'))
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -167,4 +167,10 @@ try:
 except ImportError:
     pass
 
-#LOCKDOWN_URL_EXCEPTIONS = (r'^/demo/$',)
+# Unlock demo page
+LOCKDOWN_URL_EXCEPTIONS = (
+    r'^/preview/',                              # Unlock splash page
+    r'^/demo/$',                                # Unlock demo
+    r'^/courses/COMPSCI/50/\d*/\w*/comments/$', # Unlock CS50 comments
+    r'/static/'                                 # Unlock CSS/JavaScript
+)
