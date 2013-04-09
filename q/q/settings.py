@@ -1,8 +1,10 @@
 # Django settings for q project.
 import os
 
-DEBUG = True 
+DEBUG = False 
 TEMPLATE_DEBUG = DEBUG
+ALLOWED_HOSTS = ['preview.harvardq.com', 'harvardq.com']
+
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
