@@ -32,6 +32,7 @@ def course_detail(request, course_field, course_number, year = None, term = None
     comments_per_page = 50
 
     course_number = string.replace(string.upper(course_number),'_',' ')
+
     #get all instances of the course
     courses = Qcourses.objects.filter(field__exact = string.upper(course_field)).filter(number__exact = string.upper(course_number)).order_by('-term').order_by('-year')
 

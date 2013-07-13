@@ -96,8 +96,12 @@
 
             //set the default values of each input to the value present in GET
             if($_GET["category"]){
+
+
                 var category = "#category-"+$_GET["category"];
                 $(category).attr("selected", "true");}
+
+
             if($_GET["enrollment"]){
                 var enrollment = "#enrollment-"+$_GET["enrollment"];
                 $(enrollment).attr("selected", "true");
