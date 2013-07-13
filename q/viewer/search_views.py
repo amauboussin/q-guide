@@ -10,7 +10,6 @@ from django.db.models import Q
 from operator import attrgetter
 from django.http import HttpResponseRedirect
 
-
 from course_views import course_detail
 
 #search results page for courses

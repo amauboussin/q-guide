@@ -1,53 +1,11 @@
-settings.py
+local_settings.py
+
 .idea
+.idea/*
 *.py[cod]
+
 .DS_Store
 
-# C extensions
-*.so
 
-# Packages
-*.egg
-*.egg-info
-dist
-build
-eggs
-parts
-bin
-var
-sdist
-develop-eggs
-.installed.cfg
-lib64
-
-# Installer logs
-pip-log.txt
-
-# Unit test / coverage reports
-.coverage
-.tox
-nosetests.xml
-
-# Translations
-*.mo
-
-# Mr Developer
-.mr.developer.cfg
-.project
-.pydevproject
-
-q/.idea/workspace.xml
-
-q/q/settings.py
-
-q/.idea/workspace.xml
-
-q/viewer/static/.DS_Store
 .AppleDouble
-.DS_Store
 
-q/.idea/dataSources.xml
-
-q/.idea/dataSources.ids
-
-q/.idea/dataSources.ids
