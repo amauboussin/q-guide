@@ -5,4 +5,7 @@ local_settings.py
 *.py[cod]
 
 .DS_Store
+
+
 .AppleDouble
+

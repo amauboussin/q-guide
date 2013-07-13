@@ -35,6 +35,7 @@ def course_detail(request, course_field, course_number, year = None, term = None
     comments_per_page = 50
 
     course_number = string.replace(string.upper(course_number),'_',' ')
+
     #get all instances of the course
     courses = Qcourses.objects.filter(field__exact = string.upper(course_field)).filter(number__exact = string.upper(course_number)).order_by('-term').order_by('-year')
 
@@ -121,20 +122,52 @@ def department_view(request, field):
     return render_to_response('course_list_filters.html', {'course_list': course_list},
         context_instance=RequestContext(request))
 
+def check(value):
+    if value is None:
+        return 0
+    else:
+        return value
 def trends(request):
+
+    to_chart = []
     fields = list(Qfields.objects.all())
     for field in fields:
         courses = list(Qcourses.objects.filter(field__startswith = field.field).filter(year = 2011))
         field.n = len(courses)
-        sum = 0
-        for c in courses:
-            if c.enrollment is not None:
-                sum += c.enrollment
-        field.enrollment = sum
+
+        if field.n > 10:
+            enrollment_sum = 0; workload_sum = 0; difficulty_sum = 0
+            for c in courses:
+                if c.enrollment is not None:
+                    enrollment_sum += c.enrollment
+                    workload_sum += c.enrollment * check(c.workload)
+                    difficulty_sum += c.enrollment * check(c.difficulty)
+
+            field.enrollment = enrollment_sum
+            field.workload = float(workload_sum) / enrollment_sum
+            field.difficulty = float(difficulty_sum) / enrollment_sum
+
+            to_chart.append(field)
 
 
-    fields[:] = [f for f in fields if f.enrollment > 50]
+    #fields[:] = [f for f in fields if f.enrollment > 50]
 
 
-    return render_to_response('trends.html', {'fields': fields},
+    values = []
+    for f in to_chart:
+        values.append(
+            {
+                'x': '%f' % f.enrollment,
+                'y': '%f' % f.difficulty,
+                'size' : '%f' % (f.workload),#/1000.0),
+                'label' : "'%s'" % str (f.name)
+
+
+            }
+        )
+
+    print values
+    data = "[ {key: 'Fields of Study',\v values: " + string.replace(str(values), "'", '') + "} ]"
+
+    return render_to_response('trends.html', {'data': data},
         context_instance=RequestContext(request))
