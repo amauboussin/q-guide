@@ -76,6 +76,14 @@ class Qcourses(models.Model):
             return ''
         return "{ y:%.2f }" % value
 
+    #get an int to compare which course came first
+    def order_by(self):
+        add = 0
+        if self.term == 1:
+            add = 1
+
+        return self.year * 10 + add
+
 
     #get the text representing this course's term
     def term_text(self):

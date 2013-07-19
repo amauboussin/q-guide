@@ -149,7 +149,6 @@ def convert_term(term):
     else:
         return 0 #term is not valid. filtering for term by 0 will return an empty queryset
 
-
 def filter_courses(courses, parameters):
     print courses
     if ('category' in parameters) and parameters['category'].strip():

@@ -6,17 +6,15 @@ def get_prof_detail_chart(classes):
     labels = {}
     label_index = 0
     course_data = {}
-
     for c in classes:
         course_data[c[0].course.title] = []
-
-        for prof_row in sorted(c, key = lambda c: get_label(c.course)):
-            label = get_label(c[0].course)
-
+        for prof_row in sorted(c, key = lambda c: c.course.order_by()):
+            label = get_label(prof_row.course)
+            print label
             if not label in labels:
                 label_index += 1
                 labels[label] = label_index
-            value = { 'x' :labels[label], 'y': float(prof_row.overall) }
+            value = { 'x' : labels[label], 'y': float(prof_row.overall) }
             course_data[prof_row.course.title].append(value)
 
     labels_output = [t[0] for t in sorted(labels.items(), key=lambda x: x[1]) ]
