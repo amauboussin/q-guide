@@ -56,7 +56,7 @@ def course_detail(request, course_field, course_number, year = None, term = None
     if not selected_courses:
         return render_to_response('404.html', {}, context_instance=RequestContext(request))
 
-
+    # select the most recent incarnation
     selected = selected_courses[0]
 
 
@@ -64,7 +64,6 @@ def course_detail(request, course_field, course_number, year = None, term = None
     prof_chart_data, num_profs = selected.get_prof_chart()
     enrollment_data = get_enrollment_chart(courses)
     ratings_data = get_ratings_chart(courses)
-
 
     comment_count = num_comments(courses)
     num_pages = comment_count / comments_per_page

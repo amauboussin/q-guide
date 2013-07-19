@@ -8,6 +8,7 @@ import string
 from helper import *
 from django.db.models import Q
 from operator import attrgetter
+import charts
 
 #detailed view of a professor
 def prof_detail(request, id):
@@ -27,4 +28,10 @@ def prof_detail(request, id):
         else:
             classes[row.course.cat_num] = [row]
 
-    return render_to_response('prof_detail.html', {'classes': classes.values() }, context_instance=RequestContext(request))
+    prof_detail_data, prof_detail_labels = charts.get_prof_detail_chart(classes.values())
+
+    print str(prof_detail_labels)
+
+    return render_to_response('prof_detail.html', {'classes': classes.values(),
+                'prof_detail_data' : prof_detail_data, 'prof_detail_labels' : str(prof_detail_labels)  },
+                context_instance=RequestContext(request))

@@ -1,5 +1,36 @@
 import string
 
+
+def get_prof_detail_chart(classes):
+
+    labels = {}
+    label_index = 0
+    course_data = {}
+
+    for c in classes:
+        course_data[c[0].course.title] = []
+
+        for prof_row in sorted(c, key = lambda c: get_label(c.course)):
+            label = get_label(c[0].course)
+
+            if not label in labels:
+                label_index += 1
+                labels[label] = label_index
+            value = { 'x' :labels[label], 'y': float(prof_row.overall) }
+            course_data[prof_row.course.title].append(value)
+
+    labels_output = [t[0] for t in sorted(labels.items(), key=lambda x: x[1]) ]
+
+
+    data = ""
+    for k,v in course_data.items():
+        data += "{\n"
+        data += "key: '" + k +"'"
+        data += ",\n"
+        data += "values: " + string.replace(str(v),"'", '') + ",\n},"
+
+    return data, [str(l) for l in labels_output]
+
 def get_prof_history_chart(courses, selected):
 
     labels = []

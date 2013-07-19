@@ -3,14 +3,41 @@
 
 {% block title %}{{ classes.0.0.first }} {{ classes.0.0.last }}{% endblock %}
 
+{% block head %}
+<link href="{{ STATIC_URL }}nvd3/src/nv.d3.css" rel="stylesheet" type="text/css">
+{% endblock %}
+
 
 {% block content %}
 
 
+<style>
+#prof-detail-frame{
+    height:  400px;
+}
+
+#prof-detail-chart .nv-lineChart circle.nv-point
+{
+    fill-opacity: 1;
+}
+</style>
+
+
+
+
 <h1>{{ classes.0.0.first }} {{ classes.0.0.last }}</h1>
 
+
+    <h3 style="text-align: center"> Professor Ratings Over Time</h3>
+    <div id="prof-detail-chart" >
+        <svg  id="prof-detail-frame" ></svg>
+    </div>
+
+    {{ prof_detail_data }}
+    {{ prof_detail_labels }}
+
     {% for class in classes %}
-    <h3>{{ class.0.course }}</h3>
+    <h3><a href = "{{ class.0.course.get_absolute_url }}" > {{ class.0.course }} </a></h3>
     <table class="table table-bordered" id="course_list">
     <thead>
     <tr>
@@ -38,4 +65,115 @@
     {% endfor %}
     </tbody></table>
 {% endfor %}
+
+
+{% endblock %}
+
+
+
+
+{% block javascript %}
+
+<script src="{{ STATIC_URL }}nvd3/lib/d3.v2.js"></script>
+<script src="{{ STATIC_URL }}nvd3/nv.d3.js"></script>
+<!-- <script src="{{ STATIC_URL }}nvd3/src/tooltip.js"></script> -->
+<!-- <script src="{{ STATIC_URL }}nvd3/src/utils.js"></script> -->
+<!-- <script src="{{ STATIC_URL }}nvd3/src/models/legend.js"></script> -->
+<!-- <script src="{{ STATIC_URL }}nvd3/src/models/axis.js"></script> -->
+<!-- <script src="{{ STATIC_URL }}nvd3/src/models/scatter.js"></script> -->
+<!-- <script src="{{ STATIC_URL }}nvd3/src/models/line.js"></script> -->
+<script src="{{ STATIC_URL }}nvd3/src/models/lineChart.js"></script>
+<script>
+
+
+    {% autoescape off %}
+    var prof_detail_labels = {{ prof_detail_labels }};
+    {% endautoescape %}
+
+    function getProfDetailLabel(i){
+        return prof_detail_labels[i];
+    }
+
+    function getProfDetail(){
+    {% autoescape off %}
+        return [ {{ prof_detail_data }} ];
+    {% endautoescape %}
+
+    }
+    var prof_detail_chart;
+    nv.addGraph(function() {
+        prof_detail_chart = nv.models.lineChart();
+
+        prof_detail_chart
+                .margin({right: 50})
+                .color(d3.scale.category10().range())
+{#                .tooltipContent(makeTooltip)#}
+                .forceY([0,5]);
+        prof_detail_chart.xAxis // chart sub-models (ie. xAxis, yAxis, etc) when accessed directly, return themselves, not the partent chart, so need to chain separately
+                .tickFormat(getProfDetailLabel)
+                .axisLabel('Year');
+        prof_detail_chart.yAxis
+                .tickFormat(d3.format(',.1f'));
+        d3.scale.ordinal();
+        d3.select('#prof-detail-chart svg')
+                .datum(getProfDetail())
+                .transition().duration(500)
+                .call(prof_detail_chart);
+        nv.utils.windowResize(function(){prof_detail_chart.update; $('#prof-detail-chart .nv-lineChart circle.nv-point').attr("r", "3.5");
+        });
+        prof_detail_chart.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
+        return prof_detail_chart;
+    });
+
+
+</script>
+
+
+{#  <script>#}
+{#  function data () {#}
+{#  var sin = [],#}
+{#      cos = [];#}
+{##}
+{#  for (var i = 0; i < 100; i++) {#}
+{#    sin.push({x: i, y: Math.sin(i/10)});#}
+{#    cos.push({x: i, y: .5 * Math.cos(i/10)});#}
+{#  }#}
+{##}
+{#  return [#}
+{#    {#}
+{#      values: sin,#}
+{#      key: 'Sine Wave',#}
+{#      color: '#ff7f0e'#}
+{#    },#}
+{#    {#}
+{#      values: cos,#}
+{#      key: 'Cosine Wave',#}
+{#      color: '#2ca02c'#}
+{#    }#}
+{#  ];#}
+{#}#}
+{#   nv.addGraph(function() {#}
+{#  var chart = nv.models.lineChart();#}
+{##}
+{#  chart.xAxis#}
+{#      .axisLabel('Year')#}
+{#      .tickFormat(getProfDetailLabel);#}
+{##}
+{#  chart.yAxis#}
+{#      .axisLabel('Voltage (v)')#}
+{#      .tickFormat(d3.format('.02f'));#}
+{##}
+{#  d3.select('#chart svg')#}
+{#      .datum(getProfDetail())#}
+{#    .transition().duration(500)#}
+{#      .call(chart);#}
+{##}
+{#  nv.utils.windowResize(chart.update);#}
+{##}
+{#  return chart;#}
+{#});#}
+{##}
+{#   </script>#}
+
+
 {% endblock %}
