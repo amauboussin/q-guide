@@ -95,6 +95,7 @@ def get_ratings_chart(courses):
     data += "];"
     return data
 
+
 def get_enrollment_chart(courses):
     return '[ %s ];' % get_values(courses, 'enrollment')
 

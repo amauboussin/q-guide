@@ -83,16 +83,17 @@ def top_courses(request):
     if ('n' in request.GET) and request.GET['n'].isdigit():
         n = request.GET['n']
 
+    fields = Qfields.objects.all();
+
     #filter out generic expos 20 and courses that do not have scores in the database to get baseline courses
     courses = Qcourses.objects.all().exclude(overall = None).exclude(cat_num = 5518)
 
     courses = filter_courses(courses, request.GET)
 
-
     #take first n courses
     courses = courses[:n]
 
-    return render_to_response('course_list_filters.html', {'course_list': courses}, context_instance=RequestContext(request))
+    return render_to_response('course_list_filters.html', {'course_list': courses, 'fields' : fields}, context_instance=RequestContext(request))
 
 #view all of the courses in a department
 def department_view(request, field):

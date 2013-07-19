@@ -155,6 +155,8 @@ def filter_courses(courses, parameters):
         filter = parameters['category']
     else:
         filter = 'overall'
+    
+
     #set order of values
     if ('reverse' in parameters) and parameters['reverse'].strip() and string.lower(parameters['reverse']) == 'true':
         courses=courses.order_by(filter)
